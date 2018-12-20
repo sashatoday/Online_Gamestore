@@ -158,7 +158,9 @@ The figure below shows the ER modeling for our tables.
 
 - We are going to start working when the third period begins. So we have 6 weeks to complete the project before the deadline. (But if we find time for the project during Christmas holidays we will cooperate through Telegram group.)
 - We don&#39;t plan to meet regularly, we will decide about meetings during the development process. For example, we found it necessary to discuss in person how our models should look like, so we had a meeting for this. For now, we plan to communicate online and make appointments if it will be necessary.
-- Apart from the Telegram group, we have a Google Drive folder. We will use it for some additional documents like current schemes, tasks, notes, etc. to summarise our ideas from the Telegram chat. It is easier to find some information in one place instead of searching chat history. Moreover, we will control the development process in Gitlab repository, where we will assign requirement to team members and merge feature to master when a feature is working.
+- Apart from the **Telegram** group, we have a **Google Drive** folder. We will use it for some additional documents like current schemes, tasks, notes, etc. to summarise our ideas from the Telegram chat. It is easier to find some information in one place instead of searching chat history. Moreover, we will control the development process in **Trello**, where we will assign requirement to team members as it is shown in the screenshot:
+
+![figure](trello.png "Trello")
 
 **4.2. Time Schedule**
 
