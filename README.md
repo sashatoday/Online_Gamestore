@@ -132,7 +132,7 @@ We extend Django&#39;s User model with OneToOneField relationship in UserAccount
 
 The figure below shows the ER modeling for our tables.
 
-![](https://version.aalto.fi/gitlab/zhurava1/wsd/blob/master/models.png)
+![figure](models.png "Models")
 
 **3.3. Views**
 
