@@ -4,7 +4,7 @@
 
 {% block content %}
   <h2>Registration form</h2>
-  <form method="post" action="">
+  <form method="post" action="">{% csrf_token %}
   
     <div class="form-group">
       <label for="username">Username:</label>
