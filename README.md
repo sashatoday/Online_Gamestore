@@ -74,57 +74,69 @@ We extend Django&#39;s User model with OneToOneField relationship in UserAccount
 
 **1. UserAccount**
 
-- Id
-- User = OneToOneField(User) **extend user model**
-- Birth year
-- Gender
-- Country
-- City
-- Address
-- Bio
-- Photo
-- Role (developer or player)
+| Prop      | Type                                |
+|-----------|-------------------------------------|
+| id        | AutoField                           |
+| user      | OneToOneField(extend User model)    |
+| birthDate | DateField                           |
+| gender    | CharField(Male, Female, Unknown)    |
+| country   | CharField                           |
+| city      | CharField                           |
+| address   | CharField                           |
+| bio       | TextField                           |
+| photoUrl  | URLField                            |
+| role      | CharField(Admin, Developer, Player) |
 
 **2. Game**
 
-- Id
-- Name
-- Price
-- Picture
-- Description
-- URL
-- Date
-- Developer (from User model- FK)
-
+| Prop        | Type                 |
+|-------------|----------------------|
+| id          | AutoField            |
+| price       | PositiveIntegerField |
+| pictureUrl  | URLField             |
+| description | TextField            |
+| gameUrl     | URLField             |
+| date        | DateField            |
+| category    | CharField            |
+| developer   | ForeignKey(User)     |
 
 **3. Purchase**
 
-- Id
-- Date
-- Player (from User model - FK)
-- Game (from Game model - FK)
+| Prop          | Type             |
+|---------------|------------------|
+| id            | AutoField        |
+| date          | DateField        |
+| buyer         | ForeignKey(User) |
+| purchasedGame | ForeignKey(Game) |
 
 **4. Score**
 
-- Id
-- Value
-- Date
-- Game (from Game model - FK)
-- Player (from User model - FK)
+| Prop        | Type                 |
+|-------------|----------------------|
+| id          | AutoField            |
+| value       | PositiveIntegerField |
+| date        | DateField            |
+| scorer      | ForeignKey(User)     |
+| gameInScore | ForeignKey(Game)     |
 
 **5. Wishlist**
 
-- Id
-- Player (from User model - FK)
-- Game (from Game model - FK)
+| Prop           | Type             |
+|----------------|------------------|
+| id             | AutoField        |
+| date           | DateField        |
+| potentialBuyer | ForeignKey(User) |
+| wishedGame     | ForeignKey(Game) |
 
 **6. Gamestate**
 
-- Id
-- date
-- Player (from User model - FK)
-- Game (from Game model - FK)
-- State
+| Prop        | Type             |
+|-------------|------------------|
+| id          | AutoField        |
+| state       | TextField        |
+| date        | DateField        |
+| player      | ForeignKey(User) |
+| gameInState | ForeignKey(Game) |
 
 The figure below shows the ER modeling for our tables.
 
