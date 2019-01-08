@@ -3,16 +3,31 @@ from django.contrib.auth.models import User
 from datetime import date
 
 class User(models.Model):
+    MALE = 'M'
+    FEMALE = 'F'
+    UNKNOWN = 'U'
+    ADMIN = 'A'
+    DEVELOPER = 'D'
+    PLAYER = 'P'
+    GENDER_CHOICES = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+        (UNKNOWN, 'Unknown'),
+    )
+    ROLE_CHOICES = (
+        (ADMIN, 'Admin'),
+        (DEVELOPER, 'Developer'),
+        (PLAYER, 'Player'),
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
-    birthYear = models.CharField(max_length=50)
-    gender = models.CharField(max_length=5)
-    country = models.CharField(max_length=15)
-    city = models.CharField(max_length=15)
-    address = models.CharField(max_length=15)
-    bio = models.TextField()
+    birthDate = models.DateField(null=False, blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
+    country = models.CharField(max_length=15, blank=True)
+    city = models.CharField(max_length=15, blank=True)
+    address = models.CharField(max_length=15, blank=True)
+    bio = models.TextField(blank=True)
     photoUrl = models.URLField(blank=True)
-    role = models.CharField(max_length=15)
-    objects = models.Manager()
+    role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
 
 class Game(models.Model):
     name = models.CharField(max_length=25, null=False)
@@ -21,6 +36,7 @@ class Game(models.Model):
     description = models.TextField()
     gameUrl = models.URLField(blank=False)
     date = models.DateField(default=date.today)
+    category = models.CharField(max_length=15, blank=True)
     developer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='developer')
 
     class Meta:
@@ -56,7 +72,7 @@ class WishList(models.Model):
     pass
 
 class GameState(models.Model):
-    state = models.CharField(max_length=50, null=False)
+    state = models.TextField(null=False)
     date = models.DateField(default=date.today)
     player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player')
     gameInState = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='gameInState')
