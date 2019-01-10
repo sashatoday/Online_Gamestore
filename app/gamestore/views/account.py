@@ -3,8 +3,7 @@ from gamestore.models import UserProfile
 from gamestore.forms import UserForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout
-from django.contrib.auth import authenticate
+from django.contrib.auth import logout, authenticate
 
 def startpage(request):
     return render(request, "base.html", {})
