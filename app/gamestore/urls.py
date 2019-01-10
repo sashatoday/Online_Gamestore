@@ -4,5 +4,5 @@ from gamestore.views import account
 urlpatterns = [
     re_path(r'^$', account.startpage, name='index'),
     re_path(r'^login$', account.login, name='login'),
-    re_path(r'^registration$', account.registration, name='registration'),
+    re_path(r'^signup$', account.signup, name='signup'),
 ]

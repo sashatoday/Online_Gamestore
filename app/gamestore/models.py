@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 
-class User(models.Model):
+class UserProfile(models.Model):
     MALE = 'M'
     FEMALE = 'F'
     UNKNOWN = 'U'
@@ -37,7 +37,7 @@ class Game(models.Model):
     gameUrl = models.URLField(blank=False)
     date = models.DateField(default=date.today)
     category = models.CharField(max_length=15, blank=True)
-    developer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='developer')
+    developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
 
     class Meta:
         ordering = ["-date", "name"]
@@ -45,7 +45,7 @@ class Game(models.Model):
 
 class Purchase(models.Model):
     date = models.DateField(default=date.today)
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='buyer')
+    buyer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='buyer')
     purchasedGame = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='purchasedGame')
 
     class Meta:
@@ -55,7 +55,7 @@ class Purchase(models.Model):
 class Score(models.Model):
     value = models.PositiveIntegerField()
     date = models.DateField(default=date.today)
-    scorer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='scorer')
+    scorer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='scorer')
     gameInScore = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='gameInScore')
 
     class Meta:
@@ -64,7 +64,7 @@ class Score(models.Model):
 
 class WishList(models.Model):
     date = models.DateField(default=date.today)
-    potentialBuyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='potentialBuyer')
+    potentialBuyer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='potentialBuyer')
     wishedGame = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='wishedGame')
 
     class Meta:
@@ -74,7 +74,7 @@ class WishList(models.Model):
 class GameState(models.Model):
     state = models.TextField(null=False)
     date = models.DateField(default=date.today)
-    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player')
+    player = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='player')
     gameInState = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='gameInState')
 
     class Meta:
