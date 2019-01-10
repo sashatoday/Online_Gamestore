@@ -28,6 +28,8 @@ def signup(request):
         form = UserForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(
+                first_name=form.clean_first_name(),
+                last_name=form.clean_last_name(),
                 username=form.clean_username(),
                 email=form.clean_email(),
                 password=form.clean_password2()

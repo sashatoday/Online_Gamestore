@@ -7,15 +7,19 @@ def check_user_uniqueness(error, **field):
     another_user = User.objects.filter(**field)
     if another_user:
         raise forms.ValidationError(error)
-
 class UserForm(UserCreationForm):
-
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
     
     class Meta:
         model = User
-        fields = ('username', 'email', 'birthDate',  'password1', 'password2',)
-        
+        fields = ('first_name', 'last_name', 'username', 'email', 'birthDate',  'password1', 'password2',)
+    
+    def clean_first_name(self):
+        return self.cleaned_data['first_name']
+    
+    def clean_last_name(self):
+        return self.cleaned_data['last_name']
+
     def clean_username(self):
         username = self.cleaned_data['username']
         check_user_uniqueness(error="User with this username already exists.", username=username)
