@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+  <h2>Login form</h2>
+  <form method="post" action="">{% csrf_token %}
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" class="form-control" id="username" placeholder="Enter username" value="{{username|default_if_none:""}}" name="username">
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" id="password" placeholder="Enter password" value="{{password|default_if_none:""}}" name="password">
+    </div>
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+    <span>New here? <a href="/signup">Signup</a></span>
+  </form>
+
+    {% if errors %}
+        {{errors}}
+        Please, try again!
+    {% endif %}
+{% endblock %}
+

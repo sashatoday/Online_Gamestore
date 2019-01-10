@@ -1,0 +1,22 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Game Store{% endblock %}</title>
+  </head>
+  <body>
+      <h1>Game Store</h1>
+      {% if user.is_authenticated %}
+        <p>Welcome, {{ user.get_username }}. You can now <a href="/logout">Logout</a></p>
+      {% else %}
+          <p>Welcome, new user. Please <a href="/login">log in.</a></p>
+      {% endif %}
+      <!-- Content -->
+      <div class="content">
+          {% block content %}{% endblock %}
+      </div>
+  </body>
+</html>
