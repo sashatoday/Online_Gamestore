@@ -9,7 +9,11 @@
   </head>
   <body>
       <h1>Game Store</h1>
-
+      {% if user.is_authenticated %}
+        <p>Welcome, {{ user.get_username }}. You can now <a href="/logout">Logout</a></p>
+      {% else %}
+          <p>Welcome, new user. Please <a href="/login">log in.</a></p>
+      {% endif %}
       <!-- Content -->
       <div class="content">
           {% block content %}{% endblock %}
