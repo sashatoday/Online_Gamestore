@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout, authenticate
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 def startpage(request):
     if request.user.is_authenticated:
@@ -68,3 +69,7 @@ def signup(request):
 def logout_user(request):
     logout(request)
     return redirect('index')
+
+@login_required(login_url='/login/')
+def profile(request):
+    return render(request, 'account/profile.html')
