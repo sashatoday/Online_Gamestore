@@ -4,9 +4,9 @@
 
 {% block content %}
 
-    <h1>Profile view</h1>
+<h1>Profile view</h1>
 
-    {{ user.get_birth_date }}
-   
+<span>Birthdate: {{ user.userprofile.get_birth_date }}</span>
+
+
 {% endblock %}
-
