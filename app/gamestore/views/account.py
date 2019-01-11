@@ -4,11 +4,15 @@ from gamestore.forms import UserForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 def startpage(request):
     return render(request, "base.html", {})
 
 def login(request):
+    next = 'index' #default redirect index
+    if request.GET:
+        next = request.GET['next']
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -20,7 +24,7 @@ def login(request):
         else:
             auth_login(request, user)
             #login success, needs redirect
-            return redirect('index')
+            return redirect(next)
     return render(request, "account/login.html", {})
     
 def signup(request):
@@ -49,3 +53,7 @@ def signup(request):
 def logout_user(request):
     logout(request)
     return redirect('index')
+
+@login_required(login_url='/login/')
+def profile(request):
+    return render(request, 'account/profile.html')

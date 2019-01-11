@@ -4,7 +4,8 @@
 
 {% block content %}
   <h2>Login form</h2>
-  <form method="post" action="">{% csrf_token %}
+   <form action="" method="post">
+    {% csrf_token %}
     <div class="form-group">
       <label for="username">Username:</label>
       <input type="text" class="form-control" id="username" placeholder="Enter username" value="{{username|default_if_none:""}}" name="username">

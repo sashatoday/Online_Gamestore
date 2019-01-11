@@ -29,6 +29,9 @@ class UserProfile(models.Model):
     photoUrl = models.URLField(blank=True)
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
 
+    def get_birth_date(self):
+        return self.birthDate
+    
 class Game(models.Model):
     name = models.CharField(max_length=25, null=False)
     price = models.PositiveIntegerField()
