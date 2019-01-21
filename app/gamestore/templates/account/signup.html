@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Registration{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
 <h2>Registration form</h2>
@@ -16,7 +16,7 @@
         <label for="first_name">First name</label>
         <input type="text" class="form-control" id="first_name" placeholder="" value="{{form.first_name.value|default_if_none:""}}" name="first_name">
       </div>
-        <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-3">
           <label for="last_name">Last name</label>
           <input type="text" class="form-control" id="last_name" placeholder="" value="{{form.last_name.value|default_if_none:""}}" name="last_name">
       </div>

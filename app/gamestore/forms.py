@@ -1,12 +1,15 @@
 from django import forms
+from django.forms import Form
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from gamestore.models import Game
 from datetime import date
 
 def check_user_uniqueness(error, **field):
     another_user = User.objects.filter(**field)
     if another_user:
         raise forms.ValidationError(error)
+        
 class UserForm(UserCreationForm):
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
     
@@ -36,3 +39,10 @@ class UserForm(UserCreationForm):
         if birthDate > currentDate:
             raise forms.ValidationError("Birth date is greater than current date.")
         return birthDate
+        
+    
+class GameForm(Form):
+    
+    class Meta:
+        model = Game
+        fields = ('name',)
