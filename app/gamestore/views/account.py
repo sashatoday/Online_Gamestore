@@ -8,11 +8,7 @@ from django.contrib.auth import logout, authenticate
 def startpage(request):
     if request.user.is_authenticated:
         user = UserProfile.objects.get(user=request.user)
-        if user.role == 'Developer':
-            developer = True
-        else:
-            developer = False
-        return render(request, "base.html", {'developer': developer})
+        return render(request, "base.html", {'developer': user.is_developer()})
     else:
         return render(request, "base.html", {'developer': False})
 

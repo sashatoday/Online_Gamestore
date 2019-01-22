@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import Form
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from gamestore.models import Game
@@ -12,7 +12,7 @@ def check_user_uniqueness(error, **field):
 
 class UserForm(UserCreationForm):
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
-    
+
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'birthDate',  'password1', 'password2',)
@@ -41,8 +41,9 @@ class UserForm(UserCreationForm):
         return birthDate
 
 
-class GameForm(Form):
+class GameForm(ModelForm):
 
     class Meta:
         model = Game
-        fields = ('name',)
+        fields = ('name', 'price', 'category', 'pictureUrl', 'description', 'gameUrl', 'age_restriction',)
+

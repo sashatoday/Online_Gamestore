@@ -20,24 +20,34 @@ class UserProfile(models.Model):
         (PLAYER, 'Player'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
-    birthDate = models.DateField(null=False, blank=True)
+    birthDate = models.DateField(blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     country = models.CharField(max_length=15, blank=True)
     city = models.CharField(max_length=15, blank=True)
     address = models.CharField(max_length=15, blank=True)
     bio = models.TextField(blank=True)
     photoUrl = models.URLField(blank=True)
-    role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
+
+    def is_developer(self):
+        if self.role == 'Developer':
+            return True
+        else:
+            return False
+    def calculate_age(self):
+        today = date.today()
+        return today.year - self.birthDate.year - ((today.month, today.day)
+               < (self.birthDate.month, self.birthDate.day))
 
 class Game(models.Model):
-    name = models.CharField(max_length=25, null=False)
-    price = models.PositiveIntegerField()
+    name = models.CharField(max_length=25)
+    price = models.FloatField()
     pictureUrl = models.URLField(blank=True)
-    description = models.TextField()
-    gameUrl = models.URLField(blank=False)
+    description = models.TextField(blank=True)
+    gameUrl = models.URLField()
     date = models.DateField(default=date.today)
-    category = models.CharField(max_length=15, blank=True)
+    category = models.CharField(max_length=15)
     developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
+    age_restriction = models.PositiveIntegerField()
 
     class Meta:
         ordering = ["-date", "name"]
