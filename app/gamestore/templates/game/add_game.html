@@ -15,7 +15,7 @@
     {% endif %}
         <div class="mb-3">
           <label for="name">Title</label>
-          <input type="text" class="form-control" id="name" placeholder="" maxlength="100" value="{{form.name.value|default_if_none:''}}" name="name">
+          <input type="text" class="form-control" id="name" placeholder="" maxlength="50" value="{{form.name.value|default_if_none:''}}" name="name">
         </div>
         <div class="row">
           <div class="col-md-4 mb-3">
@@ -44,15 +44,15 @@
         </div>
       <div class="mb-3">
         <label for="description">Description</label>
-        <textarea class="form-control" rows="3" id="description" placeholder="" maxlength="500" name="description">{{form.description.value|default_if_none:''}}</textarea>
+        <textarea class="form-control" rows="3" id="description" placeholder="" maxlength="200" name="description">{{form.description.value|default_if_none:''}}</textarea>
       </div>
     <div class="mb-3">
       <label for="url">Game URL</label>
-      <input type="url" class="form-control" id="gameUrl" placeholder="https://example.com" maxlength="500" value="{{form.gameUrl.value|default_if_none:''}}" name="gameUrl">
+      <input type="url" class="form-control" id="gameUrl" placeholder="https://example.com" maxlength="200" value="{{form.gameUrl.value|default_if_none:''}}" name="gameUrl">
     </div>
     <div class="mb-3">
       <label for="pic_url">Picture URL</label>
-      <input type="url" class="form-control" id="pic_url" placeholder="" maxlength="500" value="{{form.pictureUrl.value|default_if_none:''}}" name="pic_url">
+      <input type="url" class="form-control" id="pic_url" placeholder="" maxlength="200" value="{{form.pictureUrl.value|default_if_none:''}}" name="pic_url">
     </div>
     <hr class="mb-3">
     <div class="row">

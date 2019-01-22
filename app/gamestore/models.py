@@ -26,7 +26,7 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=20, blank=True)
     city = models.CharField(max_length=20, blank=True)
     address = models.CharField(max_length=100, blank=True)
-    bio = models.TextField(blank=True)
+    bio = models.TextField(max_length=200, blank=True)
     photoUrl = models.URLField(blank=True)
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
 
@@ -37,13 +37,25 @@ class UserProfile(models.Model):
             return False
 
 class Game(models.Model):
-    name = models.CharField(max_length=25)
+    CATEGORY_CHOICES = (
+        ('ACTION', 'Action'),
+        ('ADVENTURE', 'Adventure'),
+        ('ARCADE', 'Arcade'),
+        ('FANTASY', 'Fantasy'),
+        ('FIGHTING', 'Fighting'),
+        ('PUZZLE', 'Puzzle'),
+        ('SIMULATION', 'Simulation'),
+        ('SPORTS', 'Sports'),
+        ('STRATEGY', 'Strategy'),
+        ('OTHER', 'Other'),
+    )
+    name = models.CharField(max_length=50)
     price = models.FloatField()
     pictureUrl = models.URLField(blank=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(max_length=200, blank=True)
     gameUrl = models.URLField()
     date = models.DateField(default=date.today)
-    category = models.CharField(max_length=15)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
     age_restriction = models.PositiveSmallIntegerField()
 
