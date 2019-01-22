@@ -5,10 +5,10 @@
 {% block content %}
 <h2>Registration form</h2>
 <form method="post" action="">{% csrf_token %}
-    {% if errors %}
+    {% if form.errors %}
     <div class="errors">
       <b><font color="red">Errors:</font></b>
-    {{errors}}
+    {{ form.errors }}
       <b><font color="red">Please, try again!</font></b>
     </div>
     {% endif %}

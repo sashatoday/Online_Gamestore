@@ -20,13 +20,17 @@ def add_game(request):
     #    return redirect('index')
     if request.method == 'POST':
         form = GameForm(request.POST)
-        if form.is_valid():
-            game = form.save(commit=False)
-            game.developer = user
-            game.save()
+        try:
+            if form.is_valid():
+                game = form.save(commit=False)
+                game.developer = user
+                game.save()
+            else:
+                return render(request, 'game/add_game.html', {'form': form})
+        except Exception:
+            return render(request, 'game/add_game.html', {'form': form})
+        else:
             #adding success, needs redirect
             return redirect('index') # CHANGE REDIRECTED PAGE LATER!
-        else:
-            return render(request, 'game/add_game.html', {'form': form, 'errors': form.errors})
     form = GameForm()
-    return render(request, 'game/add_game.html', {'form': form, 'errors': ""})
+    return render(request, 'game/add_game.html', {'form': form})

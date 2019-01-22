@@ -57,7 +57,7 @@ class Game(models.Model):
     date = models.DateField(default=date.today)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
-    age_restriction = models.PositiveSmallIntegerField()
+    age_limit = models.PositiveSmallIntegerField()
 
     class Meta:
         ordering = ["-date", "name"]
