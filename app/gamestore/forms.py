@@ -5,10 +5,6 @@ from django.contrib.auth.models import User
 from gamestore.models import Game
 from datetime import date
 
-def check_user_uniqueness(error, **field):
-    another_user = User.objects.filter(**field)
-    if another_user:
-        raise forms.ValidationError(error)
 
 class UserForm(UserCreationForm):
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
@@ -25,14 +21,14 @@ class UserForm(UserCreationForm):
 
     def clean_username(self):
         username = self.cleaned_data['username']
-        check_user_uniqueness(error="User with this username already exists.", username=username)
+        self.check_user_uniqueness(error="User with this username already exists.", username=username)
         return username
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        check_user_uniqueness(error="User with this email already exists.", email=email)
+        self.check_user_uniqueness(error="User with this email already exists.", email=email)
         return email
-        
+
     def clean_birthDate(self):
         birthDate = self.cleaned_data['birthDate']
         currentDate = date.today()
@@ -40,6 +36,23 @@ class UserForm(UserCreationForm):
             raise forms.ValidationError("Birth date is greater than current date.")
         return birthDate
 
+    def clean_age(self):
+        age = self.calculate_age(self.cleaned_data['birthDate'])
+        if age > 120:
+            raise forms.ValidationError('You are overage (>120).')
+        if age < 14:
+            raise forms.ValidationError('You are underage (<14).')
+        return age
+
+    def calculate_age(self, birthDate):
+        today = date.today()
+        return today.year - birthDate.year - ((today.month, today.day)
+               < (birthDate.month, birthDate.day))
+
+    def check_user_uniqueness(self, error, **field):
+        another_user = User.objects.filter(**field)
+        if another_user:
+            raise forms.ValidationError(error)
 
 class GameForm(ModelForm):
 

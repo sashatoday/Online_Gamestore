@@ -15,7 +15,7 @@
     {% endif %}
         <div class="mb-3">
           <label for="name">Title</label>
-          <input type="text" class="form-control" id="name" placeholder="" value="{{form.name.value|default_if_none:''}}" name="name">
+          <input type="text" class="form-control" id="name" placeholder="" maxlength="100" value="{{form.name.value|default_if_none:''}}" name="name">
         </div>
         <div class="row">
           <div class="col-md-4 mb-3">
@@ -39,20 +39,20 @@
           </div>
           <div class="col-md-4 mb-3">
             <label for="age_restriction">Age restriction</label>
-            <input type="number" class="form-control" id="age_restriction" min="0" step="1" max="120" placeholder="0" value="{{form.age_restriction.value|default_if_none:''}}" name="age_restriction">
+            <input type="number" class="form-control" id="age_restriction" min="14" step="1" max="120" placeholder="14" value="{{form.age_restriction.value|default_if_none:''}}" name="age_restriction">
           </div>
         </div>
       <div class="mb-3">
         <label for="description">Description</label>
-        <textarea class="form-control" rows="3" id="description" placeholder="" name="description">{{form.description.value|default_if_none:''}}</textarea>
+        <textarea class="form-control" rows="3" id="description" placeholder="" maxlength="500" name="description">{{form.description.value|default_if_none:''}}</textarea>
       </div>
     <div class="mb-3">
       <label for="url">Game URL</label>
-      <input type="url" class="form-control" id="gameUrl" placeholder="https://example.com" value="{{form.gameUrl.value|default_if_none:''}}" name="gameUrl">
+      <input type="url" class="form-control" id="gameUrl" placeholder="https://example.com" maxlength="500" value="{{form.gameUrl.value|default_if_none:''}}" name="gameUrl">
     </div>
     <div class="mb-3">
       <label for="pic_url">Picture URL</label>
-      <input type="url" class="form-control" id="pic_url" placeholder="" value="{{form.pictureUrl.value|default_if_none:''}}" name="pic_url">
+      <input type="url" class="form-control" id="pic_url" placeholder="" maxlength="500" value="{{form.pictureUrl.value|default_if_none:''}}" name="pic_url">
     </div>
     <hr class="mb-3">
     <div class="row">

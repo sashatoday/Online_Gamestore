@@ -20,11 +20,12 @@ class UserProfile(models.Model):
         (PLAYER, 'Player'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
-    birthDate = models.DateField(blank=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
-    country = models.CharField(max_length=15, blank=True)
-    city = models.CharField(max_length=15, blank=True)
-    address = models.CharField(max_length=15, blank=True)
+    birthDate = models.DateField()
+    age = models.PositiveSmallIntegerField()
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    country = models.CharField(max_length=20, blank=True)
+    city = models.CharField(max_length=20, blank=True)
+    address = models.CharField(max_length=100, blank=True)
     bio = models.TextField(blank=True)
     photoUrl = models.URLField(blank=True)
 
@@ -33,10 +34,6 @@ class UserProfile(models.Model):
             return True
         else:
             return False
-    def calculate_age(self):
-        today = date.today()
-        return today.year - self.birthDate.year - ((today.month, today.day)
-               < (self.birthDate.month, self.birthDate.day))
 
 class Game(models.Model):
     name = models.CharField(max_length=25)
@@ -47,7 +44,7 @@ class Game(models.Model):
     date = models.DateField(default=date.today)
     category = models.CharField(max_length=15)
     developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
-    age_restriction = models.PositiveIntegerField()
+    age_restriction = models.PositiveSmallIntegerField()
 
     class Meta:
         ordering = ["-date", "name"]

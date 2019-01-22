@@ -19,12 +19,12 @@
         <div class="input-group-prepend">
           <span class="input-group-text">@</span>
         </div>
-          <input type="text" class="form-control" id="username" placeholder="Username" value="{{username|default_if_none:""}}" name="username">
+          <input type="text" class="form-control" id="username" placeholder="Username" maxlength="50" value="{{username|default_if_none:""}}" name="username">
       </div>
     </div>
     <div class="mb-3">
       <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="Password" value="{{password|default_if_none:""}}" name="password">
+      <input type="password" class="form-control" id="password" placeholder="Password" maxlength="50" value="{{password|default_if_none:""}}" name="password">
     </div>
     <hr class="mb-3">
     <div class="row">
