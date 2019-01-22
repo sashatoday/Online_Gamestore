@@ -28,6 +28,7 @@ class UserProfile(models.Model):
     address = models.CharField(max_length=100, blank=True)
     bio = models.TextField(blank=True)
     photoUrl = models.URLField(blank=True)
+    role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
 
     def is_developer(self):
         if self.role == 'Developer':
