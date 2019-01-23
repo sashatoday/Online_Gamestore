@@ -1,6 +1,10 @@
 from django import forms
+<<<<<<< HEAD
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
+=======
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+>>>>>>> Fixes for profile view and forms
 from django.contrib.auth.models import User
 from gamestore.models import Game
 from datetime import date
@@ -12,6 +16,22 @@ class UserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'birthDate',  'password1', 'password2',)
+        gender = forms.CharField()
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email', 'birthDate',  'password1', 'password2', 'gender')
+    
+    def clean_first_name(self):
+        return self.cleaned_data['first_name']
+    
+    def clean_last_name(self):
+        return self.cleaned_data['last_name']
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        check_user_uniqueness(error="User with this username already exists.", username=username)
+        return username
 
     def clean_email(self):
         email = self.check_email_uniqueness()
@@ -31,6 +51,7 @@ class UserForm(UserCreationForm):
             raise forms.ValidationError("Birth date is greater than current date.")
         return birthDate
 
+<<<<<<< HEAD
     def clean_age(self):
         age = self.calculate_age(self.cleaned_data['birthDate'])
         if age > 120:
@@ -75,3 +96,20 @@ class GameForm(ModelForm):
         if age_limit < 3:
             raise forms.ValidationError("Please, enter age limit greater than 3")
         return age_limit
+=======
+class UserUpdateForm(UserChangeForm):
+    birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
+    gender = forms.CharField() #Choice form?
+    
+    class Meta:
+        model = User
+        fields = (
+            'first_name',
+            'last_name', 
+            'username', 
+            'email', 
+            'birthDate',
+            'gender',
+            'password'
+        )
+>>>>>>> Fixes for profile view and forms

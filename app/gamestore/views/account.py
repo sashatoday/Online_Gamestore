@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from gamestore.models import UserProfile
-from gamestore.forms import UserForm
+from gamestore.forms import UserForm, UserUpdateForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout, authenticate
@@ -33,6 +33,7 @@ def login(request):
         return render(request, "account/login.html", {})
     
 def signup(request):
+<<<<<<< HEAD
     if request.user.is_authenticated:
         return redirect('index')
     else:
@@ -65,6 +66,32 @@ def signup(request):
                 return redirect('index')
         form = UserForm()
         return render(request, 'account/signup.html', {'form': form})
+=======
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                first_name=form.clean_first_name(),
+                last_name=form.clean_last_name(),
+                username=form.clean_username(),
+                email=form.clean_email(),
+                password=form.clean_password2()
+            )
+            user.save()
+            userProfile = UserProfile(
+                user=user,
+                birthDate=form.clean_birthDate(),
+                gender=form.gender
+            )
+            userProfile.save()
+            auth_login(request, user)
+            #signup success, needs redirect
+            return redirect('index')
+        else:
+            return render(request, 'account/signup.html', {'form': form, 'errors': form.errors})
+    form = UserForm()
+    return render(request, 'account/signup.html', {'form': form, 'errors': ""})
+>>>>>>> Fixes for profile view and forms
 
 def logout_user(request):
     logout(request)
@@ -72,4 +99,17 @@ def logout_user(request):
 
 @login_required(login_url='/login/')
 def profile(request):
-    return render(request, 'account/profile.html')
+    user = request.user
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=user)
+        print(form)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        else:
+            args = {'form' : form, 'errors' : form.errors}
+            return render(request, 'account/profile.html', args)
+    else:
+        form = UserUpdateForm(instance=user)
+        args = {'form' : form}
+        return render(request, 'account/profile.html', args)
