@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from gamestore.models import UserProfile
-from gamestore.forms import UserForm
+from gamestore.forms import UserForm, UserUpdateForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout, authenticate
@@ -41,7 +41,8 @@ def signup(request):
             user.save()
             userProfile = UserProfile(
                 user=user,
-                birthDate=form.clean_birthDate()
+                birthDate=form.clean_birthDate(),
+                gender=form.gender
             )
             userProfile.save()
             auth_login(request, user)
@@ -58,4 +59,17 @@ def logout_user(request):
 
 @login_required(login_url='/login/')
 def profile(request):
-    return render(request, 'account/profile.html')
+    user = request.user
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=user)
+        print(form)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        else:
+            args = {'form' : form, 'errors' : form.errors}
+            return render(request, 'account/profile.html', args)
+    else:
+        form = UserUpdateForm(instance=user)
+        args = {'form' : form}
+        return render(request, 'account/profile.html', args)

@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from datetime import date
 
@@ -10,10 +10,11 @@ def check_user_uniqueness(error, **field):
         
 class UserForm(UserCreationForm):
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
-    
+    gender = forms.CharField()
+
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'birthDate',  'password1', 'password2',)
+        fields = ('first_name', 'last_name', 'username', 'email', 'birthDate',  'password1', 'password2', 'gender')
     
     def clean_first_name(self):
         return self.cleaned_data['first_name']
@@ -37,3 +38,19 @@ class UserForm(UserCreationForm):
         if birthDate > currentDate:
             raise forms.ValidationError("Birth date is greater than current date.")
         return birthDate
+
+class UserUpdateForm(UserChangeForm):
+    birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
+    gender = forms.CharField() #Choice form?
+    
+    class Meta:
+        model = User
+        fields = (
+            'first_name',
+            'last_name', 
+            'username', 
+            'email', 
+            'birthDate',
+            'gender',
+            'password'
+        )
