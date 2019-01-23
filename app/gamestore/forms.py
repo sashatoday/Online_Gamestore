@@ -1,6 +1,5 @@
 from django import forms
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from gamestore.models import Game
@@ -97,4 +96,8 @@ class UserUpdateForm(UserChangeForm):
             'birthDate',
             'gender',
             'password'
+<<<<<<< HEAD
         )
+=======
+        )
+>>>>>>> 74fd50d7ac8f908eb48711510a9c556902ba62da

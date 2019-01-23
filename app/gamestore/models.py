@@ -36,6 +36,31 @@ class UserProfile(models.Model):
         else:
             return False
 
+    def get_birth_date(self):
+        return self.birthDate
+
+    def get_gender(self):
+        return self.gender
+
+    def get_country(self):
+        return self.country
+    
+    def get_city(self):
+        return self.city
+    
+    def get_address(self):
+        return self.address
+
+    def get_bio(self):
+        return self.bio
+
+    def get_photo_url(self):
+        return self.photoUrl
+    
+    def get_role(self):
+        return self.role
+    
+    
 class Game(models.Model):
     CATEGORY_CHOICES = (
         ('ACTION', 'Action'),
