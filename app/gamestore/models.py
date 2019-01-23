@@ -60,7 +60,6 @@ class UserProfile(models.Model):
     def get_role(self):
         return self.role
     
-    
 class Game(models.Model):
     CATEGORY_CHOICES = (
         ('ACTION', 'Action'),

@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from gamestore.models import Game
 from datetime import date
 
-
 class UserForm(UserCreationForm):
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
 
@@ -84,7 +83,7 @@ class GameForm(ModelForm):
         
 class UserUpdateForm(UserChangeForm):
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
-    gender = forms.CharField() #Choice form?
+    gender = forms.CharField()
     
     class Meta:
         model = User

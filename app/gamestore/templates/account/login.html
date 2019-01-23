@@ -6,13 +6,13 @@
 
 <h2>Login form</h2>
 <form method="post" action="">{% csrf_token %}
-  {% if form.errors %}
-  <div class="errors">
-      <b><font color="red">Errors:</font></b>
-      {{ form.errors }}
-      <b><font color="red">Please, try again!</font></b>
+  {% if errors %}
+    <div class="errors">
+      <b><span style="color:red">Errors:</span></b>
+      {{ errors }}
+      <b><span style="color:red">Please, try again!</span></b>
     </div>
-  {% endif %}
+    {% endif %}
   <div class="mb-3">
       <label for="username">Username</label>
       <div class="input-group"> 
