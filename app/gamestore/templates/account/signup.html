@@ -1,24 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Registration{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
 <h2>Registration form</h2>
 <form method="post" action="">{% csrf_token %}
-    {% if errors %}
+    {% if form.errors %}
     <div class="errors">
-      {{errors}}
-      Please, try again!
+      <b><font color="red">Errors:</font></b>
+    {{ form.errors }}
+      <b><font color="red">Please, try again!</font></b>
     </div>
     {% endif %}
     <div class="row">
       <div class="col-md-6 mb-3">
         <label for="first_name">First name</label>
-        <input type="text" class="form-control" id="first_name" placeholder="" value="{{form.first_name.value|default_if_none:""}}" name="first_name">
+        <input type="text" class="form-control" id="first_name" placeholder="" maxlength="50" value="{{form.first_name.value|default_if_none:""}}" name="first_name">
       </div>
-        <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-3">
           <label for="last_name">Last name</label>
-          <input type="text" class="form-control" id="last_name" placeholder="" value="{{form.last_name.value|default_if_none:""}}" name="last_name">
+          <input type="text" class="form-control" id="last_name" placeholder="" maxlength="50" value="{{form.last_name.value|default_if_none:""}}" name="last_name">
       </div>
     </div>
     <div class="row">
@@ -28,27 +29,27 @@
           <div class="input-group-prepend">
             <span class="input-group-text">@</span>
           </div>
-          <input type="text" class="form-control" id="username" placeholder="Username" value="{{form.username.value|default_if_none:""}}" name="username">
+          <input type="text" class="form-control" id="username" placeholder="Username" maxlength="50" value="{{form.username.value|default_if_none:""}}" name="username">
         </div>
       </div>
       <div class="col-md-6 mb-3">
         <label for="birthDate">Birth date</label>
-        <input type="date" class="form-control" id="birthDate" value="{{form.birthDate.value|default_if_none:""}}" name="birthDate" min="1889-01-01" max="2014-12-31">
+        <input type="date" class="form-control" id="birthDate" value="{{form.birthDate.value|default_if_none:""}}" name="birthDate">
       </div>
     </div>
     <div class="mb-3">
       <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="you@example.com" value="{{form.email.value|default_if_none:""}}" name="email">
+      <input type="email" class="form-control" id="email" placeholder="you@example.com" maxlength="50" value="{{form.email.value|default_if_none:""}}" name="email">
     </div>
     
     <div class="mb-3">
       <label for="password1">Password</label>
-      <input type="password" class="form-control" id="password1" placeholder="Password" value="{{form.password1.value|default_if_none:""}}" name="password1">
+      <input type="password" class="form-control" id="password1" placeholder="Password" maxlength="50" value="{{form.password1.value|default_if_none:""}}" name="password1">
     </div>
     
     <div class="form-group">
       <label for="password2">Repeat password</label>
-      <input type="password" class="form-control" id="password2" placeholder="Repeat password" name="password2">
+      <input type="password" class="form-control" id="password2" placeholder="Repeat password" maxlength="50" name="password2">
     </div>
     <hr class="mb-3">
     <div class="row">

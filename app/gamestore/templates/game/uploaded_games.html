@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Uploaded games{% endblock %}
+
+{% block content %}
+
+<h2>Uploaded games</h2>
+<a class="btn btn-primary " href="/add_game" role="button">Add game</a>
+
+{% for game in games %}
+    <p>{{ game.name }}</p>
+{% empty %}
+    <strong>No games found</strong>
+{% endfor %}
+
+{% endblock %}

@@ -20,24 +20,44 @@ class UserProfile(models.Model):
         (PLAYER, 'Player'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
-    birthDate = models.DateField(null=False, blank=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
-    country = models.CharField(max_length=15, blank=True)
-    city = models.CharField(max_length=15, blank=True)
-    address = models.CharField(max_length=15, blank=True)
-    bio = models.TextField(blank=True)
+    birthDate = models.DateField()
+    age = models.PositiveSmallIntegerField()
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    country = models.CharField(max_length=20, blank=True)
+    city = models.CharField(max_length=20, blank=True)
+    address = models.CharField(max_length=100, blank=True)
+    bio = models.TextField(max_length=200, blank=True)
     photoUrl = models.URLField(blank=True)
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
 
+    def is_developer(self):
+        if self.role == 'Developer':
+            return True
+        else:
+            return False
+
 class Game(models.Model):
-    name = models.CharField(max_length=25, null=False)
-    price = models.PositiveIntegerField()
+    CATEGORY_CHOICES = (
+        ('ACTION', 'Action'),
+        ('ADVENTURE', 'Adventure'),
+        ('ARCADE', 'Arcade'),
+        ('FANTASY', 'Fantasy'),
+        ('FIGHTING', 'Fighting'),
+        ('PUZZLE', 'Puzzle'),
+        ('SIMULATION', 'Simulation'),
+        ('SPORTS', 'Sports'),
+        ('STRATEGY', 'Strategy'),
+        ('OTHER', 'Other'),
+    )
+    name = models.CharField(max_length=50)
+    price = models.FloatField()
     pictureUrl = models.URLField(blank=True)
-    description = models.TextField()
-    gameUrl = models.URLField(blank=False)
+    description = models.TextField(max_length=200, blank=True)
+    gameUrl = models.URLField()
     date = models.DateField(default=date.today)
-    category = models.CharField(max_length=15, blank=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
+    age_limit = models.PositiveSmallIntegerField()
 
     class Meta:
         ordering = ["-date", "name"]
