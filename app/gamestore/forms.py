@@ -96,8 +96,4 @@ class UserUpdateForm(UserChangeForm):
             'birthDate',
             'gender',
             'password'
-<<<<<<< HEAD
         )
-=======
-        )
->>>>>>> 74fd50d7ac8f908eb48711510a9c556902ba62da
