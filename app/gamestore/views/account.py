@@ -75,7 +75,6 @@ def profile(request):
     user = request.user
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=user)
-        print(form)
         if form.is_valid():
             form.save()
             return redirect('profile')
