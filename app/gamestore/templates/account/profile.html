@@ -6,104 +6,35 @@
 
 <h1>Your profile</h1>
 <form action="" method="post">{% csrf_token %}
+    {% if profileform.errors %}
+    <div class="errors">
+        <b><span style="color:red">Errors:</span></b>
+    {{ form.errors }}
+        <b><span style="color:red">Please, try again!</span></b>
+    </div>
+    {% endif %}
+    {% for field in userform %}
     <div class="form-group row">
-        <label for="username" class="col-4 col-form-label">User Name</label>
-        <div class="col-8">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">@</span>
-                </div>
-                <input type="text" required class="form-control" id="username" placeholder="Enter username" value="{{user.get_username}}"
-                    name="username">
+            <label for="id_{{ field.name }}" class="col-4 col-form-label">{{ field.label }}</label>
+            <div class="col-8">
+                {{ field }}
             </div>
-        </div>
     </div>
+    {% endfor %}
+    {% for field in profileform %}
     <div class="form-group row">
-        <label for="first_name" class="col-4 col-form-label">First Name</label>
-        <div class="col-8">
-            <input id="first_name" name="first_name" placeholder="Enter your first name" value="{{user.first_name}}" class="form-control here"
-                type="text">
-        </div>
+            <label for="id_{{ field.name }}" class="col-4 col-form-label">{{ field.label }}</label>
+            <div class="col-8">
+                {{ field }}
+            </div>
     </div>
-    <div class="form-group row">
-        <label for="last_name" class="col-4 col-form-label">Last Name</label>
-        <div class="col-8">
-            <input id="last_name" name="last_name" placeholder="Enter your last name" value="{{user.last_name}}" class="form-control here"
-                type="text">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="gender" class="col-4 col-form-label">Gender</label>
-        <div class="col-8">
-            <select id="gender" name="gender" class="custom-select">
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-                <option value="U">Unknown</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="email" class="col-4 col-form-label">Email</label>
-        <div class="col-8">
-            <input id="email" name="email" placeholder="Enter your email" value="{{user.email}}" class="form-control here"
-                required type="text">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="country" class="col-4 col-form-label">Country</label>
-        <div class="col-8">
-            <input id="country" name="country" value="{{user.userprofile.get_country}}" placeholder="Enter your country"
-                class="form-control here" type="text">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="city" class="col-4 col-form-label">City</label>
-        <div class="col-8">
-            <input id="city" name="city" value="{{user.userprofile.get_city}}" placeholder="Enter your city" class="form-control here"
-                type="text">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="address" class="col-4 col-form-label">Address</label>
-        <div class="col-8">
-            <input id="address" name="address" value="{{user.userprofile.get_address}}" placeholder="Enter your address"
-                class="form-control here" type="text">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="photourl" class="col-4 col-form-label">Photo URL</label>
-        <div class="col-8">
-            <input id="photourl" name="photourl" value="{{user.userprofile.get_photo_url}}" placeholder="Enter your photo URL"
-                class="form-control here" type="text">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="role" class="col-4 col-form-label">Role</label>
-        <div class="col-8">
-            <select id="role" name="role" class="custom-select">
-                <option value="A">Admin</option>
-                <option value="D">Developer</option>
-                <option value="P">Player</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="birthDate" class="col-4 col-form-label">Birth date</label>
-        <div class="col-8">
-            <input type="date" class="form-control" id="birthDate" name="birthDate" min="1889-01-01" max="2014-12-31">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="bio" class="col-4 col-form-label">Bio</label>
-        <div class="col-8">
-            <textarea id="bio" placeholder="Enter your bio here" name="bio" cols="40" rows="4" class="form-control">{{user.userprofile.get_bio}}</textarea>
-        </div>
-    </div>
+    {% endfor %}
     <div class="form-group row">
         <div class="offset-4 col-8">
             <button name="submit" type="submit" class="btn btn-primary">Update My Profile</button>
         </div>
     </div>
+    
 </form>
 <h2>Change your password</h2>
 <form action="" method="post">{% csrf_token %}
