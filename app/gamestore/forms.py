@@ -1,20 +1,42 @@
 from django import forms
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from gamestore.models import Game
 from datetime import date
 
+MALE = 'M'
+FEMALE = 'F'
+UNKNOWN = 'U'
+ADMIN = 'A'
+DEVELOPER = 'D'
+PLAYER = 'P'
+GENDER_CHOICES = (
+    (MALE, 'Male'),
+    (FEMALE, 'Female'),
+    (UNKNOWN, 'Unknown'),
+)
+ROLE_CHOICES = (
+    (ADMIN, 'Admin'),
+    (DEVELOPER, 'Developer'),
+    (PLAYER, 'Player'),
+)
+
+def email_is_unique(email):
+    another_email = User.objects.filter(email=email)
+    if another_email:
+        return False
+    return True
+
+def birth_date_is_valid(birth_date):
+    currentDate = date.today()
+    if birth_date > currentDate:
+        return False
+    return True
+
 class UserForm(UserCreationForm):
+
     birthDate = forms.DateField(help_text='Required. Format: MM/DD/YYYY')
-    MALE = 'M'
-    FEMALE = 'F'
-    UNKNOWN = 'U'
-    GENDER_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (UNKNOWN, 'Unknown'),
-    )
     gender = forms.ChoiceField(
         choices=GENDER_CHOICES, 
         required=True,
@@ -106,34 +128,26 @@ class GameForm(ModelForm):
         return age_limit
 
 class UserUpdateForm(forms.ModelForm):
+
     username = forms.CharField(
-        required=True,
-        widget=forms.TextInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-    ))
+        required = True,
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
+    )
+
     first_name = forms.CharField(
-        required=True,
-        widget=forms.TextInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-    ))
+        required = True,
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
+    )
+
     last_name = forms.CharField(
-        required=True,
-        widget=forms.TextInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-    ))
+        required = True,
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
+    )
+
     email = forms.CharField(
-        required=True,
-        widget=forms.TextInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-    ))
+        required = True,
+        widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email'})
+    )
 
     class Meta:
         model = User
@@ -144,100 +158,66 @@ class UserUpdateForm(forms.ModelForm):
             'email', 
         )
 
-        
+    '''
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not email_is_unique(email):
+            raise forms.ValidationError("A user with that email already exists.")
+        return email
+    '''
+
 class UserProfileUpdateForm(forms.ModelForm):
-    MALE = 'M'
-    FEMALE = 'F'
-    UNKNOWN = 'U'
-    ADMIN = 'A'
-    DEVELOPER = 'D'
-    PLAYER = 'P'
-    GENDER_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (UNKNOWN, 'Unknown'),
-    )
-    ROLE_CHOICES = (
-        (ADMIN, 'Admin'),
-        (DEVELOPER, 'Developer'),
-        (PLAYER, 'Player'),
-    )
+
     gender = forms.ChoiceField(
-        choices=GENDER_CHOICES, 
-        label='Gender',
-        required=False,
-        widget=forms.Select(
-            attrs= {
-                'class' : 'form-control here'
-            }
-        )
+        choices  = GENDER_CHOICES, 
+        label    = 'Gender',
+        required = False,
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
+
     country = forms.CharField(
-        label='Country',
-        required=False,
-        widget=forms.TextInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-        )
+        label    = 'Country',
+        required = False,
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
     )
+
     city = forms.CharField(
-        label='City',
-        required=False,
-        widget=forms.TextInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-        )
+        label    = 'City',
+        required = False,
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
     )
+
     address = forms.CharField(
-        label='Address',
-        required=False,
-        widget=forms.TextInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-        )
+        label    = 'Address',
+        required = False,
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
     )
+ 
     photoUrl = forms.URLField(
-        label='Photo URL',
-        initial='http://',
-        required=False,
-        widget=forms.URLInput(
-            attrs= {
-                'class' : 'form-control here'
-            }
-        )
+        label    = 'Photo URL',
+        initial  = 'http://',
+        required = False,
+        widget   = forms.URLInput(attrs = {'class' : 'form-control here'})
     )
+
     role = forms.ChoiceField(
-        choices=ROLE_CHOICES, 
-        label='Role',
-        required=True,
-        widget=forms.Select(
-            attrs= {
-                'class' : 'form-control here'
-            }
-        )
+        choices  = ROLE_CHOICES, 
+        label    = 'Role',
+        required = True,
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
+
     birthDate = forms.DateField(
-        help_text='Required. Format: MM/DD/YYYY',
-        label='Birth date',
-        required=False,
-        widget=forms.DateInput(
-            attrs= {
-                'type'  : 'date',
-                'class' : 'form-control here'
-            }
-        )
+        help_text = 'Required. Format: MM/DD/YYYY',
+        label     = 'Birth date',
+        required  = False,
+        widget    = forms.DateInput(attrs = {'type' : 'date', 'class' : 'form-control here', 'min': '1899-01-01', 'max' : date.today()})
     )
+
     bio = forms.CharField(
-        label='Bio',
-        required=False,
-        widget=forms.Textarea(
-            attrs= {
-                'class' : 'form-control here'
-            }
-        )
+        label    = 'Bio',
+        required = False,
+        widget   = forms.Textarea(attrs= {'class' : 'form-control here'})
     )
     
     class Meta:
@@ -252,3 +232,26 @@ class UserProfileUpdateForm(forms.ModelForm):
             'role',
             'bio',
         )
+
+    def clean_birthDate(self):
+        birthDate = self.cleaned_data['birthDate']
+        if not birth_date_is_valid(birthDate):
+            raise forms.ValidationError("Birth date is greater than current date.")
+        return birthDate
+
+class ChangePasswordForm(PasswordChangeForm):
+
+    old_password = forms.CharField(
+        label  = "Old password", 
+        widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
+    )
+
+    new_password1 = forms.CharField(
+        label  = "New password",
+        widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
+    )
+
+    new_password2 = forms.CharField(
+        label  = "Confirm new password",
+        widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
+    )

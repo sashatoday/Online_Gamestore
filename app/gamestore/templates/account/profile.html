@@ -6,18 +6,40 @@
 
 <h1>Your profile</h1>
 <form action="" method="post">{% csrf_token %}
-    {% if profileform.errors %}
-    <div class="errors">
-        <b><span style="color:red">Errors:</span></b>
-    {{ form.errors }}
-        <b><span style="color:red">Please, try again!</span></b>
-    </div>
-    {% endif %}
     {% for field in userform %}
     <div class="form-group row">
             <label for="id_{{ field.name }}" class="col-4 col-form-label">{{ field.label }}</label>
             <div class="col-8">
+            {% if field.name == 'username' %}
+                <div class="input-group"> 
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                    </div>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="text-muted">
+                            {{ field.help_text }}
+                        </small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <small style="color:red">
+                            {{ field.errors }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% else %}
                 {{ field }}
+                {% if field.help_text %}
+                    <small style="color:red" class="text-muted">
+                        {{ field.help_text }}
+                    </small>
+                {% endif %}
+                {% if field.errors %}
+                    <small style="color:red">
+                        {{ field.errors }}
+                    </small>
+                {% endif %}
+            {% endif %}
             </div>
     </div>
     {% endfor %}
@@ -26,33 +48,48 @@
             <label for="id_{{ field.name }}" class="col-4 col-form-label">{{ field.label }}</label>
             <div class="col-8">
                 {{ field }}
+                {% if field.help_text %}
+                    <small class="text-muted">
+                        {{ field.help_text }}
+                    </small>
+                {% endif %}
+                {% if field.errors %}
+                    <small style="color:red">
+                        {{ field.errors }}
+                    </small>
+                {% endif %}
             </div>
     </div>
     {% endfor %}
     <div class="form-group row">
         <div class="offset-4 col-8">
-            <button name="submit" type="submit" class="btn btn-primary">Update My Profile</button>
+            <button name="updateprofile" type="submit" class="btn btn-primary">Update My Profile</button>
         </div>
     </div>
-    
 </form>
 <h2>Change your password</h2>
 <form action="" method="post">{% csrf_token %}
+    {% for field in changepasswordform %}
     <div class="form-group row">
-        <label for="newpass" class="col-4 col-form-label">New Password</label>
-        <div class="col-8">
-            <input id="newpass" name="newpass" placeholder="New Password" class="form-control here" type="password">
-        </div>
+            <label for="id_{{ field.name }}" class="col-4 col-form-label">{{ field.label }}</label>
+            <div class="col-8">
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="text-muted">
+                        {{ field.help_text }}
+                    </small>
+                {% endif %}
+                {% if field.errors %}
+                    <small style="color:red">
+                        {{ field.errors }}
+                    </small>
+                {% endif %}
+            </div>
     </div>
-    <div class="form-group row">
-        <label for="newpass" class="col-4 col-form-label">Repeat New Password</label>
-        <div class="col-8">
-            <input id="newpass" name="newpass" placeholder="New Password" class="form-control here" type="password">
-        </div>
-    </div>
+    {% endfor %}
     <div class="form-group row">
         <div class="offset-4 col-8">
-            <button name="submit" type="submit" class="btn btn-primary">Change My Password</button>
+            <button name="changepassword" type="submit" class="btn btn-primary">Change My Password</button>
         </div>
     </div>
 </form>
