@@ -28,6 +28,8 @@ class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     photoUrl = models.URLField(blank=True)
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
+    class Meta:
+        ordering = ["user_id"]
 
 class Game(models.Model):
     name = models.CharField(max_length=25, null=False)
