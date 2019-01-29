@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from gamestore.models import UserProfile
-from gamestore.forms import UserForm, UserUpdateForm
+from gamestore.forms import (
+    UserForm, 
+    UserUpdateForm, 
+    UserProfileUpdateForm,
+    ChangePasswordForm,
+)
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout, authenticate
@@ -15,8 +20,11 @@ def startpage(request):
         return render(request, "base.html", {'developer': False})
 
 def login(request):
+    next_page = request.GET.get('next') 
+    if not next_page: #if request doesn't have ?next= parameter
+        next_page = 'index' #keep index page as default redirect
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect(next_page)
     else:
         if request.method == 'POST':
             username = request.POST['username']
@@ -29,7 +37,7 @@ def login(request):
             else:
                 auth_login(request, user)
                 #login success, needs redirect
-                return redirect('index')
+                return redirect(next_page)
         return render(request, "account/login.html", {})
     
 def signup(request):
@@ -52,6 +60,7 @@ def signup(request):
                         userProfile = UserProfile(
                             user=user,
                             birthDate=form.clean_birthDate(),
+                            gender=form.clean_gender(),
                             age=form.clean_age()
                         )
                         userProfile.save()
@@ -73,15 +82,37 @@ def logout_user(request):
 @login_required(login_url='/login/')
 def profile(request):
     user = request.user
+    userprofile = user.userprofile
+
+    userform = UserUpdateForm(instance=user)
+    profileform = UserProfileUpdateForm(instance=userprofile)
+    changepasswordform = ChangePasswordForm(user=user)
+
+    args = {
+        'userform' : userform,
+        'profileform' : profileform,
+        'changepasswordform' : changepasswordform,
+    }
+
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-        else:
-            args = {'form' : form, 'errors' : form.errors}
-            return render(request, 'account/profile.html', args)
-    else:
-        form = UserUpdateForm(instance=user)
-        args = {'form' : form}
-        return render(request, 'account/profile.html', args)
+        if 'updateprofile' in request.POST:
+            userform = UserUpdateForm(request.POST, instance=user)
+            profileform = UserProfileUpdateForm(request.POST, instance=userprofile)
+            if userform.is_valid() and profileform.is_valid():
+                userform.save()
+                profileform.save()
+                return redirect('profile')
+            else:
+                args['userform'] = userform
+                args['profileform'] = profileform
+                return render(request, 'account/profile.html', args)
+        if 'changepassword' in request.POST:
+            changepasswordform = ChangePasswordForm(data=request.POST, user=user)
+            if changepasswordform.is_valid():
+                changepasswordform.save()
+                return redirect('profile')
+            else:
+                args['changepasswordform'] = changepasswordform
+                return render(request, 'account/profile.html', args)
+
+    return render(request, 'account/profile.html', args)
