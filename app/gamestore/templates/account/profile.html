@@ -9,6 +9,9 @@
     {% for field in userform %}
         {% include 'extra/field.html' %}
     {% endfor %}
+    {% for field in profileform %}
+        {% include 'extra/field.html' %}
+    {% endfor %}
     <div class="form-group row">
         <div class="offset-4 col-8">
             <button name="updateprofile" type="submit" class="btn btn-primary">Update My Profile</button>

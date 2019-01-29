@@ -3,6 +3,7 @@ from gamestore.models import UserProfile
 from gamestore.forms import (
     UserForm, 
     UserUpdateForm, 
+    UserProfileUpdateForm,
     ChangePasswordForm,
 )
 from django.contrib.auth.models import User
@@ -80,10 +81,12 @@ def profile(request):
     developer = userprofile.is_developer()
 
     userform = UserUpdateForm(instance=user)
+    profileform = UserProfileUpdateForm(instance=userprofile)
     changepasswordform = ChangePasswordForm(user=user)
 
     args = {
         'userform' : userform,
+        'profileform' : profileform,
         'changepasswordform' : changepasswordform,
         'developer' : developer,
     }
@@ -91,16 +94,19 @@ def profile(request):
     if request.method == 'POST':
         if 'updateprofile' in request.POST:
             userform = UserUpdateForm(request.POST, instance=user)
+            profileform = UserProfileUpdateForm(request.POST, instance=userprofile)
             if userform.data['username'] != username:
                 userform.add_error('username', "You are not allowed to change your username")
                 userform.errors['email'] = ""
                 args['userform'] = userform
                 return render(request, 'account/profile.html', args)
-            if userform.is_valid():
+            if userform.is_valid() and profileform.is_valid():
                 userform.save()
+                profileform.save()
                 return redirect('profile')
             else:
                 args['userform'] = userform
+                args['profileform'] = profileform
                 return render(request, 'account/profile.html', args)
         if 'changepassword' in request.POST:
             changepasswordform = ChangePasswordForm(data=request.POST, user=user)

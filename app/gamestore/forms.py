@@ -169,14 +169,6 @@ class UserUpdateForm(forms.ModelForm):
             'first_name',
             'last_name',
             'email',
-            'gender',
-            'birthDate',
-            'country',
-            'city',
-            'address',
-            'photoUrl',
-            'role',
-            'bio',
         )
     username = forms.CharField(
         required = True,
@@ -194,6 +186,28 @@ class UserUpdateForm(forms.ModelForm):
         required = True,
         widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email'})
     )
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        users = User.objects.exclude(username=self.cleaned_data['username'])
+        another_email = users.filter(email=email)
+        if another_email:
+            raise forms.ValidationError("A user with that email already exists.")
+        return email
+
+class UserProfileUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = (
+            'gender',
+            'birthDate',
+            'country',
+            'city',
+            'address',
+            'photoUrl',
+            'role',
+            'bio',
+        )
     gender = forms.ChoiceField(
         choices  = GENDER_CHOICES, 
         label    = 'Gender',
@@ -237,14 +251,6 @@ class UserUpdateForm(forms.ModelForm):
         required = False,
         widget   = forms.Textarea(attrs= {'class' : 'form-control here'})
     )
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        users = User.objects.exclude(username=self.cleaned_data['username'])
-        another_email = users.filter(email=email)
-        if another_email:
-            raise forms.ValidationError("A user with that email already exists.")
-        return email
 
     def clean_birthDate(self):
         birthDate = self.cleaned_data['birthDate']
