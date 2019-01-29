@@ -5,36 +5,38 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/login/')
 def show_uploaded_games(request):
-    user = UserProfile.objects.get(user=request.user)
-    # CHECK LATER !!!!
-    #if not user.is_developer():
-    #    return redirect('index')
-    games = Game.objects.filter(developer=user)
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('index')
+    games = Game.objects.filter(developer=request.user.userprofile)
+    args = {
+        'games' : games,
+        'developer' : developer,
+    }
 
-    return render(request, 'game/uploaded_games.html', {'games': games})
+    return render(request, 'game/uploaded_games.html', args)
     
 @login_required(login_url='/login/')
 def add_game(request):
-    user = UserProfile.objects.get(user=request.user)
-    # CHECK LATER !!!!
-    #if not user.is_developer():
-    #    return redirect('index')
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('index')
+    form = GameForm()
+    args = {
+        'form' : form,
+        'developer' : developer,
+    }
     if request.method == 'POST':
         form = GameForm(request.POST)
-        try:
-            if form.is_valid():
-                game = form.save(commit=False)
-                game.developer = user
-                game.save()
-            else:
-                return render(request, 'game/add_game.html', {'form': form})
-        except Exception:
-            return render(request, 'game/add_game.html', {'form': form})
-        else:
-            #adding success, needs redirect
+        if form.is_valid():
+            game = form.save(commit=False)
+            game.developer = request.user.userprofile
+            game.save()
             return redirect('uploaded_games') # CHANGE REDIRECTED PAGE LATER!
-    form = GameForm()
-    return render(request, 'game/add_game.html', {'form': form})
+        else:
+            args['form'] = form
+            return render(request, 'game/add_game.html', args)
+    return render(request, 'game/add_game.html', args)
 
 
     
