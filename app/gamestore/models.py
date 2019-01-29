@@ -14,6 +14,8 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=200, blank=True)
     photoUrl = models.URLField(blank=True)
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
+    class Meta:
+        ordering = ["user_id"]
 
     def is_developer(self):
         if self.role == 'D':
