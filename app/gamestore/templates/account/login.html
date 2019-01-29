@@ -8,9 +8,10 @@
 <form method="post" action="">{% csrf_token %}
   {% if errors %}
     <div class="errors">
-      <b><span style="color:red">Errors:</span></b>
+      <small style="color:red">Errors:</b>
       {{ errors }}
-      <b><span style="color:red">Please, try again!</span></b>
+      </small>
+      <b><small style="color:red">Please, try again!</small></b>
     </div>
     {% endif %}
   <div class="mb-3">

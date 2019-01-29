@@ -1,27 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
+from gamestore.core.constants import *
+
 
 class UserProfile(models.Model):
-    MALE = 'M'
-    FEMALE = 'F'
-    UNKNOWN = 'U'
-    ADMIN = 'A'
-    DEVELOPER = 'D'
-    PLAYER = 'P'
-    GENDER_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (UNKNOWN, 'Unknown'),
-    )
-    ROLE_CHOICES = (
-        (ADMIN, 'Admin'),
-        (DEVELOPER, 'Developer'),
-        (PLAYER, 'Player'),
-    )
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
     birthDate = models.DateField()
-    age = models.PositiveSmallIntegerField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     country = models.CharField(max_length=20, blank=True)
     city = models.CharField(max_length=20, blank=True)
@@ -31,48 +16,12 @@ class UserProfile(models.Model):
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
 
     def is_developer(self):
-        if self.role == 'Developer':
+        if self.role == 'D':
             return True
         else:
             return False
-
-    def get_birth_date(self):
-        return self.birthDate
-
-    def get_gender(self):
-        return self.gender
-
-    def get_country(self):
-        return self.country
-    
-    def get_city(self):
-        return self.city
-    
-    def get_address(self):
-        return self.address
-
-    def get_bio(self):
-        return self.bio
-
-    def get_photo_url(self):
-        return self.photoUrl
-    
-    def get_role(self):
-        return self.role
-    
+ 
 class Game(models.Model):
-    CATEGORY_CHOICES = (
-        ('ACTION', 'Action'),
-        ('ADVENTURE', 'Adventure'),
-        ('ARCADE', 'Arcade'),
-        ('FANTASY', 'Fantasy'),
-        ('FIGHTING', 'Fighting'),
-        ('PUZZLE', 'Puzzle'),
-        ('SIMULATION', 'Simulation'),
-        ('SPORTS', 'Sports'),
-        ('STRATEGY', 'Strategy'),
-        ('OTHER', 'Other'),
-    )
     name = models.CharField(max_length=50)
     price = models.FloatField()
     pictureUrl = models.URLField(blank=True)
