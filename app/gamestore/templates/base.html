@@ -37,9 +37,9 @@
         <!-- A placeholder for the side bar. should be removed with actual sidebar content -->
         <h3>Sidebar</h3>
         <ul class="row list-group">
-          <li class="list-group-item"><a href="#">Search game</a></li>
+          <li class="list-group-item"><a href="/search_game">Search game</a></li>
           {% if user.is_authenticated %}
-              <li class="list-group-item"><a href="#">My games</a></li>
+              <li class="list-group-item"><a href="/my_games">My games</a></li>
               <li class="list-group-item"><a href="/profile">Profile</a></li>
               {% if developer %}
                   <li class="list-group-item"><a href="/uploaded_games">Uploaded games</a></li>

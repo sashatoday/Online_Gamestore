@@ -1,7 +1,47 @@
 from django.shortcuts import render, redirect
-from gamestore.models import UserProfile, Game
+from gamestore.models import *
 from gamestore.forms import GameForm
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+
+@login_required(login_url='/login/')
+def search_game(request):
+    developer = request.user.userprofile.is_developer()
+    # TODO: process search input and filter objects
+    games = Game.objects.all()
+    args = {
+        'games' : games,
+        'developer' : developer,
+    }
+    return render(request, "game/search_game.html", args)
+
+@login_required(login_url='/login/')
+def show_my_games(request):
+    user = request.user.userprofile
+    developer = user.is_developer()
+    purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
+    games = Game.objects.all()
+    args = {
+        'games' : purchased_games,
+        'developer' : developer,
+    }
+    return render(request, "game/my_games.html", args)
+
+@login_required(login_url='/login/')
+def game_description(request, game_id):
+    developer = request.user.userprofile.is_developer()
+    game = get_object_or_404(Game, id=game_id)
+    if game.developer == request.user.userprofile:
+        owner = True
+    else:
+        owner: False
+
+    args = {
+        'game' : game,
+        'developer' : developer,
+        'owner' : owner,
+    }
+    return render(request, "game/game_description.html", args)
 
 @login_required(login_url='/login/')
 def show_uploaded_games(request):

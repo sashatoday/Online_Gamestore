@@ -1,0 +1,25 @@
+{% load static %}
+
+<div class="row">
+    {% for game in games %}
+    <div class="col-sm-4 my-3">
+        <div class="card">
+          {% if not game.pictureUrl %}
+            <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Game Picture">
+          {% else %}
+            <img class="card-img-top" src={{ game.pictureUrl }} alt="Game Picture">
+          {% endif %}
+          <div class="card-body">
+            <h5><a class="card-title" href="/games/{{ game.id }}">{{ game.name }}</a></h5>
+            <p class="card-text">Category: {{ game.get_category_display }}<br>
+                                 Price: {{ game.price }} €
+            </p>
+          </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-sm-4 my-3">
+        You have no games yet
+    </div>
+    {% endfor %}
+</div>

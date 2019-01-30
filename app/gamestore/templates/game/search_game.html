@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Search game{% endblock %}
+
+{% block content %}
+
+<h2>Search game</h2>
+
+<form method="post" action="">{% csrf_token %}
+  <div class="row">
+    <input class="form-control search-query col-9 mr-4 ml-3" type="text" id="search" maxlength="50" name="search">
+    <a class="btn btn-primary col-2" href="#" role="button">Search</a>
+  </div>
+</form>
+
+{% include 'game/games_list.html' %}
+
+{% endblock %}
