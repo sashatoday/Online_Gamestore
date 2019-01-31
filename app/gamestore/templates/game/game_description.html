@@ -14,7 +14,7 @@
   {% if not game.pictureUrl %}
     <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Game Picture">
   {% else %}
-    <img class="card-img-top" src={{ game.pictureUrl }} alt="Game Picture">
+    <img class="card-img-top" src="{{ game.pictureUrl }}" alt="Game Picture">
   {% endif %}
   </div>
 </article> 
@@ -43,8 +43,10 @@
 	</span> 
 </p>
 <dl>
-  <dt>Description</dt>
-  <dd><p>{{ game.description }}</p></dd>
+  {% if game.description %}
+    <dt>Description</dt>
+    <dd><p>{{ game.description }}</p></dd>
+  {% endif %}
 </dl>
 <hr>
 <dl>
@@ -61,8 +63,12 @@
 </dl>
 
 <hr>
+  {% if owner or purchased_game %}
+    <a href="#" class="btn btn-primary btn-block text-uppercase"> Play </a>
+  {% else %}
 	<a href="#" class="btn btn-primary text-uppercase"> Buy now </a>
 	<a href="#" class="btn btn-outline-primary"> <i class="fas fa-shopping-cart"></i> Save to wishlist </a>
+  {% endif %}
 </article> <!-- card-body.// -->
 		</aside> <!-- col.// -->
 	</div> <!-- row.// -->

@@ -29,17 +29,24 @@ def show_my_games(request):
 
 @login_required(login_url='/login/')
 def game_description(request, game_id):
-    developer = request.user.userprofile.is_developer()
+    user = request.user.userprofile
+    developer = user.is_developer()
     game = get_object_or_404(Game, id=game_id)
+    owner = False
     if game.developer == request.user.userprofile:
         owner = True
+
+    purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
+    if game in purchased_games:
+        purchased_game = True
     else:
-        owner: False
+        purchased_game = False
 
     args = {
         'game' : game,
         'developer' : developer,
         'owner' : owner,
+        'purchased_game' : purchased_game,
     }
     return render(request, "game/game_description.html", args)
 
