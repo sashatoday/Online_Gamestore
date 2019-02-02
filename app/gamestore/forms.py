@@ -20,6 +20,20 @@ def birth_date_is_valid(birth_date):
     if age < 14:
         raise forms.ValidationError("You are underage (<14).")
 
+def check_price(price):
+    if price > 10000:
+        raise forms.ValidationError("Sorry, we don't allow prices more than 10000 UER")
+    if price < 0:
+        raise forms.ValidationError("Price have to be positive number")
+    return round(price, 2)
+
+def check_age_limit(age_limit):
+    if age_limit > 120:
+        raise forms.ValidationError("Please, enter age limit less than 120")
+    if age_limit < 3:
+        raise forms.ValidationError("Please, enter age limit greater than 3")
+    return age_limit
+
 class UserForm(UserCreationForm):
 
     class Meta:
@@ -86,79 +100,6 @@ class UserForm(UserCreationForm):
         birth_date = self.cleaned_data['birthDate']
         birth_date_is_valid(birth_date)
         return birth_date
-
-class GameForm(ModelForm):
-
-    class Meta:
-        model = Game
-        fields = (
-            'name',
-            'price',
-            'category',
-            'pictureUrl',
-            'description',
-            'gameUrl',
-            'age_limit',
-        )
-    name = forms.CharField(
-        label  = "Title",
-        required = True,
-        widget = forms.TextInput(attrs= {'class' : 'form-control here', 'maxlength' : 50})
-    )
-    price = forms.FloatField(
-        label  = "Price in EUR",
-        required = True,
-        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000, 'size' : 0.01})
-    )
-    pictureUrl = forms.URLField(
-        label  = "Picture URL",
-        required = False,
-        widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
-    )
-    description = forms.CharField(
-        label  = "Description",
-        required = False,
-        widget = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
-    )
-    gameUrl = forms.URLField(
-        label  = "Game URL",
-        required = True,
-        widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
-    )
-    category = forms.ChoiceField(
-        choices  = CATEGORY_CHOICES,
-        label    = 'Category',
-        required = True,
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
-    )
-    age_limit = forms.IntegerField(
-        help_text = 'Indicate age limit for users. You can enter number between 3 and 120',
-        label  = "Age limit",
-        required = True,
-        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'min' : 3, 'max' : 120, 'size' : 1})
-    )
-
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        cleaned_data['price'] = self.clean_price()
-        cleaned_data['age_limit'] = self.clean_age_limit()
-        return cleaned_data
-
-    def clean_price(self):
-        price = self.cleaned_data['price']
-        if price > 10000:
-            raise forms.ValidationError("Sorry, we don't allow prices more than 10000 UER")
-        if price < 0:
-            raise forms.ValidationError("Price have to be positive number")
-        return round(price, 2)
-
-    def clean_age_limit(self):
-        age_limit = self.cleaned_data['age_limit']
-        if age_limit > 120:
-            raise forms.ValidationError("Please, enter age limit less than 120")
-        if age_limit < 3:
-            raise forms.ValidationError("Please, enter age limit greater than 3")
-        return age_limit
 
 class UserUpdateForm(forms.ModelForm):
 
@@ -271,3 +212,118 @@ class ChangePasswordForm(PasswordChangeForm):
         label  = "Confirm new password",
         widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
     )
+
+class GameForm(ModelForm):
+
+    class Meta:
+        model = Game
+        fields = (
+            'name',
+            'price',
+            'category',
+            'pictureUrl',
+            'description',
+            'gameUrl',
+            'age_limit',
+        )
+    name = forms.CharField(
+        label  = "Title",
+        required = True,
+        widget = forms.TextInput(attrs= {'class' : 'form-control here', 'maxlength' : 50})
+    )
+    price = forms.FloatField(
+        label  = "Price in EUR",
+        required = True,
+        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000, 'size' : 0.01})
+    )
+    pictureUrl = forms.URLField(
+        label  = "Picture URL",
+        required = False,
+        widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
+    )
+    description = forms.CharField(
+        label  = "Description",
+        required = False,
+        widget = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
+    )
+    gameUrl = forms.URLField(
+        label  = "Game URL",
+        required = True,
+        widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
+    )
+    category = forms.ChoiceField(
+        choices  = CATEGORY_CHOICES,
+        label    = 'Category',
+        required = True,
+        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+    )
+    age_limit = forms.IntegerField(
+        help_text = 'Indicate age limit for users. You can enter number between 3 and 120',
+        label  = "Age limit",
+        required = True,
+        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'min' : 3, 'max' : 120, 'size' : 1})
+    )
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['price'] = check_price(self.cleaned_data['price'])
+        cleaned_data['age_limit'] = check_age_limit(self.cleaned_data['age_limit'])
+        return cleaned_data
+
+
+class GameUpdateForm(ModelForm):
+
+    class Meta:
+        model = Game
+        fields = (
+            'name',
+            'price',
+            'category',
+            'pictureUrl',
+            'description',
+            'gameUrl',
+            'age_limit',
+        )
+    name = forms.CharField(
+        label  = "Title",
+        required = True,
+        widget = forms.TextInput(attrs= {'class' : 'form-control here', 'maxlength' : 50, 'readonly' : 'readonly'})
+    )
+    price = forms.FloatField(
+        label  = "Price in EUR",
+        required = True,
+        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000, 'size' : 0.01})
+    )
+    pictureUrl = forms.URLField(
+        label  = "Picture URL",
+        required = False,
+        widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
+    )
+    description = forms.CharField(
+        label  = "Description",
+        required = False,
+        widget = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
+    )
+    gameUrl = forms.URLField(
+        label  = "Game URL",
+        required = True,
+        widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
+    )
+    category = forms.ChoiceField(
+        choices  = CATEGORY_CHOICES,
+        label    = 'Category',
+        required = True,
+        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+    )
+    age_limit = forms.IntegerField(
+        help_text = 'Indicate age limit for users. You can enter number between 3 and 120',
+        label  = "Age limit",
+        required = True,
+        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'min' : 3, 'max' : 120, 'size' : 1})
+    )
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['price'] = check_price(self.cleaned_data['price'])
+        cleaned_data['age_limit'] = check_age_limit(self.cleaned_data['age_limit'])
+        return cleaned_data
