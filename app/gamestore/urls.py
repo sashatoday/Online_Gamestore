@@ -8,6 +8,7 @@ urlpatterns = [
     re_path(r'^signup/$', account.signup, name='signup'),
     re_path(r'^logout/$', account.logout_user, name='logout_user'),
     re_path(r'^profile/$', account.profile, name='profile'),
+    re_path(r'^user/(?P<user_id>[0-9]+)/$', account.show_user, name='user'),
     re_path(r'^search_game/$', game.search_game, name='search_game'),
     re_path(r'^my_games/$', game.show_my_games, name='my_games'),
     re_path(r'^games/(?P<game_id>[0-9]+)/$', game.game_description, name='game_description'),

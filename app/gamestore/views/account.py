@@ -11,6 +11,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout, authenticate
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 def startpage(request):
     if request.user.is_authenticated:
@@ -118,3 +119,16 @@ def profile(request):
                 return render(request, 'account/profile.html', args)
 
     return render(request, 'account/profile.html', args)
+
+@login_required(login_url='/login/')
+def show_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    userprofile = user.userprofile
+
+    developer = request.user.userprofile.is_developer()
+    args = {
+        'user' : user,
+        'userprofile' : userprofile,
+        'developer' : developer,
+    }
+    return render(request, 'account/profile_preview.html', args)

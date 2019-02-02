@@ -158,22 +158,22 @@ class UserProfileUpdateForm(forms.ModelForm):
     country = forms.CharField(
         label    = 'Country',
         required = False,
-        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here', 'maxlength' : 20})
     )
     city = forms.CharField(
         label    = 'City',
         required = False,
-        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here', 'maxlength' : 30})
     )
     address = forms.CharField(
         label    = 'Address',
         required = False,
-        widget   = forms.TextInput(attrs = {'class' : 'form-control here'})
+        widget   = forms.TextInput(attrs = {'class' : 'form-control here', 'maxlength' : 100})
     )
     photoUrl = forms.URLField(
         label    = 'Photo URL',
         required = False,
-        widget   = forms.URLInput(attrs = {'class' : 'form-control here', 'placeholder': 'http://'})
+        widget   = forms.URLInput(attrs = {'class' : 'form-control here', 'placeholder': 'http://', 'maxlength' : 200})
     )
     role = forms.ChoiceField(
         choices  = ROLE_CHOICES, 
@@ -190,7 +190,7 @@ class UserProfileUpdateForm(forms.ModelForm):
     bio = forms.CharField(
         label    = 'Bio',
         required = False,
-        widget   = forms.Textarea(attrs= {'class' : 'form-control here'})
+        widget   = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
     )
 
     def clean_birthDate(self):

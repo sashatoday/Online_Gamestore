@@ -35,12 +35,10 @@ def game_description(request, game_id):
     owner = False
     if game.developer == request.user.userprofile:
         owner = True
-
+    purchased_game = False
     purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
     if game in purchased_games:
         purchased_game = True
-    else:
-        purchased_game = False
 
     args = {
         'game' : game,
@@ -92,7 +90,6 @@ def edit_game(request, game_id):
         return redirect('index')
     game = get_object_or_404(Game, id=game_id)
     form = GameUpdateForm(instance=game)
-    #form['category'] = game.category
     args = {
         'form' : form,
         'developer' : developer,
