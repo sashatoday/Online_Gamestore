@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ game.name }}{% endblock %}
+
+{% block content %}
+
+<h2>Play game!</h2>
+<script>
+    $(document).ready(function () {
+        'use strict';
+
+        const $game = $("#game");
+
+        $(window).on('message', function (evt) {
+            const data = evt.originalEvent.data;
+
+            if (data.messageType === 'SETTING') {
+
+                $(game).attr('width', data.options.width);
+                $(game).attr('height', data.options.height);
+
+            }
+
+            if (data.messageType === 'SCORE') {
+
+                $.ajax({
+                    url: window.location,
+                    type: 'POST',
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    data: JSON.stringify({
+                        'score': data.score,
+                        'type': 'SCORE'
+                    }),
+                    dataType: 'json',
+
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (data) {
+                        alert(data.message)
+                        let msg = {
+                            messageType: 'RESET',
+                        }
+                        $game[0].contentWindow.postMessage(msg, '*');
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                    }
+                });
+            }
+
+            if (data.messageType === 'SAVE') {
+
+                $.ajax({
+                    url: window.location,
+                    type: 'POST',
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    data: JSON.stringify({
+                        "state": data.gameState,
+                        "type": "SAVE"
+                    }),
+                    dataType: 'json',
+
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (data) {
+                        alert(data.message)
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                    }
+                });
+
+            }
+
+            if (data.messageType === 'LOAD_REQUEST') {
+
+                $.ajax({
+                    url: window.location,
+                    type: 'GET',
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    data: JSON.stringify({
+                        'type': 'LOAD_REQUEST'
+                    }),
+                    dataType: 'json',
+
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (data) {
+                        alert(data.message)
+                        data = JSON.parse(data.state)
+                        let msg = {
+                            messageType: 'LOAD',
+                            state: data
+                        }
+                        $game[0].contentWindow.postMessage(msg, '*');
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                    }
+                });
+            }
+        });
+    });
+</script>
+<div>
+    <h3>You are playing: {{ game.name }}</h3>
+    <iframe id="game" src="{{ game.gameUrl }}"></iframe>
+</div>
+
+{% endblock %}

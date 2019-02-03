@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Example Game</title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            "use strict";
+
+            let backbag = [];
+            let points = 0;
+
+            $("#submit_score").click(function () {
+                let msg = {
+                    "messageType": "SCORE",
+                    "score": parseFloat($("#score").text())
+                };
+                window.parent.postMessage(msg, "*");
+            });
+
+            $("#save").click(function () {
+                var msg = {
+                    "messageType": "SAVE",
+                    "gameState": {
+                        "playerItems": backbag,
+                        "score": parseFloat($("#score").text())
+                    }
+                };
+                window.parent.postMessage(msg, "*");
+            });
+
+            $("#load").click(function () {
+                var msg = {
+                    "messageType": "LOAD_REQUEST",
+                };
+                window.parent.postMessage(msg, "*");
+            });
+
+            window.addEventListener("message", function (evt) {
+                if (evt.data.messageType === "LOAD") {
+                    backbag = evt.data.state.playerItems;
+                    points = evt.data.state.score;
+                    $("#score").text(points);
+                    renderItems();
+                } else if (evt.data.messageType === "ERROR") {
+                    alert(evt.data.info);
+                } else if (evt.data.messageType === "RESET") {
+                    points = 0;
+                    backbag = [];
+                    renderItems();
+                    $("#score").text(points);
+                }
+            });
+
+            $("#add_item").click(function () {
+                backbag.push("A rock");
+                $("#new_item").val("");
+                renderItems();
+            });
+
+            $("#add_points").click(function () {
+                points += 10;
+                $("#score").text(points);
+            });
+
+            function renderItems() {
+                $("#item_list").html("");
+                for (var i = backbag.length - 1; i >= 0; i--) {
+                    $("#item_list").append("<li>" + backbag[i] + "</li>");
+                }
+            }
+
+            let message = {
+                messageType: "SETTING",
+                options: {
+                    "width": 700,
+                    "height": 300
+                }
+            };
+            window.parent.postMessage(message, "*");
+        });
+    </script>
+</head>
+
+<body>
+
+    <button id="add_item">Add a stone to backbag</button>
+    <button id="add_points">Add 10 points</button>
+
+    <h3>Backbag</h3>
+    <ul id="item_list"></ul>
+    <div><span id="score">0</span> Points</div>
+
+    <button id="submit_score">Submit score</button><br>
+
+    <button id="save">Save</button>
+    <button id="load">Load</button>
+</body>
+
+</html>

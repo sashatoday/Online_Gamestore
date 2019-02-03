@@ -3,6 +3,9 @@ from gamestore.models import *
 from gamestore.forms import GameForm, GameUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+import json
+from django.http import JsonResponse, HttpResponse
+from django.core import serializers
 
 def search_game(request):
     developer = False
@@ -84,6 +87,50 @@ def add_game(request):
             args['form'] = form
             return render(request, 'game/add_game.html', args)
     return render(request, 'game/add_game.html', args)
+
+@login_required(login_url='/login/')
+def play_game(request, game_id):
+    user = request.user.userprofile
+    game = get_object_or_404(Game, id=game_id)
+    purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
+    owner = False
+    if game.developer == user:
+        owner = True
+    if game not in purchased_games and not owner:
+        return redirect('search_game')
+    developer = user.is_developer()
+    args = {
+        'game' : game,
+        'developer' : developer,
+    }
+    if request.is_ajax() and request.method == 'POST':
+        data = json.loads(request.body)
+        if data['type'] == 'SCORE': #save score, (game over)
+            score = Score(value=data['score'], scorer=user, gameInScore=game)
+            score.save()
+            response = {'success':'true', 'message': 'Score saved.', 'developer' : developer,}
+        if data['type'] == 'SAVE': #save game state
+            gamestate = GameState.objects.filter(player=user, gameInState=game)
+            if gamestate:
+                gamestate.update(state=json.dumps(data["state"]))
+                response = {'success':'true', 'message': 'Gamestate updated.', 'developer' : developer,}
+            else:
+                newgamestate = GameState(state=json.dumps(data["state"]), player=user, gameInState=game)
+                newgamestate.save()
+                response = {'success':'true', 'message': 'Gamestate created.', 'developer' : developer,}
+        return JsonResponse(response)
+
+    if request.is_ajax() and request.method == 'GET': #load gamestate
+        state = GameState.objects.filter(player=user, gameInState=game)
+        if state:
+            gamestate = state.values('state')[0]['state']
+            response = {'success':'true', 'message': 'Gamestate loaded!', 'state' : json.loads(gamestate), 'developer' : developer,}
+            return JsonResponse(response)
+        else:
+            response = {'success':'false', 'message': 'No gamestate found', 'developer' : developer,}
+            return JsonResponse(response)
+        
+    return render(request, "game/play_game.html", args)
 
 @login_required(login_url='/login/')
 def edit_game(request, game_id):
