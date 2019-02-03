@@ -61,8 +61,12 @@ def signup(request):
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()
-                auth_login(request, user)
-                return redirect('search_game')
+                args = {
+                    'thanks_for' : "registering",
+                    'enjoy' : "our services",
+                    'message' : "Please, confirm your email before login.",
+                }
+                return render(request, 'extra/thanks.html', args)
             else:
                 return render(request, 'account/signup.html', {'form': form})
         form = UserForm()
