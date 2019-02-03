@@ -93,7 +93,10 @@ def play_game(request, game_id):
     user = request.user.userprofile
     game = get_object_or_404(Game, id=game_id)
     purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
-    if game not in purchased_games:
+    owner = False
+    if game.developer == user:
+        owner = True
+    if game not in purchased_games and not owner:
         return redirect('index')
     args = {
         'game' : game,
