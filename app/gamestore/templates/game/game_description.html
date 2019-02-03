@@ -64,7 +64,7 @@
 
 <hr>
   {% if owner or purchased_game %}
-    <a href="#" class="btn btn-primary btn-block text-uppercase"> Play </a>
+    <a href="/play_game/{{ game.id }}" class="btn btn-primary btn-block text-uppercase"> Play </a>
   {% else %}
 	<a href="#" class="btn btn-primary text-uppercase"> Buy now </a>
 	<a href="#" class="btn btn-outline-primary"> <i class="fas fa-shopping-cart"></i> Save to wishlist </a>

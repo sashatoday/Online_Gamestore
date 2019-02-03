@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 from gamestore.core.constants import *
+import jsonfield
 
 
 class UserProfile(models.Model):
@@ -67,7 +68,7 @@ class WishList(models.Model):
     pass
 
 class GameState(models.Model):
-    state = models.TextField(null=False)
+    state = jsonfield.JSONField()
     date = models.DateField(default=date.today)
     player = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='player')
     gameInState = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='gameInState')

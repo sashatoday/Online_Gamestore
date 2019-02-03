@@ -13,4 +13,5 @@ urlpatterns = [
     re_path(r'^games/(?P<game_id>[0-9]+)/$', game.game_description, name='game_description'),
     re_path(r'^uploaded_games/$', game.show_uploaded_games, name='uploaded_games'),
     re_path(r'^add_game/$', game.add_game, name='adding_game'),
+    re_path(r'^play_game/(?P<game_id>[0-9]+)/$', game.play_game, name='play_game'),
 ]
