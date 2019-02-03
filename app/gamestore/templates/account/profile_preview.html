@@ -9,7 +9,7 @@
 <div class="card">
     <div class="row">
 		<aside class="col-sm-5">
-        <article class="gallery-wrap">
+        <article class="card">
             <div>
                 {% if not userprofile.photoUrl %}
                     <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Profile Picture">
@@ -24,14 +24,14 @@
                 <h4 class="title">{{user.first_name}} {{user.last_name}}</h4>
                 <hr>
                 {% if userprofile.city or userprofile.country %}
-                    <small><cite title="">{{userprofile.city}} {{userprofile.country}} <i class="fas fa-map-marker-alt"></i></cite></small>
+                    <small class="text-info"><cite><i class="fas fa-map-marker-alt"></i> {{userprofile.city}} {{userprofile.country}}</cite></small>
                 {% endif %}
                 <p>
                 <div>
-                    <i class="fas fa-user-circle mb-2"></i> {{user.username}}<br />
-                    <i class="fas fa-envelope mb-2"></i> {{user.email}}<br />
-                    <i class="fas fa-user mb-2"></i> {{userprofile.get_gender_display}}<br />
-                    <i class="fas fa-gift mb-2"></i> {{userprofile.birthDate}}<br />
+                    <i class="fas fa-user-circle mb-3"></i> {{user.username}}<br />
+                    <i class="fas fa-envelope mb-3"></i> {{user.email}}<br />
+                    <i class="fas fa-user mb-3"></i> {{userprofile.get_gender_display}}<br />
+                    <i class="fas fa-gift mb-3"></i> {{userprofile.birthDate}}<br />
                     {% if userprofile.birthDate %}
                         <i class="fas fa-graduation-cap"></i> {{userprofile.bio}}
                     {% endif %}
