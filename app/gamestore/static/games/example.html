@@ -38,14 +38,6 @@
                 window.parent.postMessage(msg, "*");
             });
 
-            // Listen incoming messages, if the messageType
-            // is LOAD then the game state will be loaded.
-            // Note that no checking is done, whether the
-            // gameState in the incoming message contains
-            // correct information.
-            //
-            // Also handles any errors that the service
-            // wants to send (displays them as an alert).
             window.addEventListener("message", function (evt) {
                 if (evt.data.messageType === "LOAD") {
                     backbag = evt.data.state.playerItems;
