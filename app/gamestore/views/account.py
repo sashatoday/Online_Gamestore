@@ -22,7 +22,7 @@ def startpage(request):
 def login(request):
     next_page = request.GET.get('next') 
     if not next_page: #if request doesn't have ?next= parameter
-        next_page = 'index' #keep index page as default redirect
+        next_page = 'search_game' #keep search_game page as default redirect
     if request.user.is_authenticated:
         return redirect(next_page)
     else:
@@ -42,7 +42,7 @@ def login(request):
 @transaction.atomic
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('search_game')
     else:
         if request.method == 'POST':
             form = UserForm(request.POST)
@@ -62,7 +62,7 @@ def signup(request):
                 )
                 userProfile.save()
                 auth_login(request, user)
-                return redirect('index')
+                return redirect('search_game')
             else:
                 return render(request, 'account/signup.html', {'form': form})
         form = UserForm()
@@ -71,7 +71,7 @@ def signup(request):
 @login_required(login_url='/login/')
 def logout_user(request):
     logout(request)
-    return redirect('index')
+    return redirect('search_game')
 
 @transaction.atomic
 @login_required(login_url='/login/')
