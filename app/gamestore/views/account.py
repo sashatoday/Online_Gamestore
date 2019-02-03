@@ -11,6 +11,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout, authenticate
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 def startpage(request):
     if request.user.is_authenticated:
@@ -21,7 +22,7 @@ def startpage(request):
 def login(request):
     next_page = request.GET.get('next') 
     if not next_page: #if request doesn't have ?next= parameter
-        next_page = 'index' #keep index page as default redirect
+        next_page = 'search_game' #keep search_game page as default redirect
     if request.user.is_authenticated:
         return redirect(next_page)
     else:
@@ -41,7 +42,7 @@ def login(request):
 @transaction.atomic
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('search_game')
     else:
         if request.method == 'POST':
             form = UserForm(request.POST)
@@ -60,8 +61,12 @@ def signup(request):
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()
-                auth_login(request, user)
-                return redirect('index')
+                args = {
+                    'thanks_for' : "registering",
+                    'enjoy' : "our services",
+                    'message' : "Please, confirm your email before login.",
+                }
+                return render(request, 'extra/thanks.html', args)
             else:
                 return render(request, 'account/signup.html', {'form': form})
         form = UserForm()
@@ -70,7 +75,7 @@ def signup(request):
 @login_required(login_url='/login/')
 def logout_user(request):
     logout(request)
-    return redirect('index')
+    return redirect('search_game')
 
 @transaction.atomic
 @login_required(login_url='/login/')
@@ -118,3 +123,16 @@ def profile(request):
                 return render(request, 'account/profile.html', args)
 
     return render(request, 'account/profile.html', args)
+
+@login_required(login_url='/login/')
+def show_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    userprofile = user.userprofile
+
+    developer = request.user.userprofile.is_developer()
+    args = {
+        'user' : user,
+        'userprofile' : userprofile,
+        'developer' : developer,
+    }
+    return render(request, 'account/profile_preview.html', args)

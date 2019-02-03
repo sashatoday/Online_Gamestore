@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}Edit game{% endblock %}
 
 {% block content %}
 
-<h2>Registration form</h2>
+<h2>Edit game</h2>
 <form method="post" action="">{% csrf_token %}
     {% for field in form %}
         {% include 'extra/field.html' %}
     {% endfor %}
     <hr class="mb-3">
     <div class="row">
-      <div class="col-md-5 offset-md-6">
+      <div class="col-md-6 offset-md-6">
         <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        <span>Already an user? <a href="/login">Login</a></span>
       </div>
     </div>
   </form>
-{% endblock %}
 
+
+{% endblock %}

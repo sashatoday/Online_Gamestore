@@ -59,15 +59,15 @@
 </dl>
 <dl>
   <dt>Developer</dt>
-  <a href="#"><dd>{{ game.developer.user.username }}</dd></a>
+  <a href="/user/{{game.developer.user.id}}"><dd>{{ game.developer.user.username }}</dd></a>
 </dl>
 
 <hr>
   {% if owner or purchased_game %}
     <a href="#" class="btn btn-primary btn-block text-uppercase"> Play </a>
   {% else %}
-	<a href="#" class="btn btn-primary text-uppercase"> Buy now </a>
-	<a href="#" class="btn btn-outline-primary"> <i class="fas fa-shopping-cart"></i> Save to wishlist </a>
+	<a href="#" class="btn btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Buy now </a>
+	<a href="#" class="btn btn-outline-primary"> <i class="far fa-bookmark"></i> Save to wishlist </a>
   {% endif %}
 </article> <!-- card-body.// -->
 		</aside> <!-- col.// -->
@@ -75,7 +75,7 @@
 </div> <!-- card.// -->
 
 {% if owner %}
-    <a class="btn btn-outline-primary btn-block mt-3" href="#" role="button">Edit game</a>
+    <a class="btn btn-outline-primary btn-block mt-3" href="/edit_game/{{game.id}}" role="button">Edit game</a>
 {% endif %}
 
 {% endblock %}
