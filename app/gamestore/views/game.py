@@ -112,10 +112,10 @@ def play_game(request, game_id):
         if data['type'] == 'SAVE': #save game state
             gamestate = GameState.objects.filter(player=user, gameInState=game)
             if gamestate:
-                gamestate.update(state=json.dumps(data["state"]))
+                gamestate.update(state=json.dumps(data['gameState']))
                 response = {'success':'true', 'message': 'Gamestate updated.', 'developer' : developer,}
             else:
-                newgamestate = GameState(state=json.dumps(data["state"]), player=user, gameInState=game)
+                newgamestate = GameState(state=json.dumps(data['gameState']), player=user, gameInState=game)
                 newgamestate.save()
                 response = {'success':'true', 'message': 'Gamestate created.', 'developer' : developer,}
         return JsonResponse(response)

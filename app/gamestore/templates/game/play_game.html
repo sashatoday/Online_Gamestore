@@ -49,7 +49,12 @@
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                        let msg = {
+                            messageType: 'ERROR',
+                            info: 'Score save failed.'
+                        }
+                        $game[0].contentWindow.postMessage(msg, '*');
+                        //alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
                     }
                 });
             }
@@ -63,7 +68,7 @@
                         xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                     },
                     data: JSON.stringify({
-                        "state": data.gameState,
+                        "gameState": data.gameState,
                         "type": "SAVE"
                     }),
                     dataType: 'json',
@@ -73,10 +78,15 @@
                         'Content-Type': 'application/json'
                     },
                     success: function (data) {
-                        alert(data.message)
+                        alert("saved")
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                        let msg = {
+                            messageType: 'ERROR',
+                            info: 'Saving failed.'
+                        }
+                        $game[0].contentWindow.postMessage(msg, '*');
+                        //alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
                     }
                 });
 
@@ -104,12 +114,17 @@
                         data = JSON.parse(data.state)
                         let msg = {
                             messageType: 'LOAD',
-                            state: data
+                            gameState: data
                         }
                         $game[0].contentWindow.postMessage(msg, '*');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                        let msg = {
+                            messageType: 'ERROR',
+                            info: 'Load failed.'
+                        }
+                        $game[0].contentWindow.postMessage(msg, '*');
+                        //alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
                     }
                 });
             }
