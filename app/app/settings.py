@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gamestore',
-    'gamestore-api',
+    'gamestoreapi',
     'rest_framework'
 ]
 
