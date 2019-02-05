@@ -144,7 +144,10 @@ def edit_game(request, game_id):
         'developer' : developer,
     }
     if request.method == 'POST':
-        form = GameUpdateForm(request.POST)
+        if 'deletegame' in request.POST:
+            game.delete()
+            return redirect('uploaded_games')
+        form = GameUpdateForm(request.POST, instance=game)
         if form.is_valid():
             game = form.save(commit=False)
             game.developer = request.user.userprofile
@@ -154,5 +157,3 @@ def edit_game(request, game_id):
             args['form'] = form
             return render(request, 'game/edit_game.html', args)
     return render(request, 'game/edit_game.html', args)
-
-    
