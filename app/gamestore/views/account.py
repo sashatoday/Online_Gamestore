@@ -19,6 +19,42 @@ def startpage(request):
     else:
         return render(request, "base.html", {'developer': False})
 
+def activate(request):
+    if request.user.is_authenticated:
+        return redirect('search_game')
+    else:
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            try:
+                user_object = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user_object = None
+            if user_object:
+                user_object.is_active = True
+                user_object.save()
+                user = authenticate(username=username, password=password)
+                if user:
+                    args = {
+                        'thanks_for' : "activating your account",
+                        'enjoy' : "our services",
+                    }
+                    return render(request, 'extra/thanks.html', args)
+                else:
+                    user_object.is_active = False
+                    user_object.save()
+                    args = {
+                        'error' : "Incorrect password.",
+                    }
+                    return render(request, 'account/activate_account.html', args)
+            else:
+                args = {
+                    'error' : "User does not exist. Please sign up.",
+                }
+                return render(request, 'account/activate_account.html', args)
+    return render(request, "account/activate_account.html")
+        
+
 def login(request):
     next_page = request.GET.get('next') 
     if not next_page: #if request doesn't have ?next= parameter
