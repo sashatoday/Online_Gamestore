@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import json
 from django.http import JsonResponse, HttpResponse
-from django.core import serializers
 
 def search_game(request):
     developer = False
@@ -33,7 +32,7 @@ def show_my_games(request):
     return render(request, "game/my_games.html", args)
 
 @login_required(login_url='/login/')
-def game_description(request, game_id):
+def show_game_description(request, game_id):
     user = request.user.userprofile
     developer = user.is_developer()
     game = get_object_or_404(Game, id=game_id)
@@ -44,12 +43,13 @@ def game_description(request, game_id):
     purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
     if game in purchased_games:
         purchased_game = True
-
+    scores = Score.objects.filter(gameInScore=game)[:10]
     args = {
         'game' : game,
         'developer' : developer,
         'owner' : owner,
         'purchased_game' : purchased_game,
+        'scores' : scores,
     }
     return render(request, "game/game_description.html", args)
 

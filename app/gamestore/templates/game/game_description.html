@@ -22,14 +22,12 @@
   <div>
       <h5 class="title mb-3">Best scores</h5>
     <table style="width:100%">
-      <tr>
-        <td>username1</td>
-        <td>94</td>
-      </tr>
-      <tr>
-        <td>username2</td>
-        <td>50</td>
-      </tr>
+      {% for score in scores %}
+          <tr>
+            <td>{{ score.scorer.user.username }}</td>
+            <td>{{ score.value }}</td>
+          </tr>
+      {% endfor %}
     </table>
    </div>
 </article>
