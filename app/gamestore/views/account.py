@@ -157,7 +157,11 @@ def profile(request):
             else:
                 args['changepasswordform'] = changepasswordform
                 return render(request, 'account/profile.html', args)
-
+        if 'deleteuser' in request.POST:
+            user.is_active = False
+            user.save()
+            logout(request)
+            return redirect('search_game')
     return render(request, 'account/profile.html', args)
 
 @login_required(login_url='/login/')
