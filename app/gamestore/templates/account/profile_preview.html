@@ -11,32 +11,36 @@
 		<aside class="col-sm-5">
         <article class="card">
             <div>
-                {% if not userprofile.photoUrl %}
-                    <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Profile Picture">
-                {% else %}
+                {% if userprofile.photoUrl and user.is_active%}
                     <img class="card-img-top" src="{{ userprofile.photoUrl }}" alt="Profile Picture">
+                {% else %}
+                    <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Profile Picture">
                 {% endif %}
             </div>
         </article>
         </aside>
         <aside class="col-sm-7">
         <article class="card-body p-5">
-                <h4 class="title">{{user.first_name}} {{user.last_name}}</h4>
+                <h4 class="title">{{user.username}}</h4>
                 <hr>
-                {% if userprofile.city or userprofile.country %}
-                    <small class="text-info"><cite><i class="fas fa-map-marker-alt"></i> {{userprofile.city}} {{userprofile.country}}</cite></small>
-                {% endif %}
-                <p>
-                <div>
-                    <i class="fas fa-user-circle mb-3"></i> {{user.username}}<br />
-                    <i class="fas fa-envelope mb-3"></i> {{user.email}}<br />
-                    <i class="fas fa-user mb-3"></i> {{userprofile.get_gender_display}}<br />
-                    <i class="fas fa-gift mb-3"></i> {{userprofile.birthDate}}<br />
-                    {% if userprofile.birthDate %}
-                        <i class="fas fa-graduation-cap"></i> {{userprofile.bio}}
+                {% if user.is_active %}
+                    {% if userprofile.city or userprofile.country %}
+                        <small class="text-info"><cite><i class="fas fa-map-marker-alt"></i> {{userprofile.city}} {{userprofile.country}}</cite></small>
                     {% endif %}
-                </div>
-                </p>
+                    <p>
+                    <div>
+                        <i class="fas fa-user-circle mb-3"></i> {{user.first_name}} {{user.last_name}}<br />
+                        <i class="fas fa-envelope mb-3"></i> {{user.email}}<br />
+                        <i class="fas fa-user mb-3"></i> {{userprofile.get_gender_display}}<br />
+                        <i class="fas fa-gift mb-3"></i> {{userprofile.birthDate}}<br />
+                        {% if userprofile.birthDate %}
+                            <i class="fas fa-graduation-cap"></i> {{userprofile.bio}}
+                        {% endif %}
+                    </div>
+                    </p>
+                {% else %}
+                    <p>User account is deleted</p>
+                {% endif %}
         </article>
         </aside>
     </div>
