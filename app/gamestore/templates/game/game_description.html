@@ -24,6 +24,7 @@
     <table style="width:100%">
       {% for score in scores %}
           <tr>
+            <td>{{ forloop.counter }}</td>
             <td>{{ score.scorer.user.username }}</td>
             <td>{{ score.value }}</td>
           </tr>
