@@ -5,10 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import json
 from django.http import JsonResponse, HttpResponse
-<<<<<<< HEAD
-=======
 from django.db.models import Count, Sum
->>>>>>> games-statistics
 
 def search_game(request):
     developer = False
