@@ -33,6 +33,18 @@ def show_my_games(request):
     return render(request, "game/my_games.html", args)
 
 @login_required(login_url='/login/')
+def show_wishlist(request):
+    user = request.user.userprofile
+    developer = user.is_developer()
+    wished_games = WishList.objects.filter(potentialBuyer=user)
+    games = Game.objects.all()
+    args = {
+        'games' : wished_games,
+        'developer' : developer,
+    }
+    return render(request, "game/my_games.html", args)
+
+@login_required(login_url='/login/')
 def show_game_description(request, game_id):
     user = request.user.userprofile
     developer = user.is_developer()
