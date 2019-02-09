@@ -23,7 +23,7 @@
       <div class="col text-center">
           <h1>Game Store</h1>
           {% if user.is_authenticated %}
-            <p>Welcome, {{ user.get_username }}.</p>
+            <p>Welcome, {{ user.username }}.</p>
           {% else %}
             <p>Welcome, guest. <a href="/login" class="btn-login"> Login </a></p>
           {% endif %}

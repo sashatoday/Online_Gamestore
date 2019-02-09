@@ -25,7 +25,7 @@
       {% for score in scores %}
           <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ score.scorer.user.username }}</td>
+            <td><a href="/user/{{ score.scorer.user.id }}">{{ score.scorer.user.username }}</a></td>
             <td>{{ score.value }}</td>
           </tr>
       {% endfor %}
@@ -58,7 +58,7 @@
 </dl>
 <dl>
   <dt>Developer</dt>
-  <a href="/user/{{game.developer.user.id}}"><dd>{{ game.developer.user.username }}</dd></a>
+  <a href="/user/{{ game.developer.user.id }}"><dd>{{ game.developer.user.username }}</dd></a>
 </dl>
 
 <hr>
