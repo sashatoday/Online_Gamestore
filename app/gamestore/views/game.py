@@ -4,8 +4,10 @@ from gamestore.forms import GameForm, GameUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import json
+from gamestore.core.constants import *
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Count, Sum
+from hashlib import md5
 
 def search_game(request):
     developer = False
@@ -163,6 +165,26 @@ def edit_game(request, game_id):
             args['form'] = form
             return render(request, 'game/edit_game.html', args)
     return render(request, 'game/edit_game.html', args)
+
+@login_required(login_url='/login/')
+def buy_game(request, game_id):
+    game = get_object_or_404(Game, id=game_id)
+    purchase = Purchase.objects.filter(buyer=request.user.userprofile, purchasedGame=game) #check if purchase exists
+    if purchase:
+        return redirect('index')
+    pid = game.id #payment ID
+    amount = game.price
+    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+    m = md5(checksumstr.encode("ascii"))
+    checksum = m.hexdigest() #checksum is sent to payment service
+    args = {
+        'pid': pid,
+        'sid': sid,
+        'amount': amount,
+        'checksum': checksum,
+        'game': game
+    }
+    return render(request, 'game/buy_game.html', args)
 
 @login_required(login_url='/login/')
 def show_statistics(request):

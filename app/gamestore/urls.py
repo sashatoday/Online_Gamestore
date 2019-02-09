@@ -1,6 +1,7 @@
 from django.urls import re_path
 from gamestore.views import account
 from gamestore.views import game
+from gamestore.views import payment
 
 urlpatterns = [
     re_path(r'^$', account.startpage, name='index'),
@@ -18,4 +19,7 @@ urlpatterns = [
     re_path(r'^add_game/$', game.add_game, name='adding_game'),
     re_path(r'^edit_game/(?P<game_id>[0-9]+)/$', game.edit_game, name='editing_game'),
     re_path(r'^statistics/$', game.show_statistics, name='statistics'),
+    re_path(r'^buy_game/(?P<game_id>[0-9]+)/$', game.buy_game, name='buying_game'),
+    re_path(r'^payment/success/$', payment.success, name='payment_success'),
+    re_path(r'^payment/error/$', payment.error, name='payment_error'),
 ]

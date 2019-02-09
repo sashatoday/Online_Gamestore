@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Buy game{% endblock %}
+
+{% block content %}
+
+<h2>Payment was succesful!</h2>
+
+
+Thank you for buying {{ game.name }}
+
+<a href="/play_game/{{ game.id }}"><button class="btn btn-success btn-lg btn-block">Play game!!!!</button></a>
+
+{% endblock %}
