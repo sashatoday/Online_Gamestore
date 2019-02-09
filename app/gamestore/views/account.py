@@ -171,7 +171,7 @@ def show_user(request, user_id):
 
     developer = request.user.userprofile.is_developer()
     args = {
-        'user' : user,
+        'user_info' : user,
         'userprofile' : userprofile,
         'developer' : developer,
     }
