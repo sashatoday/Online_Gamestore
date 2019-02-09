@@ -6,6 +6,8 @@
 
 <h2>Wishlist</h2>
 
-{% include 'game/games_list.html' %}
+<form action="" method="post">{% csrf_token %}
+    {% include 'game/games_list.html' %}
+</form>
 
 {% endblock %}

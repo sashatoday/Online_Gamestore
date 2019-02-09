@@ -36,33 +36,60 @@ def show_my_games(request):
 def show_wishlist(request):
     user = request.user.userprofile
     developer = user.is_developer()
+    if request.method == 'POST':
+        game_id = request.POST['deletegame']
+        game = WishList.objects.filter(wishedGame=get_object_or_404(Game, id=game_id)).delete()
     wished_games = Game.objects.filter(wishedGame__in=WishList.objects.filter(potentialBuyer=user))
     games = Game.objects.all()
     args = {
         'games' : wished_games,
         'developer' : developer,
+        'wishlist' : True,
     }
     return render(request, "game/wishlist.html", args)
 
 @login_required(login_url='/login/')
 def show_game_description(request, game_id):
+
+    ########  initialize variables  ##############
     user = request.user.userprofile
     developer = user.is_developer()
     game = get_object_or_404(Game, id=game_id)
+
+    ########  check wishlist  ####################
+    saved_game = False
+    wished_game = WishList.objects.filter(wishedGame=game, potentialBuyer=user)
+    if wished_game:
+        saved_game = True
+    if request.method == 'POST':
+        if 'wishlist' in request.POST:
+            if not wished_game:
+                wished_game = WishList.objects.create(potentialBuyer=user, wishedGame=game)
+                wished_game.save()
+                saved_game = True
+
+    ########  check ownership  ###################
     owner = False
     if game.developer == request.user.userprofile:
         owner = True
+
+    ########  check if purchased  ################
     purchased_game = False
     purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
     if game in purchased_games:
         purchased_game = True
+
+    ########  find scores  #######################
     scores = Score.objects.filter(gameInScore=game)[:10]
+
+    ########  prepare arguments  #################
     args = {
         'game' : game,
         'developer' : developer,
         'owner' : owner,
         'purchased_game' : purchased_game,
         'scores' : scores,
+        'saved_game' : saved_game,
     }
     return render(request, "game/game_description.html", args)
 
