@@ -12,19 +12,24 @@
     {% for field in profileform %}
         {% include 'extra/field.html' %}
     {% endfor %}
-    <div class="form-group row">
-        <div class="offset-4 col-8">
+    <div class="d-flex justify-content-between">
+        <div class="offset-4 col-md-3">
+            <button name="deleteuser" type="submit" class="btn btn-danger btn-block">Delete account</button>
+        </div>
+        <div class="offset-2">
             <button name="updateprofile" type="submit" class="btn btn-primary">Update My Profile</button>
         </div>
     </div>
 </form>
+<br>
+<br>
 <h2>Change your password</h2>
 <form action="" method="post">{% csrf_token %}
     {% for field in changepasswordform %}
         {% include 'extra/field.html' %}
     {% endfor %}
     <div class="form-group row">
-        <div class="offset-4 col-8">
+        <div class="offset-9 col-8">
             <button name="changepassword" type="submit" class="btn btn-primary">Change My Password</button>
         </div>
     </div>

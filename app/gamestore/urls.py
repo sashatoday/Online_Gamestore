@@ -6,6 +6,7 @@ urlpatterns = [
     re_path(r'^$', account.startpage, name='index'),
     re_path(r'^login/$', account.login, name='login'),
     re_path(r'^signup/$', account.signup, name='signup'),
+    re_path(r'^activate/$', account.activate, name='activate'),
     re_path(r'^logout/$', account.logout_user, name='logout_user'),
     re_path(r'^profile/$', account.profile, name='profile'),
     re_path(r'^user/(?P<user_id>[0-9]+)/$', account.show_user, name='user'),

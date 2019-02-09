@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}Activate account{% endblock %}
 
 {% block content %}
 
-<h2>Login</h2>
+<h2>Activate account</h2>
+<p>You can activate your account if you deleted it before.</p>
+<br>
 <form method="post" action="">{% csrf_token %}
-  {% if errors %}
+  {% if error %}
       <small style="color:red">
-        {{ errors }}
+        {{ error }}
       </small>
-      <small style="color:red">Please, try again!</small>
     {% endif %}
   <div class="mb-3">
       <label for="username">Username</label>
@@ -28,7 +29,7 @@
     <hr class="mb-3">
     <div class="row">
       <div class="col-md-6 offset-md-6">
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        <button type="submit" class="btn btn-primary btn-block">Activate</button>
         <span>New here? <a href="/signup">Signup</a></span>
       </div>
     </div>
