@@ -1,3 +1,14 @@
+##############################################################
+##### This view provides actions related to user account: ####
+#####     * startpage                                     ####
+#####     * activate                                      ####
+#####     * login                                         ####
+#####     * signup                                        ####
+#####     * logout_user                                   ####
+#####     * edit_profile                                  ####
+#####     * show_user                                     ####
+##############################################################
+
 from django.shortcuts import render, redirect
 from gamestore.models import UserProfile
 from gamestore.forms import (
@@ -23,14 +34,17 @@ def activate(request):
     if request.user.is_authenticated:
         return redirect('search_game')
     else:
+    ########  process post request  ##############
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
+            ########  check if user exists  ##############
             try:
                 user_object = User.objects.get(username=username)
             except User.DoesNotExist:
                 user_object = None
             if user_object:
+                ########  activate account and save ######
                 user_object.is_active = True
                 user_object.save()
                 user = authenticate(username=username, password=password)
@@ -41,6 +55,7 @@ def activate(request):
                     }
                     return render(request, 'extra/thanks.html', args)
                 else:
+                    ########  report errors  ##########
                     user_object.is_active = False
                     user_object.save()
                     args = {
@@ -48,6 +63,7 @@ def activate(request):
                     }
                     return render(request, 'account/activate_account.html', args)
             else:
+            ########  user does not exist  ##############
                 args = {
                     'error' : "User does not exist. Please sign up.",
                 }
@@ -56,21 +72,25 @@ def activate(request):
         
 
 def login(request):
+    ########## initial checks #############
     next_page = request.GET.get('next') 
     if not next_page: #if request doesn't have ?next= parameter
         next_page = 'search_game' #keep search_game page as default redirect
     if request.user.is_authenticated:
         return redirect(next_page)
     else:
+        ########  process post request  ##############
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
             if user is None:
+                ########  report errors  ##########
                 return render(request, 'account/login.html',
                               {'username': username, 'password': password,
                               'errors': "Your username or password was incorrect."})
             else:
+                ########  login  ##################
                 auth_login(request, user)
                 return redirect(next_page)
         return render(request, "account/login.html", {})
@@ -80,9 +100,12 @@ def signup(request):
     if request.user.is_authenticated:
         return redirect('search_game')
     else:
+    ########  process post request  ##############
         if request.method == 'POST':
             form = UserForm(request.POST)
             if form.is_valid():
+
+            ##  save valid form to User and UserProfile models  ##
                 user = User.objects.create_user(
                     first_name=form.cleaned_data['first_name'],
                     last_name=form.cleaned_data['last_name'],
@@ -104,6 +127,7 @@ def signup(request):
                 }
                 return render(request, 'extra/thanks.html', args)
             else:
+            ########  report errors  ##########
                 return render(request, 'account/signup.html', {'form': form})
         form = UserForm()
         return render(request, 'account/signup.html', {'form': form})
@@ -115,7 +139,9 @@ def logout_user(request):
 
 @transaction.atomic
 @login_required(login_url='/login/')
-def profile(request):
+def edit_profile(request):
+
+    ########  initialize variables  ##############
     user = request.user
     userprofile = user.userprofile
     username = user.username
@@ -125,6 +151,7 @@ def profile(request):
     profileform = UserProfileUpdateForm(instance=userprofile)
     changepasswordform = ChangePasswordForm(user=user)
 
+    ########  prepare arguments  #################
     args = {
         'userform' : userform,
         'profileform' : profileform,
@@ -132,7 +159,10 @@ def profile(request):
         'developer' : developer,
     }
 
+    ########  process post request  ##############
     if request.method == 'POST':
+
+        ########  update profile info  ###########
         if 'updateprofile' in request.POST:
             userform = UserUpdateForm(request.POST, instance=user)
             profileform = UserProfileUpdateForm(request.POST, instance=userprofile)
@@ -149,6 +179,8 @@ def profile(request):
                 args['userform'] = userform
                 args['profileform'] = profileform
                 return render(request, 'account/profile.html', args)
+
+        ########  change password  ###############
         if 'changepassword' in request.POST:
             changepasswordform = ChangePasswordForm(data=request.POST, user=user)
             if changepasswordform.is_valid():
@@ -157,6 +189,8 @@ def profile(request):
             else:
                 args['changepasswordform'] = changepasswordform
                 return render(request, 'account/profile.html', args)
+
+        ########  delete user  ###################
         if 'deleteuser' in request.POST:
             user.is_active = False
             user.save()
@@ -166,9 +200,12 @@ def profile(request):
 
 @login_required(login_url='/login/')
 def show_user(request, user_id):
+
+    ########  get user by id  ##########
     user = get_object_or_404(User, id=user_id)
     userprofile = user.userprofile
 
+    ########  prepare arguments  #######
     developer = request.user.userprofile.is_developer()
     args = {
         'user_info' : user,
