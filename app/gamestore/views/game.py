@@ -189,4 +189,4 @@ def show_statistics(request):
         'total_purchases' : total_purchases,
         'developer' : developer,
     }
-    return render(request, 'game/game_statistics.html', args)
+    return render(request, 'game/games_statistics.html', args)
