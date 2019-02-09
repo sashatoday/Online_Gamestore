@@ -50,7 +50,24 @@
     <br>
     {% if games_data %}
         <div id="container" style="height: 400px"></div>
-        
+        <br>
+        <h3>Total purchases</h3>
+        <br>
+        <table class="table">
+          {% for game in games_data %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ game.name }}</td>
+                <td>{{ game.total }}</td>
+              </tr>
+          {% endfor %}
+          <tr>
+              <th scope="col"></th>
+              <th scope="col">Total</th>
+              <th scope="col">{{ total_purchases }}</th>
+          </tr>
+        </table>
+
     {% else %}
         <p>You have no uploaded games yet</p>
     {% endif %}

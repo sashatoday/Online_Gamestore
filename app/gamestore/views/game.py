@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import json
 from django.http import JsonResponse, HttpResponse
-from django.db.models import Count
+from django.db.models import Count, Sum
 
 def search_game(request):
     developer = False
@@ -172,16 +172,21 @@ def show_statistics(request):
 
     games = Game.objects.filter(developer=request.user.userprofile)
     games_data = []
+    total_purchases = 0
     for game in games:
         purchases = Purchase.objects.filter(purchasedGame=game).values_list('date').annotate(count=Count('pk')).order_by('date')
+        total = purchases.aggregate(Sum('count'))['count__sum']
         data = {
             'name' : game.name,
             'purchases' : purchases,
+            'total' : total,
         }
+        total_purchases += total
         games_data.append(data)
 
     args = {
         'games_data' : games_data,
+        'total_purchases' : total_purchases,
         'developer' : developer,
     }
     return render(request, 'game/game_statistics.html', args)
