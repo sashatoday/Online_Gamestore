@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import json
 from django.http import JsonResponse, HttpResponse
-from django.core import serializers
+from django.db.models import Count
 
 def search_game(request):
     developer = False
@@ -33,7 +33,7 @@ def show_my_games(request):
     return render(request, "game/my_games.html", args)
 
 @login_required(login_url='/login/')
-def game_description(request, game_id):
+def show_game_description(request, game_id):
     user = request.user.userprofile
     developer = user.is_developer()
     game = get_object_or_404(Game, id=game_id)
@@ -44,49 +44,15 @@ def game_description(request, game_id):
     purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
     if game in purchased_games:
         purchased_game = True
-
+    scores = Score.objects.filter(gameInScore=game)[:10]
     args = {
         'game' : game,
         'developer' : developer,
         'owner' : owner,
         'purchased_game' : purchased_game,
+        'scores' : scores,
     }
     return render(request, "game/game_description.html", args)
-
-@login_required(login_url='/login/')
-def show_uploaded_games(request):
-    developer = request.user.userprofile.is_developer()
-    if not developer:
-        return redirect('search_game')
-    games = Game.objects.filter(developer=request.user.userprofile)
-    args = {
-        'games' : games,
-        'developer' : developer,
-    }
-
-    return render(request, 'game/uploaded_games.html', args)
-    
-@login_required(login_url='/login/')
-def add_game(request):
-    developer = request.user.userprofile.is_developer()
-    if not developer:
-        return redirect('search_game')
-    form = GameForm()
-    args = {
-        'form' : form,
-        'developer' : developer,
-    }
-    if request.method == 'POST':
-        form = GameForm(request.POST)
-        if form.is_valid():
-            game = form.save(commit=False)
-            game.developer = request.user.userprofile
-            game.save()
-            return redirect('uploaded_games')
-        else:
-            args['form'] = form
-            return render(request, 'game/add_game.html', args)
-    return render(request, 'game/add_game.html', args)
 
 @login_required(login_url='/login/')
 def play_game(request, game_id):
@@ -132,6 +98,46 @@ def play_game(request, game_id):
         
     return render(request, "game/play_game.html", args)
 
+
+####################################################################
+#############  DEVELOPER FUNCTIONALITY ONLY  #######################
+####################################################################
+
+@login_required(login_url='/login/')
+def show_uploaded_games(request):
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('search_game')
+    games = Game.objects.filter(developer=request.user.userprofile)
+    args = {
+        'games' : games,
+        'developer' : developer,
+    }
+
+    return render(request, 'game/uploaded_games.html', args)
+
+@login_required(login_url='/login/')
+def add_game(request):
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('search_game')
+    form = GameForm()
+    args = {
+        'form' : form,
+        'developer' : developer,
+    }
+    if request.method == 'POST':
+        form = GameForm(request.POST)
+        if form.is_valid():
+            game = form.save(commit=False)
+            game.developer = request.user.userprofile
+            game.save()
+            return redirect('uploaded_games')
+        else:
+            args['form'] = form
+            return render(request, 'game/add_game.html', args)
+    return render(request, 'game/add_game.html', args)
+
 @login_required(login_url='/login/')
 def edit_game(request, game_id):
     developer = request.user.userprofile.is_developer()
@@ -157,3 +163,25 @@ def edit_game(request, game_id):
             args['form'] = form
             return render(request, 'game/edit_game.html', args)
     return render(request, 'game/edit_game.html', args)
+
+@login_required(login_url='/login/')
+def show_statistics(request):
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('search_game')
+
+    games = Game.objects.filter(developer=request.user.userprofile)
+    games_data = []
+    for game in games:
+        purchases = Purchase.objects.filter(purchasedGame=game).values_list('date').annotate(count=Count('pk')).order_by('date')
+        data = {
+            'name' : game.name,
+            'purchases' : purchases,
+        }
+        games_data.append(data)
+
+    args = {
+        'games_data' : games_data,
+        'developer' : developer,
+    }
+    return render(request, 'game/game_statistics.html', args)

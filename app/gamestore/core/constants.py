@@ -19,11 +19,13 @@ ROLE_CHOICES = (
 
 CATEGORY_CHOICES = (
         ('ACTION', 'Action'),
+        ('ACTION-ADVENTURE', 'Action-adventure'),
         ('ADVENTURE', 'Adventure'),
         ('ARCADE', 'Arcade'),
         ('FANTASY', 'Fantasy'),
         ('FIGHTING', 'Fighting'),
         ('PUZZLE', 'Puzzle'),
+        ('ROLE-PLAYING', 'Role-playing'),
         ('SIMULATION', 'Simulation'),
         ('SPORTS', 'Sports'),
         ('STRATEGY', 'Strategy'),

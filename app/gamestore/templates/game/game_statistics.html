@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Games statistics{% endblock %}
+
+{% block content %}
+<h2>Games statistics</h2>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container'
+            },
+            title: {
+                text: 'Game purchase statistics by date'
+            },
+            xAxis: {
+                type: 'category',
+                title: {
+                    text: 'Time'
+                },
+                labels: {
+                    enabled: true
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of games purchased'
+                }
+            }
+        });
+        {% for game in games_data %}
+            var chartData = [];
+            {% for purchase in game.purchases %}
+                xyPair = [];
+                xyPair[0] = "{{ purchase.0 }}";
+                xyPair[1] = {{ purchase.1 }};
+                chartData.push(xyPair);
+            {% endfor %}
+            chart.addSeries({
+                data: chartData,
+                name: "{{ game.name }}"
+            });
+        {% endfor %}
+    });
+</script>
+<div>
+    <br>
+    {% if games_data %}
+        <div id="container" style="height: 400px"></div>
+        
+    {% else %}
+        <p>You have no uploaded games yet</p>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
