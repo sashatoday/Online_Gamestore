@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h1>Your profile</h1>
+<h2>Your profile</h2>
 <form action="" method="post">{% csrf_token %}
     {% for field in userform %}
         {% include 'extra/field.html' %}

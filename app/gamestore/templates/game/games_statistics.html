@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sales statistics{% endblock %}
+
+{% block content %}
+<h2>Sales statistics</h2>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container'
+            },
+            title: {
+                text: 'Games purchase statistics by date'
+            },
+            xAxis: {
+                type: 'category',
+                title: {
+                    text: 'Time'
+                },
+                labels: {
+                    enabled: true
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of games purchased'
+                }
+            }
+        });
+        {% for game in games_data %}
+            var chartData = [];
+            {% for purchase in game.purchases %}
+                xyPair = [];
+                xyPair[0] = "{{ purchase.0 }}";
+                xyPair[1] = {{ purchase.1 }};
+                chartData.push(xyPair);
+            {% endfor %}
+            chart.addSeries({
+                data: chartData,
+                name: "{{ game.name }}"
+            });
+        {% endfor %}
+    });
+</script>
+<div>
+    <br>
+    {% if games_data %}
+        <div id="container" style="height: 400px"></div>
+        <br>
+        <h3>Total purchases</h3>
+        <br>
+        <table class="table">
+          {% for game in games_data %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ game.name }}</td>
+                <td>{{ game.total }}</td>
+              </tr>
+          {% endfor %}
+          <tr>
+              <th scope="col"></th>
+              <th scope="col">Total</th>
+              <th scope="col">{{ total_purchases }}</th>
+          </tr>
+        </table>
+
+    {% else %}
+        <p>You have no uploaded games yet</p>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}

@@ -5,6 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import json
 from django.http import JsonResponse, HttpResponse
+<<<<<<< HEAD
+=======
+from django.db.models import Count, Sum
+>>>>>>> games-statistics
 
 def search_game(request):
     developer = False
@@ -54,41 +58,6 @@ def show_game_description(request, game_id):
     return render(request, "game/game_description.html", args)
 
 @login_required(login_url='/login/')
-def show_uploaded_games(request):
-    developer = request.user.userprofile.is_developer()
-    if not developer:
-        return redirect('search_game')
-    games = Game.objects.filter(developer=request.user.userprofile)
-    args = {
-        'games' : games,
-        'developer' : developer,
-    }
-
-    return render(request, 'game/uploaded_games.html', args)
-    
-@login_required(login_url='/login/')
-def add_game(request):
-    developer = request.user.userprofile.is_developer()
-    if not developer:
-        return redirect('search_game')
-    form = GameForm()
-    args = {
-        'form' : form,
-        'developer' : developer,
-    }
-    if request.method == 'POST':
-        form = GameForm(request.POST)
-        if form.is_valid():
-            game = form.save(commit=False)
-            game.developer = request.user.userprofile
-            game.save()
-            return redirect('uploaded_games')
-        else:
-            args['form'] = form
-            return render(request, 'game/add_game.html', args)
-    return render(request, 'game/add_game.html', args)
-
-@login_required(login_url='/login/')
 def play_game(request, game_id):
     user = request.user.userprofile
     game = get_object_or_404(Game, id=game_id)
@@ -132,6 +101,46 @@ def play_game(request, game_id):
         
     return render(request, "game/play_game.html", args)
 
+
+####################################################################
+#############  DEVELOPER FUNCTIONALITY ONLY  #######################
+####################################################################
+
+@login_required(login_url='/login/')
+def show_uploaded_games(request):
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('search_game')
+    games = Game.objects.filter(developer=request.user.userprofile)
+    args = {
+        'games' : games,
+        'developer' : developer,
+    }
+
+    return render(request, 'game/uploaded_games.html', args)
+
+@login_required(login_url='/login/')
+def add_game(request):
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('search_game')
+    form = GameForm()
+    args = {
+        'form' : form,
+        'developer' : developer,
+    }
+    if request.method == 'POST':
+        form = GameForm(request.POST)
+        if form.is_valid():
+            game = form.save(commit=False)
+            game.developer = request.user.userprofile
+            game.save()
+            return redirect('uploaded_games')
+        else:
+            args['form'] = form
+            return render(request, 'game/add_game.html', args)
+    return render(request, 'game/add_game.html', args)
+
 @login_required(login_url='/login/')
 def edit_game(request, game_id):
     developer = request.user.userprofile.is_developer()
@@ -157,3 +166,30 @@ def edit_game(request, game_id):
             args['form'] = form
             return render(request, 'game/edit_game.html', args)
     return render(request, 'game/edit_game.html', args)
+
+@login_required(login_url='/login/')
+def show_statistics(request):
+    developer = request.user.userprofile.is_developer()
+    if not developer:
+        return redirect('search_game')
+
+    games = Game.objects.filter(developer=request.user.userprofile)
+    games_data = []
+    total_purchases = 0
+    for game in games:
+        purchases = Purchase.objects.filter(purchasedGame=game).values_list('date').annotate(count=Count('pk')).order_by('date')
+        total = purchases.aggregate(Sum('count'))['count__sum']
+        data = {
+            'name' : game.name,
+            'purchases' : purchases,
+            'total' : total,
+        }
+        total_purchases += total
+        games_data.append(data)
+
+    args = {
+        'games_data' : games_data,
+        'total_purchases' : total_purchases,
+        'developer' : developer,
+    }
+    return render(request, 'game/games_statistics.html', args)
