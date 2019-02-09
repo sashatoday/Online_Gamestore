@@ -188,12 +188,15 @@ def show_statistics(request):
     for game in games:
         purchases = Purchase.objects.filter(purchasedGame=game).values_list('date').annotate(count=Count('pk')).order_by('date')
         total = purchases.aggregate(Sum('count'))['count__sum']
+        if total:
+            total_purchases += total
+        else:
+
         data = {
             'name' : game.name,
             'purchases' : purchases,
             'total' : total,
         }
-        total_purchases += total
         games_data.append(data)
 
     args = {
