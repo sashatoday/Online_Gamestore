@@ -301,7 +301,7 @@ def show_statistics(request):
         else:
             total = 0
         data = {
-            'name' : game.name,
+            'game' : game,
             'purchases' : purchases,
             'total' : total,
         }
