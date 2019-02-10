@@ -1,11 +1,26 @@
+##############################################
+##### This file contains following forms: ####
+#####     * UserForm                      ####
+#####     * UserUpdateForm                ####
+#####     * UserProfileUpdateForm         ####
+#####     * ChangePasswordForm            ####
+#####     * GameForm                      ####
+#####     * GameUpdateForm                ####
+#####                                     ####
+##### and extra functions:                ####
+#####     * calculate_age                 ####
+#####     * birth_date_is_valid           ####
+#####     * check_price                   ####
+#####     * check_age_limit               ####
+##############################################
+
 from django import forms
-from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from gamestore.models import Game
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from gamestore.core.constants import *
+from gamestore.constants import *
 
 
 def calculate_age(birth_date):
@@ -43,7 +58,7 @@ class UserForm(UserCreationForm):
             'first_name',
             'last_name',
             'email',
-            'birthDate',
+            'birth_date',
             'gender', 
             'password1',
             'password2',
@@ -65,7 +80,7 @@ class UserForm(UserCreationForm):
         required = True,
         widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email', 'maxlength' : 50, 'placeholder': 'you@example.com'})
     )
-    birthDate = forms.DateField(
+    birth_date = forms.DateField(
         help_text = 'Your age should be more than 14 and less than 120',
         label     = 'Birth date',
         required  = True,
@@ -95,8 +110,8 @@ class UserForm(UserCreationForm):
             raise forms.ValidationError("A user with that email already exists.")
         return email
 
-    def clean_birthDate(self):
-        birth_date = self.cleaned_data['birthDate']
+    def clean_birth_date(self):
+        birth_date = self.cleaned_data['birth_date']
         birth_date_is_valid(birth_date)
         return birth_date
 
@@ -140,11 +155,11 @@ class UserProfileUpdateForm(forms.ModelForm):
         model = User
         fields = (
             'gender',
-            'birthDate',
+            'birth_date',
             'country',
             'city',
             'address',
-            'photoUrl',
+            'photo_url',
             'role',
             'bio',
         )
@@ -169,7 +184,7 @@ class UserProfileUpdateForm(forms.ModelForm):
         required = False,
         widget   = forms.TextInput(attrs = {'class' : 'form-control here', 'maxlength' : 100})
     )
-    photoUrl = forms.URLField(
+    photo_url = forms.URLField(
         label    = 'Photo URL',
         required = False,
         widget   = forms.URLInput(attrs = {'class' : 'form-control here', 'placeholder': 'http://', 'maxlength' : 200})
@@ -180,7 +195,7 @@ class UserProfileUpdateForm(forms.ModelForm):
         required = True,
         widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 1})
     )
-    birthDate = forms.DateField(
+    birth_date = forms.DateField(
         help_text = 'Your age should be more than 14 and less than 120',
         label     = 'Birth date',
         required  = True,
@@ -192,10 +207,10 @@ class UserProfileUpdateForm(forms.ModelForm):
         widget   = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
     )
 
-    def clean_birthDate(self):
-        birthDate = self.cleaned_data['birthDate']
-        birth_date_is_valid(birthDate)
-        return birthDate
+    def clean_birth_date(self):
+        birth_date = self.cleaned_data['birth_date']
+        birth_date_is_valid(birth_date)
+        return birth_date
 
 class ChangePasswordForm(PasswordChangeForm):
 
@@ -212,7 +227,7 @@ class ChangePasswordForm(PasswordChangeForm):
         widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
     )
 
-class GameForm(ModelForm):
+class GameForm(forms.ModelForm):
 
     class Meta:
         model = Game
@@ -220,9 +235,9 @@ class GameForm(ModelForm):
             'name',
             'price',
             'category',
-            'pictureUrl',
+            'picture_url',
             'description',
-            'gameUrl',
+            'game_url',
             'age_limit',
         )
     name = forms.CharField(
@@ -235,7 +250,7 @@ class GameForm(ModelForm):
         required = True,
         widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000, 'size' : 0.01})
     )
-    pictureUrl = forms.URLField(
+    picture_url = forms.URLField(
         label  = "Picture URL",
         required = False,
         widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
@@ -245,7 +260,7 @@ class GameForm(ModelForm):
         required = False,
         widget = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
     )
-    gameUrl = forms.URLField(
+    game_url = forms.URLField(
         label  = "Game URL",
         required = True,
         widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
@@ -270,7 +285,7 @@ class GameForm(ModelForm):
         return cleaned_data
 
 
-class GameUpdateForm(ModelForm):
+class GameUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Game
@@ -278,9 +293,9 @@ class GameUpdateForm(ModelForm):
             'name',
             'price',
             'category',
-            'pictureUrl',
+            'picture_url',
             'description',
-            'gameUrl',
+            'game_url',
             'age_limit',
         )
     name = forms.CharField(
@@ -293,7 +308,7 @@ class GameUpdateForm(ModelForm):
         required = True,
         widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000, 'size' : 0.01})
     )
-    pictureUrl = forms.URLField(
+    picture_url = forms.URLField(
         label  = "Picture URL",
         required = False,
         widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})
@@ -303,7 +318,7 @@ class GameUpdateForm(ModelForm):
         required = False,
         widget = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
     )
-    gameUrl = forms.URLField(
+    game_url = forms.URLField(
         label  = "Game URL",
         required = True,
         widget = forms.URLInput(attrs= {'class' : 'form-control here', 'maxlength' : 200, 'placeholder': 'http://'})

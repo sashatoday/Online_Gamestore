@@ -4,15 +4,15 @@
     {% for game in games %}
     <div class="col-sm-4 my-3">
         <div class="card">
-          {% if not game.pictureUrl %}
+          {% if not game.picture_url %}
             <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Game Picture">
           {% else %}
-            <img class="card-img-top" src={{ game.pictureUrl }} alt="Game Picture">
+            <img class="card-img-top" src={{ game.picture_url }} alt="Game Picture">
           {% endif %}
           <div class="card-body">
             <h5><a class="card-title" href="/games/{{ game.id }}">{{ game.name }}</a></h5>
             <p class="card-text">Category: {{ game.get_category_display }}<br>
-                                 Price: {{ game.price }} €
+                                 Price: {{ game.price }} &euro;
             </p>
             {% if wishlist %}
                 <button name="deletegame" type="submit" value="{{game.id}}" class="btn btn-danger btn-block">Delete from wishlist</button>

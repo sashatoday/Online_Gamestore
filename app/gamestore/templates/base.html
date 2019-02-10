@@ -50,14 +50,14 @@
               <li class="list-group-item"><a href="/my_games">My games</a></li>
               <li class="list-group-item"><a href="/wishlist">Wishlist</a></li>
               <li class="list-group-item"><a href="/profile">Profile</a></li>
-              {% if developer %}
+              {% if user.userprofile.is_developer %}
                   <li class="list-group-item"><a href="/uploaded_games">Uploaded games</a></li>
                   <li class="list-group-item"><a href="/statistics">Games statistics</a></li>
               {% endif %}
               <li class="list-group-item"><a href="/logout"> Logout </a></li>
           {% else %}
               <li class="list-group-item"><a href="/signup"> Signup </a></li>
-              <li class="list-group-item"><a href="/activate"> Activate account </a></li>
+              <li class="list-group-item"><a href="/activation"> Activate account </a></li>
               <li class="list-group-item"><a href="/login"> Login </a></li>
           {% endif %}
         </ul>

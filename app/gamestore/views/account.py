@@ -7,6 +7,8 @@
 #####     * logout_user                                   ####
 #####     * edit_profile                                  ####
 #####     * show_user                                     ####
+#####     * report_successful_registration                ####
+#####     * report_successful_activation                  ####
 ##############################################################
 
 from django.shortcuts import render, redirect
@@ -23,12 +25,10 @@ from django.contrib.auth import logout, authenticate
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from gamestore.constants import *
 
 def startpage(request):
-    if request.user.is_authenticated:
-        return render(request, "base.html", {'developer': request.user.userprofile.is_developer()})
-    else:
-        return render(request, "base.html", {'developer': False})
+    return render(request, BASE_HTML)
 
 def activate(request):
     if request.user.is_authenticated:
@@ -44,31 +44,33 @@ def activate(request):
             except User.DoesNotExist:
                 user_object = None
             if user_object:
-                ########  activate account and save ######
-                user_object.is_active = True
-                user_object.save()
-                user = authenticate(username=username, password=password)
-                if user:
-                    args = {
-                        'thanks_for' : "activating your account",
-                        'enjoy' : "our services",
-                    }
-                    return render(request, 'extra/thanks.html', args)
-                else:
-                    ########  report errors  ##########
-                    user_object.is_active = False
+                if not user_object.is_active:
+                    ########  activate account and save ######
+                    user_object.is_active = True
                     user_object.save()
+                    user = authenticate(username=username, password=password)
+                    if user:
+                        return redirect('activation_success')
+                    else:
+                        ########  report errors  ##########
+                        user_object.is_active = False
+                        user_object.save()
+                        args = {
+                            'error' : "Incorrect password.",
+                        }
+                        return render(request, ACTIVATE_ACCOUNT_HTML, args)
+                else:
                     args = {
-                        'error' : "Incorrect password.",
+                        'error' : "User is already active. Please login.",
                     }
-                    return render(request, 'account/activate_account.html', args)
+                    return render(request, ACTIVATE_ACCOUNT_HTML, args)
             else:
             ########  user does not exist  ##############
                 args = {
                     'error' : "User does not exist. Please sign up.",
                 }
-                return render(request, 'account/activate_account.html', args)
-    return render(request, "account/activate_account.html")
+                return render(request, ACTIVATE_ACCOUNT_HTML, args)
+    return render(request, ACTIVATE_ACCOUNT_HTML)
         
 
 def login(request):
@@ -86,14 +88,14 @@ def login(request):
             user = authenticate(username=username, password=password)
             if user is None:
                 ########  report errors  ##########
-                return render(request, 'account/login.html',
+                return render(request, LOGIN_HTML,
                               {'username': username, 'password': password,
                               'errors': "Your username or password was incorrect."})
             else:
                 ########  login  ##################
                 auth_login(request, user)
                 return redirect(next_page)
-        return render(request, "account/login.html", {})
+        return render(request, LOGIN_HTML, {})
 
 @transaction.atomic
 def signup(request):
@@ -116,21 +118,16 @@ def signup(request):
                 user.save()
                 userProfile = UserProfile(
                     user=user,
-                    birthDate=form.cleaned_data['birthDate'],
+                    birth_date=form.cleaned_data['birth_date'],
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()
-                args = {
-                    'thanks_for' : "registering",
-                    'enjoy' : "our services",
-                    'message' : "Please, confirm your email before login.",
-                }
-                return render(request, 'extra/thanks.html', args)
+                return redirect('registration_success')
             else:
             ########  report errors  ##########
-                return render(request, 'account/signup.html', {'form': form})
+                return render(request, SIGNUP_HTML, {'form': form})
         form = UserForm()
-        return render(request, 'account/signup.html', {'form': form})
+        return render(request, SIGNUP_HTML, {'form': form})
 
 @login_required(login_url='/login/')
 def logout_user(request):
@@ -145,7 +142,6 @@ def edit_profile(request):
     user = request.user
     userprofile = user.userprofile
     username = user.username
-    developer = userprofile.is_developer()
 
     userform = UserUpdateForm(instance=user)
     profileform = UserProfileUpdateForm(instance=userprofile)
@@ -156,7 +152,6 @@ def edit_profile(request):
         'userform' : userform,
         'profileform' : profileform,
         'changepasswordform' : changepasswordform,
-        'developer' : developer,
     }
 
     ########  process post request  ##############
@@ -170,7 +165,7 @@ def edit_profile(request):
                 userform.add_error('username', "You are not allowed to change your username")
                 userform.errors['email'] = ""
                 args['userform'] = userform
-                return render(request, 'account/profile.html', args)
+                return render(request, PROFILE_HTML, args)
             if userform.is_valid() and profileform.is_valid():
                 userform.save()
                 profileform.save()
@@ -178,7 +173,7 @@ def edit_profile(request):
             else:
                 args['userform'] = userform
                 args['profileform'] = profileform
-                return render(request, 'account/profile.html', args)
+                return render(request, PROFILE_HTML, args)
 
         ########  change password  ###############
         if 'changepassword' in request.POST:
@@ -188,7 +183,7 @@ def edit_profile(request):
                 return redirect('profile')
             else:
                 args['changepasswordform'] = changepasswordform
-                return render(request, 'account/profile.html', args)
+                return render(request, PROFILE_HTML, args)
 
         ########  delete user  ###################
         if 'deleteuser' in request.POST:
@@ -196,7 +191,7 @@ def edit_profile(request):
             user.save()
             logout(request)
             return redirect('search_game')
-    return render(request, 'account/profile.html', args)
+    return render(request, PROFILE_HTML, args)
 
 @login_required(login_url='/login/')
 def show_user(request, user_id):
@@ -206,10 +201,22 @@ def show_user(request, user_id):
     userprofile = user.userprofile
 
     ########  prepare arguments  #######
-    developer = request.user.userprofile.is_developer()
     args = {
         'user_info' : user,
         'userprofile' : userprofile,
-        'developer' : developer,
     }
-    return render(request, 'account/profile_preview.html', args)
+    return render(request, PROFILE_PREVIEW_HTML, args)
+
+def report_successful_registration(request):
+    args = {
+        'thanks_for' : "registering",
+        'message' : "Please, confirm your email before login.",
+    }
+    return render(request, THANKS_HTML, args)
+
+def report_successful_activation(request):
+    args = {
+        'thanks_for' : "activating your account",
+        'message' : "Now you can login in our system.",
+    }
+    return render(request, THANKS_HTML, args)

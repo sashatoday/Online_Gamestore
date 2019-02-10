@@ -10,10 +10,10 @@
 		<aside class="col-sm-5 border-right">
 <article class="gallery-wrap"> 
   <div> 
-  {% if not game.pictureUrl %}
+  {% if not game.picture_url %}
     <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Game Picture">
   {% else %}
-    <img class="card-img-top" src="{{ game.pictureUrl }}" alt="Game Picture">
+    <img class="card-img-top" src="{{ game.picture_url }}" alt="Game Picture">
   {% endif %}
   </div>
 </article> 
@@ -37,7 +37,7 @@
 	<h3 class="title mb-3">{{ game.name }}</h3>
 <p>
 	<span class="price h4 text-warning"> 
-		<span class="currency">EUR €</span><span class="num">{{ game.price }}</span>
+		<span class="num">{{ game.price }} &euro;</span>
 	</span> 
 </p>
 <dl>

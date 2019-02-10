@@ -4,16 +4,16 @@
 
 {% block content %}
 
-<h2>Registration form</h2>
+<h2>Registration</h2>
 <form method="post" action="">{% csrf_token %}
     {% for field in form %}
-        {% include 'extra/field.html' %}
+        {% include 'extra/profile_field.html' %}
     {% endfor %}
     <hr class="mb-3">
     <div class="row">
-      <div class="col-md-5 offset-md-7">
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        <span>Already an user? <a href="/login">Login</a></span>
+      <div class="col-md-5 offset-md-6">
+        <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+        <span>Already a user? <a href="/login">Login</a></span>
       </div>
     </div>
   </form>
