@@ -24,14 +24,21 @@ from hashlib import md5
 
 def search_game(request):
     developer = False
+    search_applied = False
     if request.user.is_authenticated:
         developer = request.user.userprofile.is_developer()
 
     # TODO: process search input and filter objects
     games = Game.objects.all()
+    if 'searchgame' in request.POST:
+        search_key = request.POST['search-key']
+        if search_key:
+            games = Game.objects.filter(name__contains=search_key)
+            search_applied = True
     args = {
         'games' : games,
         'developer' : developer,
+        'search_applied' : search_applied
     }
     return render(request, "game/search_game.html", args)
 

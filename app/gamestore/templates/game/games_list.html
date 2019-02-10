@@ -21,8 +21,8 @@
         </div>
     </div>
     {% empty %}
-    <div class="col-sm-4 my-3">
-        You have no games yet
+    <div class="col-sm-6 my-3">
+        {{ search_applied|yesno:"No games found with this search key,You have no games yet" }} 
     </div>
     {% endfor %}
 </div>
