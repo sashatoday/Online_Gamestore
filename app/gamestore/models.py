@@ -1,3 +1,13 @@
+###############################################
+##### This file contains following models: ####
+#####     * UserProfile                    ####
+#####     * Game                           ####
+#####     * Purchase                       ####
+#####     * Score                          ####
+#####     * WishList                       ####
+#####     * GameState                      ####
+###############################################
+
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
