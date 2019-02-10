@@ -28,10 +28,7 @@ from django.shortcuts import get_object_or_404
 from gamestore.constants import *
 
 def startpage(request):
-    if request.user.is_authenticated:
-        return render(request, BASE_HTML, {'developer': request.user.userprofile.is_developer()})
-    else:
-        return render(request, BASE_HTML, {'developer': False})
+    return render(request, BASE_HTML)
 
 def activate(request):
     if request.user.is_authenticated:
@@ -145,7 +142,6 @@ def edit_profile(request):
     user = request.user
     userprofile = user.userprofile
     username = user.username
-    developer = userprofile.is_developer()
 
     userform = UserUpdateForm(instance=user)
     profileform = UserProfileUpdateForm(instance=userprofile)
@@ -156,7 +152,6 @@ def edit_profile(request):
         'userform' : userform,
         'profileform' : profileform,
         'changepasswordform' : changepasswordform,
-        'developer' : developer,
     }
 
     ########  process post request  ##############
@@ -206,11 +201,9 @@ def show_user(request, user_id):
     userprofile = user.userprofile
 
     ########  prepare arguments  #######
-    developer = request.user.userprofile.is_developer()
     args = {
         'user_info' : user,
         'userprofile' : userprofile,
-        'developer' : developer,
     }
     return render(request, PROFILE_PREVIEW_HTML, args)
 

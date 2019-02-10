@@ -25,15 +25,11 @@ from django.db.models import Count, Sum
 from hashlib import md5
 
 def search_game(request):
-    developer = False
-    if request.user.is_authenticated:
-        developer = request.user.userprofile.is_developer()
 
     # TODO: process search input and filter objects
     games = Game.objects.all()
     args = {
         'games' : games,
-        'developer' : developer,
     }
     return render(request, SEARCH_GAME_HTML, args)
 
@@ -42,7 +38,6 @@ def show_my_games(request):
 
     ########  initialize variables  ##############
     user = request.user.userprofile
-    developer = user.is_developer()
 
     ########  get list of purchased games ########
     purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
@@ -51,7 +46,6 @@ def show_my_games(request):
     ########  prepare arguments  ################
     args = {
         'games' : purchased_games,
-        'developer' : developer,
     }
     return render(request, MY_GAMES_HTML, args)
 
@@ -60,7 +54,6 @@ def show_wishlist(request):
 
     ########  initialize variables  ##############
     user = request.user.userprofile
-    developer = user.is_developer()
 
     ####  check request to delete game from wishlist  ####
     if request.method == 'POST':
@@ -74,7 +67,6 @@ def show_wishlist(request):
     ########  prepare arguments  ################
     args = {
         'games' : wished_games,
-        'developer' : developer,
         'wishlist' : True,
     }
     return render(request, WISHLIST_HTML, args)
@@ -84,7 +76,6 @@ def show_game_description(request, game_id):
 
     ########  initialize variables  ##############
     user = request.user.userprofile
-    developer = user.is_developer()
     game = get_object_or_404(Game, id=game_id)
 
     ########  check wishlist  ####################
@@ -116,7 +107,6 @@ def show_game_description(request, game_id):
     ########  prepare arguments  #################
     args = {
         'game' : game,
-        'developer' : developer,
         'owner' : owner,
         'purchased_game' : purchased_game,
         'scores' : scores,
@@ -156,10 +146,8 @@ def play_game(request, game_id):
         owner = True
     if game not in purchased_games and not owner:
         return redirect('search_game')
-    developer = user.is_developer()
     args = {
         'game' : game,
-        'developer' : developer,
     }
     ########  process post request  ##############
     if request.is_ajax() and request.method == 'POST':
@@ -167,26 +155,26 @@ def play_game(request, game_id):
         if data['type'] == 'SCORE': #save score, (game over)
             score = Score(value=data['score'], scorer=user, game_in_score=game)
             score.save()
-            response = {'success':'true', 'message': 'Score saved.', 'developer' : developer,}
+            response = {'success':'true', 'message': 'Score saved.',}
         if data['type'] == 'SAVE': #save game state
             gamestate = GameState.objects.filter(player=user, game_in_state=game)
             if gamestate:
                 gamestate.update(state=json.dumps(data['gameState']))
-                response = {'success':'true', 'message': 'Gamestate updated.', 'developer' : developer,}
+                response = {'success':'true', 'message': 'Gamestate updated.',}
             else:
                 newgamestate = GameState(state=json.dumps(data['gameState']), player=user, game_in_state=game)
                 newgamestate.save()
-                response = {'success':'true', 'message': 'Gamestate created.', 'developer' : developer,}
+                response = {'success':'true', 'message': 'Gamestate created.',}
         return JsonResponse(response)
 
     if request.is_ajax() and request.method == 'GET': #load gamestate
         state = GameState.objects.filter(player=user, game_in_state=game)
         if state:
             gamestate = state.values('state')[0]['state']
-            response = {'success':'true', 'message': 'Gamestate loaded!', 'state' : json.loads(gamestate), 'developer' : developer,}
+            response = {'success':'true', 'message': 'Gamestate loaded!', 'state' : json.loads(gamestate),}
             return JsonResponse(response)
         else:
-            response = {'success':'false', 'message': 'No gamestate found', 'developer' : developer,}
+            response = {'success':'false', 'message': 'No gamestate found',}
             return JsonResponse(response)
         
     return render(request, PLAY_GAME_HTML, args)
@@ -199,9 +187,8 @@ def play_game(request, game_id):
 @login_required(login_url='/login/')
 def show_uploaded_games(request):
 
-    ########  initialize variables  ##############
-    developer = request.user.userprofile.is_developer()
-    if not developer:
+    ########  initial checks  ####################
+    if not request.user.userprofile.is_developer():
         return redirect('search_game')
 
     ########  get list of uploaded games  ########
@@ -210,23 +197,21 @@ def show_uploaded_games(request):
     ########  prepare arguments  #################
     args = {
         'games' : games,
-        'developer' : developer,
     }
     return render(request, UPLOADED_GAMES_HTML, args)
 
 @login_required(login_url='/login/')
 def add_game(request):
 
-    ########  initialize variables  ##############
-    developer = request.user.userprofile.is_developer()
-    if not developer:
+    ########  initial checks   ###################
+    if not request.user.userprofile.is_developer():
         return redirect('search_game')
+
+    ########  prepare arguments  #################
     form = GameForm()
     args = {
         'form' : form,
-        'developer' : developer,
     }
-
     ########  process post request  ##############
     if request.method == 'POST':
         form = GameForm(request.POST)
@@ -246,15 +231,15 @@ def add_game(request):
 @login_required(login_url='/login/')
 def edit_game(request, game_id):
 
-    ########  initialize variables  ##############
-    developer = request.user.userprofile.is_developer()
-    if not developer:
+    ########  initial checks  ####################
+    if not request.user.userprofile.is_developer():
         return redirect('search_game')
+
+    ########  initialize variables  ##############
     game = get_object_or_404(Game, id=game_id)
     form = GameUpdateForm(instance=game)
     args = {
         'form' : form,
-        'developer' : developer,
     }
     ########  process post request  ##############
     if request.method == 'POST':
@@ -281,9 +266,8 @@ def edit_game(request, game_id):
 @login_required(login_url='/login/')
 def show_statistics(request):
 
-    ########  initialize variables  ##############
-    developer = request.user.userprofile.is_developer()
-    if not developer:
+    ########  initial checks  ####################
+    if not request.user.userprofile.is_developer():
         return redirect('search_game')
 
     ########  get list of uploaded games  ########
@@ -310,15 +294,12 @@ def show_statistics(request):
     args = {
         'games_data' : games_data,
         'total_purchases' : total_purchases,
-        'developer' : developer,
     }
     return render(request, GAMES_STATISTICS_HTML, args)
 
 def report_successful_game_adding(request):
-    developer = request.user.userprofile.is_developer()
     args = {
         'thanks_for' : "adding the game",
         'message' : "Now you can find your game in uploaded games.".format(request.POST.get('name', None)),
-        'developer' : developer,
     }
     return render(request, THANKS_HTML, args)
