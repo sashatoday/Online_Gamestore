@@ -7,6 +7,8 @@
 #####     * logout_user                                   ####
 #####     * edit_profile                                  ####
 #####     * show_user                                     ####
+#####     * report_successful_registration                ####
+#####     * report_successful_activation                  ####
 ##############################################################
 
 from django.shortcuts import render, redirect
@@ -44,22 +46,24 @@ def activate(request):
             except User.DoesNotExist:
                 user_object = None
             if user_object:
-                ########  activate account and save ######
-                user_object.is_active = True
-                user_object.save()
-                user = authenticate(username=username, password=password)
-                if user:
-                    args = {
-                        'thanks_for' : "activating your account",
-                        'enjoy' : "our services",
-                    }
-                    return render(request, 'extra/thanks.html', args)
-                else:
-                    ########  report errors  ##########
-                    user_object.is_active = False
+                if not user_object.is_active:
+                    ########  activate account and save ######
+                    user_object.is_active = True
                     user_object.save()
+                    user = authenticate(username=username, password=password)
+                    if user:
+                        return redirect('activation_success')
+                    else:
+                        ########  report errors  ##########
+                        user_object.is_active = False
+                        user_object.save()
+                        args = {
+                            'error' : "Incorrect password.",
+                        }
+                        return render(request, 'account/activate_account.html', args)
+                else:
                     args = {
-                        'error' : "Incorrect password.",
+                        'error' : "User is already active. Please login.",
                     }
                     return render(request, 'account/activate_account.html', args)
             else:
@@ -120,12 +124,7 @@ def signup(request):
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()
-                args = {
-                    'thanks_for' : "registering",
-                    'enjoy' : "our services",
-                    'message' : "Please, confirm your email before login.",
-                }
-                return render(request, 'extra/thanks.html', args)
+                return redirect('registration_success')
             else:
             ########  report errors  ##########
                 return render(request, 'account/signup.html', {'form': form})
@@ -213,3 +212,17 @@ def show_user(request, user_id):
         'developer' : developer,
     }
     return render(request, 'account/profile_preview.html', args)
+
+def report_successful_registration(request):
+    args = {
+        'thanks_for' : "registering",
+        'message' : "Please, confirm your email before login.",
+    }
+    return render(request, 'extra/thanks.html', args)
+
+def report_successful_activation(request):
+    args = {
+        'thanks_for' : "activating your account",
+        'message' : "Now you can login in our system.",
+    }
+    return render(request, 'extra/thanks.html', args)

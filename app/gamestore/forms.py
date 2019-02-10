@@ -15,13 +15,12 @@
 ##############################################
 
 from django import forms
-from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from gamestore.models import Game
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from gamestore.core.constants import *
+from gamestore.constants import *
 
 
 def calculate_age(birth_date):
@@ -228,7 +227,7 @@ class ChangePasswordForm(PasswordChangeForm):
         widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
     )
 
-class GameForm(ModelForm):
+class GameForm(forms.ModelForm):
 
     class Meta:
         model = Game
@@ -286,7 +285,7 @@ class GameForm(ModelForm):
         return cleaned_data
 
 
-class GameUpdateForm(ModelForm):
+class GameUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Game

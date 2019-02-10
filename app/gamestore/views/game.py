@@ -5,10 +5,12 @@
 #####     * show_wishlist                          ####
 #####     * show_game_description                  ####
 #####     * play_game                              ####
+#####     * buy_game                               ####
 #####     * show_uploaded_games (only developer)   ####
 #####     * add_game (only developer)              ####
 #####     * edit_game (only developer)             ####
 #####     * show_statistics (only developer)       ####
+#####     * report_successful_game_adding          ####
 #######################################################
 
 from django.shortcuts import render, redirect
@@ -17,7 +19,7 @@ from gamestore.forms import GameForm, GameUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import json
-from gamestore.core.constants import *
+from gamestore.constants import *
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Count, Sum
 from hashlib import md5
@@ -123,6 +125,26 @@ def show_game_description(request, game_id):
     return render(request, "game/game_description.html", args)
 
 @login_required(login_url='/login/')
+def buy_game(request, game_id):
+    game = get_object_or_404(Game, id=game_id)
+    purchase = Purchase.objects.filter(buyer=request.user.userprofile, purchasedGame=game) #check if purchase exists
+    if purchase:
+        return redirect('index')
+    pid = game.id #payment ID
+    amount = game.price
+    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
+    m = md5(checksumstr.encode("ascii"))
+    checksum = m.hexdigest() #checksum is sent to payment service
+    args = {
+        'pid': pid,
+        'sid': sid,
+        'amount': amount,
+        'checksum': checksum,
+        'game': game
+    }
+    return render(request, 'game/buy_game.html', args)
+
+@login_required(login_url='/login/')
 def play_game(request, game_id):
 
     ########## initialize variables #############
@@ -205,6 +227,7 @@ def add_game(request):
         'form' : form,
         'developer' : developer,
     }
+
     ########  process post request  ##############
     if request.method == 'POST':
         form = GameForm(request.POST)
@@ -214,8 +237,7 @@ def add_game(request):
             game = form.save(commit=False)
             game.developer = request.user.userprofile
             game.save()
-            return redirect('uploaded_games')
-
+            return redirect('adding_game_success')
         else:
         ########  report form errors  #####
             args['form'] = form
@@ -258,26 +280,6 @@ def edit_game(request, game_id):
     return render(request, 'game/edit_game.html', args)
 
 @login_required(login_url='/login/')
-def buy_game(request, game_id):
-    game = get_object_or_404(Game, id=game_id)
-    purchase = Purchase.objects.filter(buyer=request.user.userprofile, purchasedGame=game) #check if purchase exists
-    if purchase:
-        return redirect('index')
-    pid = game.id #payment ID
-    amount = game.price
-    checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
-    m = md5(checksumstr.encode("ascii"))
-    checksum = m.hexdigest() #checksum is sent to payment service
-    args = {
-        'pid': pid,
-        'sid': sid,
-        'amount': amount,
-        'checksum': checksum,
-        'game': game
-    }
-    return render(request, 'game/buy_game.html', args)
-
-@login_required(login_url='/login/')
 def show_statistics(request):
 
     ########  initialize variables  ##############
@@ -312,3 +314,12 @@ def show_statistics(request):
         'developer' : developer,
     }
     return render(request, 'game/games_statistics.html', args)
+
+def report_successful_game_adding(request):
+    developer = request.user.userprofile.is_developer()
+    args = {
+        'thanks_for' : "adding the game",
+        'message' : "Now you can find your game in uploaded games.".format(request.POST.get('name', None)),
+        'developer' : developer,
+    }
+    return render(request, 'extra/thanks.html', args)

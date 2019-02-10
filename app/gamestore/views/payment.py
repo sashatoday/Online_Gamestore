@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
 @login_required(login_url='/login/')
-def success(request):
+def report_success(request):
     pid = request.GET.get('pid', None)
     ref = request.GET.get('ref', None)
     result = request.GET.get('result', None)
@@ -19,14 +19,14 @@ def success(request):
         pid = int(pid)
         ref = int(ref)
     except ValueError:
-        return redirect('index')
+        return redirect('payment_error')
     
     if pid and ref and result and checksum:
         game = get_object_or_404(Game, id=pid)
         user = request.user.userprofile
         purchase = Purchase.objects.filter(ref=ref) #check if purchase exists
         if purchase:
-            return redirect('index')
+            return redirect('search_game')
         purchase = Purchase(buyer=user, purchasedGame=game, ref=ref)
         purchase.save()
         args = {
@@ -34,11 +34,11 @@ def success(request):
             'game': game
         }
     else:
-        return redirect('index')
+        return redirect('payment_error')
     return render(request, 'payment/success.html', args)
 
 @login_required(login_url='/login/')
-def error(request):
+def report_error(request):
     return render(request, 'payment/error.html')
 
 

@@ -11,7 +11,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
-from gamestore.core.constants import *
+from gamestore.constants import *
 import jsonfield
 
 
