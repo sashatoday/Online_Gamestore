@@ -7,15 +7,15 @@
 <h2>Edit game</h2>
 <form method="post" action="">{% csrf_token %}
     {% for field in form %}
-        {% include 'extra/field.html' %}
+        {% include 'extra/game_field.html' %}
     {% endfor %}
     <hr class="mb-3">
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-around">
       <div class="col-md-3">
         <button name="deletegame" type="submit" class="btn btn-danger btn-block">Delete game</button>
       </div>
-      <div class="col-md-5 offset-md-4">
-        <button name="updategame" type="submit" class="btn btn-primary btn-block">Submit</button>
+      <div class="col-md-5 offset-md-2">
+        <button name="updategame" type="submit" class="btn btn-primary btn-block">Update game</button>
       </div>
     </div>
   </form>
