@@ -63,9 +63,9 @@
 <hr>
 <form action="" method="post">{% csrf_token %}
   {% if owner or purchased_game %}
-    <button href="/play_game/{{ game.id }}" class="btn btn-primary btn-block text-uppercase"> Play </button>
+    <a href="/play_game/{{game.id}}" class="btn btn-primary btn-block text-uppercase">Play</a>
   {% else %}
-	<button href="/buy_game/{{ game.id }}" class="btn btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Buy now </button>
+	<a href="/buy_game/{{game.id}}" class="btn btn-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Buy now </a>
     {% if saved_game %}
         <button class="btn btn-outline-primary btn-secondary" disabled> <i class="far fa-bookmark"></i> Save to wishlist </button>
     {% else %}
