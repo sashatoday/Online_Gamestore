@@ -12,6 +12,7 @@ GENDER_CHOICES = (
     (UNKNOWN, 'Unknown'),
 )
 ROLE_CHOICES = (
+    (ADMIN, 'Admin'),
     (DEVELOPER, 'Developer'),
     (PLAYER, 'Player'),
 )
