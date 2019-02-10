@@ -5,6 +5,9 @@
 {% block content %}
 
 <h2>Your profile</h2>
+<br>
+<p><strong>Look how users see your profile <a href="/user/{{ user.id }}">here</a></strong></p>
+
 <form action="" method="post">{% csrf_token %}
     {% for field in userform %}
         {% include 'extra/field.html' %}
