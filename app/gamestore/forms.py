@@ -1,3 +1,19 @@
+##############################################
+##### This file contains following forms: ####
+#####     * UserForm                      ####
+#####     * UserUpdateForm                ####
+#####     * UserProfileUpdateForm         ####
+#####     * ChangePasswordForm            ####
+#####     * GameForm                      ####
+#####     * GameUpdateForm                ####
+#####                                     ####
+##### and extra functions:                ####
+#####     * calculate_age                 ####
+#####     * birth_date_is_valid           ####
+#####     * check_price                   ####
+#####     * check_age_limit               ####
+##############################################
+
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
