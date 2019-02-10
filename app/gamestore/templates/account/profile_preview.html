@@ -11,8 +11,8 @@
 		<aside class="col-sm-5">
         <article class="card">
             <div>
-                {% if userprofile.photoUrl and user_info.is_active%}
-                    <img class="card-img-top" src="{{ userprofile.photoUrl }}" alt="Profile Picture">
+                {% if userprofile.photo_url and user_info.is_active%}
+                    <img class="card-img-top" src="{{ userprofile.photo_url }}" alt="Profile Picture">
                 {% else %}
                     <img class="card-img-top" src="{% static 'images/default_pic.png' %}" alt="Default Profile Picture">
                 {% endif %}
@@ -32,7 +32,7 @@
                         <i class="fas fa-user-circle mb-3"></i> {{user_info.first_name}} {{user_info.last_name}}<br />
                         <i class="fas fa-envelope mb-3"></i> {{user_info.email}}<br />
                         <i class="fas fa-user mb-3"></i> {{userprofile.get_gender_display}}<br />
-                        <i class="fas fa-gift mb-3"></i> {{userprofile.birthDate}}<br />
+                        <i class="fas fa-gift mb-3"></i> {{userprofile.birth_date}}<br />
                         {% if userprofile.bio %}
                             <i class="fas fa-graduation-cap"></i> {{userprofile.bio}}
                         {% endif %}

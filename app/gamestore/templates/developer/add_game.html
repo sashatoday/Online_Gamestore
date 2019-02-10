@@ -7,12 +7,12 @@
 <h2>Add game</h2>
 <form method="post" action="">{% csrf_token %}
     {% for field in form %}
-        {% include 'extra/field.html' %}
+        {% include 'extra/game_field.html' %}
     {% endfor %}
     <hr class="mb-3">
     <div class="row">
-      <div class="col-md-6 offset-md-6">
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+      <div class="col-md-6 offset-md-5">
+        <button type="submit" class="btn btn-primary btn-block">Upload game</button>
       </div>
     </div>
   </form>

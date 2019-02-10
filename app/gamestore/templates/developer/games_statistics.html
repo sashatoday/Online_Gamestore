@@ -31,9 +31,9 @@
                 }
             }
         });
-        {% for game in games_data %}
+        {% for game_data in games_data %}
             var chartData = [];
-            {% for purchase in game.purchases %}
+            {% for purchase in game_data.purchases %}
                 xyPair = [];
                 xyPair[0] = "{{ purchase.0 }}";
                 xyPair[1] = {{ purchase.1 }};
@@ -41,7 +41,7 @@
             {% endfor %}
             chart.addSeries({
                 data: chartData,
-                name: "{{ game.name }}"
+                name: "{{ game_data.game.name }}"
             });
         {% endfor %}
     });
@@ -51,14 +51,14 @@
     {% if games_data %}
         <div id="container" style="height: 400px"></div>
         <br>
-        <h3>Total purchases</h3>
+        <h3>Total sales</h3>
         <br>
         <table class="table">
-          {% for game in games_data %}
+          {% for game_data in games_data %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ game.name }}</td>
-                <td>{{ game.total }}</td>
+                <td><a href="/games/{{ game_data.game.id }}">{{ game_data.game.name }}</a></td>
+                <td>{{ game_data.game.total }}</td>
               </tr>
           {% endfor %}
           <tr>
