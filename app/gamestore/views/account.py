@@ -121,7 +121,7 @@ def signup(request):
                 user.save()
                 userProfile = UserProfile(
                     user=user,
-                    birthDate=form.cleaned_data['birthDate'],
+                    birth_date=form.cleaned_data['birth_date'],
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()

@@ -28,7 +28,7 @@ def report_success(request):
         purchase = Purchase.objects.filter(ref=ref) #check if purchase exists
         if purchase:
             return redirect('search_game')
-        purchase = Purchase(buyer=user, purchasedGame=game, ref=ref)
+        purchase = Purchase(buyer=user, purchased_game=game, ref=ref)
         purchase.save()
         args = {
             'purchase': purchase,

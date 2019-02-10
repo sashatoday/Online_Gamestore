@@ -45,7 +45,7 @@ def show_my_games(request):
     developer = user.is_developer()
 
     ########  get list of purchased games ########
-    purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
     games = Game.objects.all()
 
     ########  prepare arguments  ################
@@ -65,10 +65,10 @@ def show_wishlist(request):
     ####  check request to delete game from wishlist  ####
     if request.method == 'POST':
         game_id = request.POST['deletegame']
-        game = WishList.objects.filter(wishedGame=get_object_or_404(Game, id=game_id)).delete()
+        game = WishList.objects.filter(wished_game=get_object_or_404(Game, id=game_id)).delete()
 
     ########  get list of wished games  ##########
-    wished_games = Game.objects.filter(wishedGame__in=WishList.objects.filter(potentialBuyer=user))
+    wished_games = Game.objects.filter(wished_game__in=WishList.objects.filter(potential_buyer=user))
     games = Game.objects.all()
 
     ########  prepare arguments  ################
@@ -89,13 +89,13 @@ def show_game_description(request, game_id):
 
     ########  check wishlist  ####################
     saved_game = False
-    wished_game = WishList.objects.filter(wishedGame=game, potentialBuyer=user)
+    wished_game = WishList.objects.filter(wished_game=game, potential_buyer=user)
     if wished_game:
         saved_game = True
     if request.method == 'POST':
         if 'wishlist' in request.POST:
             if not wished_game:
-                wished_game = WishList.objects.create(potentialBuyer=user, wishedGame=game)
+                wished_game = WishList.objects.create(potential_buyer=user, wished_game=game)
                 wished_game.save()
                 saved_game = True
 
@@ -106,12 +106,12 @@ def show_game_description(request, game_id):
 
     ########  check if purchased  ################
     purchased_game = False
-    purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
     if game in purchased_games:
         purchased_game = True
 
     ########  find scores  #######################
-    scores = Score.objects.filter(gameInScore=game)[:10]
+    scores = Score.objects.filter(game_in_score=game)[:10]
 
     ########  prepare arguments  #################
     args = {
@@ -127,7 +127,7 @@ def show_game_description(request, game_id):
 @login_required(login_url='/login/')
 def buy_game(request, game_id):
     game = get_object_or_404(Game, id=game_id)
-    purchase = Purchase.objects.filter(buyer=request.user.userprofile, purchasedGame=game) #check if purchase exists
+    purchase = Purchase.objects.filter(buyer=request.user.userprofile, purchased_game=game) #check if purchase exists
     if purchase:
         return redirect('index')
     pid = game.id #payment ID
@@ -150,7 +150,7 @@ def play_game(request, game_id):
     ########## initialize variables #############
     user = request.user.userprofile
     game = get_object_or_404(Game, id=game_id)
-    purchased_games = Game.objects.filter(purchasedGame__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
     owner = False
     if game.developer == user:
         owner = True
@@ -165,22 +165,22 @@ def play_game(request, game_id):
     if request.is_ajax() and request.method == 'POST':
         data = json.loads(request.body)
         if data['type'] == 'SCORE': #save score, (game over)
-            score = Score(value=data['score'], scorer=user, gameInScore=game)
+            score = Score(value=data['score'], scorer=user, game_in_score=game)
             score.save()
             response = {'success':'true', 'message': 'Score saved.', 'developer' : developer,}
         if data['type'] == 'SAVE': #save game state
-            gamestate = GameState.objects.filter(player=user, gameInState=game)
+            gamestate = GameState.objects.filter(player=user, game_in_state=game)
             if gamestate:
                 gamestate.update(state=json.dumps(data['gameState']))
                 response = {'success':'true', 'message': 'Gamestate updated.', 'developer' : developer,}
             else:
-                newgamestate = GameState(state=json.dumps(data['gameState']), player=user, gameInState=game)
+                newgamestate = GameState(state=json.dumps(data['gameState']), player=user, game_in_state=game)
                 newgamestate.save()
                 response = {'success':'true', 'message': 'Gamestate created.', 'developer' : developer,}
         return JsonResponse(response)
 
     if request.is_ajax() and request.method == 'GET': #load gamestate
-        state = GameState.objects.filter(player=user, gameInState=game)
+        state = GameState.objects.filter(player=user, game_in_state=game)
         if state:
             gamestate = state.values('state')[0]['state']
             response = {'success':'true', 'message': 'Gamestate loaded!', 'state' : json.loads(gamestate), 'developer' : developer,}
@@ -292,7 +292,7 @@ def show_statistics(request):
     total_purchases = 0
     for game in games:
         ## get list of purchases for each game by date ##
-        purchases = Purchase.objects.filter(purchasedGame=game).values_list('date').annotate(count=Count('pk')).order_by('date')
+        purchases = Purchase.objects.filter(purchased_game=game).values_list('date').annotate(count=Count('pk')).order_by('date')
         ## count the total number of purchases for the game ##
         total = purchases.aggregate(Sum('count'))['count__sum']
         if total:
