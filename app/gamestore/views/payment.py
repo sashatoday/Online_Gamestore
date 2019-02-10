@@ -1,9 +1,11 @@
+##########################################################
+##### This view provides actions related to payments: ####
+#####     * report_success                            ####
+#####     * report_error                              ####
+##########################################################
+
 from django.shortcuts import render, redirect
-from gamestore.models import UserProfile, Purchase, Game
-from django.contrib.auth.models import User
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout, authenticate
-from django.db import transaction
+from gamestore.models import Purchase, Game
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
