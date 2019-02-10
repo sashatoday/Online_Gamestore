@@ -12,7 +12,7 @@
           <div class="card-body">
             <h5><a class="card-title" href="/games/{{ game.id }}">{{ game.name }}</a></h5>
             <p class="card-text">Category: {{ game.get_category_display }}<br>
-                                 Price: {{ game.price }} €
+                                 Price: {{ game.price }} &euro;
             </p>
             {% if wishlist %}
                 <button name="deletegame" type="submit" value="{{game.id}}" class="btn btn-danger btn-block">Delete from wishlist</button>
