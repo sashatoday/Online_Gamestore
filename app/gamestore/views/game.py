@@ -35,7 +35,7 @@ def search_game(request):
         'games' : games,
         'developer' : developer,
     }
-    return render(request, "game/search_game.html", args)
+    return render(request, SEARCH_GAME_HTML, args)
 
 @login_required(login_url='/login/')
 def show_my_games(request):
@@ -53,7 +53,7 @@ def show_my_games(request):
         'games' : purchased_games,
         'developer' : developer,
     }
-    return render(request, "game/my_games.html", args)
+    return render(request, MY_GAMES_HTML, args)
 
 @login_required(login_url='/login/')
 def show_wishlist(request):
@@ -77,7 +77,7 @@ def show_wishlist(request):
         'developer' : developer,
         'wishlist' : True,
     }
-    return render(request, "game/wishlist.html", args)
+    return render(request, WISHLIST_HTML, args)
 
 @login_required(login_url='/login/')
 def show_game_description(request, game_id):
@@ -122,7 +122,7 @@ def show_game_description(request, game_id):
         'scores' : scores,
         'saved_game' : saved_game,
     }
-    return render(request, "game/game_description.html", args)
+    return render(request, GAME_DESCRIPTION_HTML, args)
 
 @login_required(login_url='/login/')
 def buy_game(request, game_id):
@@ -142,7 +142,7 @@ def buy_game(request, game_id):
         'checksum': checksum,
         'game': game
     }
-    return render(request, 'game/buy_game.html', args)
+    return render(request, BUY_GAME_HTML, args)
 
 @login_required(login_url='/login/')
 def play_game(request, game_id):
@@ -161,7 +161,6 @@ def play_game(request, game_id):
         'game' : game,
         'developer' : developer,
     }
-
     ########  process post request  ##############
     if request.is_ajax() and request.method == 'POST':
         data = json.loads(request.body)
@@ -190,7 +189,7 @@ def play_game(request, game_id):
             response = {'success':'false', 'message': 'No gamestate found', 'developer' : developer,}
             return JsonResponse(response)
         
-    return render(request, "game/play_game.html", args)
+    return render(request, PLAY_GAME_HTML, args)
 
 
 ####################################################################
@@ -213,7 +212,7 @@ def show_uploaded_games(request):
         'games' : games,
         'developer' : developer,
     }
-    return render(request, 'game/uploaded_games.html', args)
+    return render(request, UPLOADED_GAMES_HTML, args)
 
 @login_required(login_url='/login/')
 def add_game(request):
@@ -241,8 +240,8 @@ def add_game(request):
         else:
         ########  report form errors  #####
             args['form'] = form
-            return render(request, 'game/add_game.html', args)
-    return render(request, 'game/add_game.html', args)
+            return render(request, ADD_GAME_HTML, args)
+    return render(request, ADD_GAME_HTML, args)
 
 @login_required(login_url='/login/')
 def edit_game(request, game_id):
@@ -276,8 +275,8 @@ def edit_game(request, game_id):
         else:
         ########  report form errors  #####
             args['form'] = form
-            return render(request, 'game/edit_game.html', args)
-    return render(request, 'game/edit_game.html', args)
+            return render(request, EDIT_GAME_HTML, args)
+    return render(request, EDIT_GAME_HTML, args)
 
 @login_required(login_url='/login/')
 def show_statistics(request):
@@ -313,7 +312,7 @@ def show_statistics(request):
         'total_purchases' : total_purchases,
         'developer' : developer,
     }
-    return render(request, 'game/games_statistics.html', args)
+    return render(request, GAMES_STATISTICS_HTML, args)
 
 def report_successful_game_adding(request):
     developer = request.user.userprofile.is_developer()
@@ -322,4 +321,4 @@ def report_successful_game_adding(request):
         'message' : "Now you can find your game in uploaded games.".format(request.POST.get('name', None)),
         'developer' : developer,
     }
-    return render(request, 'extra/thanks.html', args)
+    return render(request, THANKS_HTML, args)

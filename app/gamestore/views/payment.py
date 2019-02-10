@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from gamestore.models import Purchase, Game
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from gamestore.constants import *
 
 @login_required(login_url='/login/')
 def report_success(request):
@@ -35,11 +36,8 @@ def report_success(request):
         }
     else:
         return redirect('payment_error')
-    return render(request, 'payment/success.html', args)
+    return render(request, PAYMENT_SUCCESS_HTML, args)
 
 @login_required(login_url='/login/')
 def report_error(request):
-    return render(request, 'payment/error.html')
-
-
-
+    return render(request, PAYMENT_ERROR_HTML)

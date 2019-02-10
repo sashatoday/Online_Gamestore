@@ -25,12 +25,13 @@ from django.contrib.auth import logout, authenticate
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from gamestore.constants import *
 
 def startpage(request):
     if request.user.is_authenticated:
-        return render(request, "base.html", {'developer': request.user.userprofile.is_developer()})
+        return render(request, BASE_HTML, {'developer': request.user.userprofile.is_developer()})
     else:
-        return render(request, "base.html", {'developer': False})
+        return render(request, BASE_HTML, {'developer': False})
 
 def activate(request):
     if request.user.is_authenticated:
@@ -60,19 +61,19 @@ def activate(request):
                         args = {
                             'error' : "Incorrect password.",
                         }
-                        return render(request, 'account/activate_account.html', args)
+                        return render(request, ACTIVATE_ACCOUNT_HTML, args)
                 else:
                     args = {
                         'error' : "User is already active. Please login.",
                     }
-                    return render(request, 'account/activate_account.html', args)
+                    return render(request, ACTIVATE_ACCOUNT_HTML, args)
             else:
             ########  user does not exist  ##############
                 args = {
                     'error' : "User does not exist. Please sign up.",
                 }
-                return render(request, 'account/activate_account.html', args)
-    return render(request, "account/activate_account.html")
+                return render(request, ACTIVATE_ACCOUNT_HTML, args)
+    return render(request, ACTIVATE_ACCOUNT_HTML)
         
 
 def login(request):
@@ -90,14 +91,14 @@ def login(request):
             user = authenticate(username=username, password=password)
             if user is None:
                 ########  report errors  ##########
-                return render(request, 'account/login.html',
+                return render(request, LOGIN_HTML,
                               {'username': username, 'password': password,
                               'errors': "Your username or password was incorrect."})
             else:
                 ########  login  ##################
                 auth_login(request, user)
                 return redirect(next_page)
-        return render(request, "account/login.html", {})
+        return render(request, LOGIN_HTML, {})
 
 @transaction.atomic
 def signup(request):
@@ -127,9 +128,9 @@ def signup(request):
                 return redirect('registration_success')
             else:
             ########  report errors  ##########
-                return render(request, 'account/signup.html', {'form': form})
+                return render(request, SIGNUP_HTML, {'form': form})
         form = UserForm()
-        return render(request, 'account/signup.html', {'form': form})
+        return render(request, SIGNUP_HTML, {'form': form})
 
 @login_required(login_url='/login/')
 def logout_user(request):
@@ -169,7 +170,7 @@ def edit_profile(request):
                 userform.add_error('username', "You are not allowed to change your username")
                 userform.errors['email'] = ""
                 args['userform'] = userform
-                return render(request, 'account/profile.html', args)
+                return render(request, PROFILE_HTML, args)
             if userform.is_valid() and profileform.is_valid():
                 userform.save()
                 profileform.save()
@@ -177,7 +178,7 @@ def edit_profile(request):
             else:
                 args['userform'] = userform
                 args['profileform'] = profileform
-                return render(request, 'account/profile.html', args)
+                return render(request, PROFILE_HTML, args)
 
         ########  change password  ###############
         if 'changepassword' in request.POST:
@@ -187,7 +188,7 @@ def edit_profile(request):
                 return redirect('profile')
             else:
                 args['changepasswordform'] = changepasswordform
-                return render(request, 'account/profile.html', args)
+                return render(request, PROFILE_HTML, args)
 
         ########  delete user  ###################
         if 'deleteuser' in request.POST:
@@ -195,7 +196,7 @@ def edit_profile(request):
             user.save()
             logout(request)
             return redirect('search_game')
-    return render(request, 'account/profile.html', args)
+    return render(request, PROFILE_HTML, args)
 
 @login_required(login_url='/login/')
 def show_user(request, user_id):
@@ -211,18 +212,18 @@ def show_user(request, user_id):
         'userprofile' : userprofile,
         'developer' : developer,
     }
-    return render(request, 'account/profile_preview.html', args)
+    return render(request, PROFILE_PREVIEW_HTML, args)
 
 def report_successful_registration(request):
     args = {
         'thanks_for' : "registering",
         'message' : "Please, confirm your email before login.",
     }
-    return render(request, 'extra/thanks.html', args)
+    return render(request, THANKS_HTML, args)
 
 def report_successful_activation(request):
     args = {
         'thanks_for' : "activating your account",
         'message' : "Now you can login in our system.",
     }
-    return render(request, 'extra/thanks.html', args)
+    return render(request, THANKS_HTML, args)
