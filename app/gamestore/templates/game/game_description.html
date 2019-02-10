@@ -5,7 +5,6 @@
 
 {% block content %}
 
-
 <div class="card">
 	<div class="row">
 		<aside class="col-sm-5 border-right">
@@ -62,12 +61,18 @@
 </dl>
 
 <hr>
+<form action="" method="post">{% csrf_token %}
   {% if owner or purchased_game %}
-    <a href="/play_game/{{ game.id }}" class="btn btn-primary btn-block text-uppercase"> Play </a>
+    <button href="/play_game/{{ game.id }}" class="btn btn-primary btn-block text-uppercase"> Play </button>
   {% else %}
-	<a href="/buy_game/{{ game.id }}" class="btn btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Buy now </a>
-	<a href="#" class="btn btn-outline-primary"> <i class="far fa-bookmark"></i> Save to wishlist </a>
+	<button href="/buy_game/{{ game.id }}" class="btn btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Buy now </button>
+    {% if saved_game %}
+        <button class="btn btn-outline-primary btn-secondary" disabled> <i class="far fa-bookmark"></i> Save to wishlist </button>
+    {% else %}
+        <button name="wishlist" type="submit" class="btn btn-outline-primary"> <i class="far fa-bookmark"></i> Save to wishlist </button>
+    {% endif %}
   {% endif %}
+</form>
 </article> <!-- card-body.// -->
 		</aside> <!-- col.// -->
 	</div> <!-- row.// -->

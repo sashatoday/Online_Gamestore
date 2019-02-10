@@ -14,6 +14,9 @@
             <p class="card-text">Category: {{ game.get_category_display }}<br>
                                  Price: {{ game.price }} €
             </p>
+            {% if wishlist %}
+                <button name="deletegame" type="submit" value="{{game.id}}" class="btn btn-danger btn-block">Delete from wishlist</button>
+            {% endif %}
           </div>
         </div>
     </div>
