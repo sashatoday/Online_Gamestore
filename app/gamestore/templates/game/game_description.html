@@ -65,7 +65,7 @@
   {% if owner or purchased_game %}
     <button href="/play_game/{{ game.id }}" class="btn btn-primary btn-block text-uppercase"> Play </button>
   {% else %}
-	<button href="#" class="btn btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Buy now </button>
+	<button href="/buy_game/{{ game.id }}" class="btn btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Buy now </button>
     {% if saved_game %}
         <button class="btn btn-outline-primary btn-secondary" disabled> <i class="far fa-bookmark"></i> Save to wishlist </button>
     {% else %}

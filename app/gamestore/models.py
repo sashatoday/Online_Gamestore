@@ -43,6 +43,7 @@ class Purchase(models.Model):
     date = models.DateField(default=date.today)
     buyer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='buyer')
     purchasedGame = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='purchasedGame')
+    ref = models.CharField(max_length=50, blank=True)
 
     class Meta:
         ordering = ["-date"]

@@ -31,3 +31,6 @@ CATEGORY_CHOICES = (
         ('STRATEGY', 'Strategy'),
         ('OTHER', 'Other'),
     )
+
+sid = 'MusVinAle'
+secret_key = '510ed4cc72a95c1972a18cedc5d16318'
