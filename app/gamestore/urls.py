@@ -1,15 +1,10 @@
 from django.urls import re_path
-from gamestore.views import account
-from gamestore.views import game
-from gamestore.views import payment
+from gamestore.views import account, game, payment, developer
 
 urlpatterns = [
 
 ### Base view
     re_path(r'^$', account.startpage, name='index'),
-
-### Thanks view
-    re_path(r'^add_game/thanks/$', game.report_successful_game_adding, name='adding_game_success'),
 
 ### Account
     re_path(r'^login/$', account.login, name='login'),
@@ -34,8 +29,9 @@ urlpatterns = [
     re_path(r'^payment/error/$', payment.report_error, name='payment_error'),
 
 ### Developer functionality
-    re_path(r'^add_game/$', game.add_game, name='adding_game'),
-    re_path(r'^edit_game/(?P<game_id>[0-9]+)/$', game.edit_game, name='editing_game'),
-    re_path(r'^uploaded_games/$', game.show_uploaded_games, name='uploaded_games'),
-    re_path(r'^statistics/$', game.show_statistics, name='statistics'),
+    re_path(r'^add_game/$', developer.add_game, name='adding_game'),
+    re_path(r'^add_game/thanks/$', developer.report_successful_game_adding, name='adding_game_success'),
+    re_path(r'^edit_game/(?P<game_id>[0-9]+)/$', developer.edit_game, name='editing_game'),
+    re_path(r'^uploaded_games/$', developer.show_uploaded_games, name='uploaded_games'),
+    re_path(r'^statistics/$', developer.show_statistics, name='statistics'),
 ]
