@@ -45,6 +45,9 @@ class Game(models.Model):
     developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
     age_limit = models.PositiveSmallIntegerField()
 
+    def get_developer(self):
+        return self.developer
+
     class Meta:
         ordering = ["-date", "name"]
 
@@ -53,6 +56,16 @@ class Purchase(models.Model):
     buyer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='buyer')
     purchased_game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='purchased_game')
     ref = models.CharField(max_length=50, blank=True)
+    complete = models.BooleanField(default=False)
+
+    def is_complete(self):
+        if self.complete == True:
+            return True
+        else:
+            return False
+
+    def get_purchased_game(self):
+        return self.purchased_game
 
     class Meta:
         ordering = ["-date"]
