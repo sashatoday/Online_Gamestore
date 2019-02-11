@@ -43,7 +43,7 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.UserProfile
-        fields = ('id', 'url', 'user', 'birthDate', 'gender', 'country', 'city', 'address', 'bio', 'photoUrl', 'role', 'developer', 'buyer')
+        fields = ('id', 'url', 'user', 'birth_date', 'gender', 'country', 'city', 'address', 'bio', 'photo_url', 'role', 'developer', 'buyer')
     
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -64,13 +64,13 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
         instance.user.last_name = user[2][1]
         instance.user.email = user[3][1]
         instance.user.save()
-        instance.birthDate = validated_data.get('birthDate', instance.birthDate)
+        instance.birth_date = validated_data.get('birth_date', instance.birthDate)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.country = validated_data.get('country', instance.country)
         instance.city = validated_data.get('city', instance.city)
         instance.address = validated_data.get('address', instance.address)
         instance.bio = validated_data.get('bio', instance.bio)
-        instance.photoUrl = validated_data.get('photoUrl', instance.photoUrl)
+        instance.photo_url = validated_data.get('photo_url', instance.photoUrl)
         instance.role = validated_data.get('role', instance.role)
         instance.developer.set(validated_data.get('developer', instance.developer))
         instance.buyer.set(validated_data.get('buyer', instance.buyer))
