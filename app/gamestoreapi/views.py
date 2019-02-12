@@ -16,8 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
-            instance.user.is_active = False
-            instance.user.save()
+            instance.user.delete()
             self.perform_destroy(instance)
         except Http404:
             pass
