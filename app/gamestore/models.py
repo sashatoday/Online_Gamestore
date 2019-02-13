@@ -33,7 +33,7 @@ class UserProfile(models.Model):
             return True
         else:
             return False
- 
+
 class Game(models.Model):
     name = models.CharField(max_length=50)
     price = models.FloatField()

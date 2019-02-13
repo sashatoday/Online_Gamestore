@@ -3,6 +3,9 @@ from django.http import Http404
 from django.contrib.auth.models import User
 from gamestore import models
 from rest_framework import status, viewsets
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from gamestoreapi.permissions import IsOwnerOrAdminElseReadOnly
 from rest_framework.response import Response
 from gamestoreapi import serializers
 
@@ -11,8 +14,10 @@ API endpoints that allows users to be viewed or edited.
 """
 class UserViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticatedOrReadOnly,IsOwnerOrAdminElseReadOnly)
     serializer_class = serializers.UserProfileSerializer
-    
+
     def destroy(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
