@@ -17,6 +17,7 @@ import json
 from gamestore.constants import *
 from django.http import JsonResponse
 from hashlib import md5
+from django.core.exceptions import ObjectDoesNotExist
 
 def search_game(request):
     developer = False
@@ -45,7 +46,7 @@ def show_my_games(request):
     user = request.user.userprofile
 
     ########  get list of purchased games ########
-    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
     games = Game.objects.all()
 
     ########  prepare arguments  ################
@@ -102,7 +103,7 @@ def show_game_description(request, game_id):
 
     ########  check if purchased  ################
     purchased_game = False
-    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
     if game in purchased_games:
         purchased_game = True
 
@@ -121,11 +122,18 @@ def show_game_description(request, game_id):
 
 @login_required(login_url='/login/')
 def buy_game(request, game_id):
-    game = get_object_or_404(Game, id=game_id)
-    purchase = Purchase.objects.filter(buyer=request.user.userprofile, purchased_game=game) #check if purchase exists
-    if purchase:
-        return redirect('index')
-    pid = game.id #payment ID
+    user = request.user.userprofile
+    game = get_object_or_404(Game, id=game_id) #return 404 if game not found
+    if game.get_developer() == user:
+        return redirect('play_game', game_id=game.id) #developers cannot buy their own games...
+    try:
+        purchase = Purchase.objects.get(buyer=user, purchased_game=game) #check if purchase is found
+        if purchase.is_complete(): #if the purchase is already completed
+            return redirect('play_game', game_id=game.id) #redirect user to the play game template
+    except ObjectDoesNotExist: #no purchase found, lets create a new one :)
+        purchase = Purchase(buyer=user, purchased_game=game) #create a new purchase
+        purchase.save()
+    pid = purchase.id #payment id (PID)
     amount = game.price
     checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
     m = md5(checksumstr.encode("ascii"))
@@ -138,19 +146,19 @@ def buy_game(request, game_id):
         'game': game
     }
     return render(request, BUY_GAME_HTML, args)
-
+    
 @login_required(login_url='/login/')
 def play_game(request, game_id):
 
     ########## initialize variables #############
     user = request.user.userprofile
     game = get_object_or_404(Game, id=game_id)
-    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
     owner = False
     if game.developer == user:
         owner = True
     if game not in purchased_games and not owner:
-        return redirect('search_game')
+        return redirect('buying_game', game_id=game.id)
     args = {
         'game' : game,
     }

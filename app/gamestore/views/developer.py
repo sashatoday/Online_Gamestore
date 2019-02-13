@@ -108,7 +108,7 @@ def show_statistics(request):
     total_purchases = 0
     for game in games:
         ## get list of purchases for each game by date ##
-        purchases = Purchase.objects.filter(purchased_game=game).values_list('date').annotate(count=Count('pk')).order_by('date')
+        purchases = Purchase.objects.filter(purchased_game=game, complete=True).values_list('date').annotate(count=Count('pk')).order_by('date')
         ## count the total number of purchases for the game ##
         total = purchases.aggregate(Sum('count'))['count__sum']
         if total:
