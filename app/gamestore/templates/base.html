@@ -22,6 +22,11 @@
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
+  <style>
+    #sidebar div a:hover {
+        background-color: #e5eaef;
+    }
+  </style>
 </head>
 
 <body>
@@ -42,29 +47,29 @@
         {% block content %}{% endblock %}
       </div>
       <!-- Sidebar -->
-      <div class="sidebar col-md-2 order-md-2">
+      <div id="sidebar" class="sidebar order-md-2">
         <h3>Sidebar</h3>
-        <ul class="row list-group">
-          <li class="list-group-item"><a href="/search_game">Search game</a></li>
+        <div class="list-group">
+          <a class="list-group-item" href="/search_game">Search game</a>
           {% if user.is_authenticated %}
-              <li class="list-group-item"><a href="/my_games">My games</a></li>
-              <li class="list-group-item"><a href="/wishlist">Wishlist</a></li>
-              <li class="list-group-item"><a href="/profile">Profile</a></li>
+              <a class="list-group-item" href="/my_games">My games</a>
+              <a class="list-group-item" href="/wishlist">Wishlist</a>
+              <a class="list-group-item" href="/profile">Profile</a>
               {% if user.userprofile.is_developer %}
-                  <li class="list-group-item"><a href="/uploaded_games">Uploaded games</a></li>
-                  <li class="list-group-item"><a href="/statistics">Games statistics</a></li>
+                  <a class="list-group-item" href="/uploaded_games">Uploaded games</a>
+                  <a class="list-group-item" href="/statistics">Games statistics</a>
               {% endif %}
-              <li class="list-group-item"><a href="/logout"> Logout </a></li>
+              <a class="list-group-item" href="/logout"> Logout </a>
           {% else %}
-              <li class="list-group-item"><a href="/signup"> Signup </a></li>
-              <li class="list-group-item"><a href="/activation"> Activate account </a></li>
-              <li class="list-group-item"><a href="/login"> Login </a></li>
+              <a class="list-group-item" href="/signup"> Signup </a>
+              <a class="list-group-item" href="/restore_account"> Restore account </a>
+              <a class="list-group-item" href="/login"> Login </a>
           {% endif %}
-        </ul>
+        </div>
       </div>
     </div>
     <footer class="my-5 pt-5 text-muted text-center text-small">
-      <p class="mb-1">© 2019 WSD Game Store</p>
+      <p class="mb-1">&copy; 2019 WSD Game Store</p>
     </footer>
   </div>
 </body>
