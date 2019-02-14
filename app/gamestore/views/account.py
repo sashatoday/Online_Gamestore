@@ -18,6 +18,8 @@ from gamestore.forms import (
     UserUpdateForm, 
     UserProfileUpdateForm,
     ChangePasswordForm,
+    CustomPasswordResetForm,
+    CustomPasswordSetForm,
 )
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
@@ -26,6 +28,14 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from gamestore.constants import *
+
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from ..tokens import account_activation_token
+from django.core.mail import EmailMessage
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.exceptions import ObjectDoesNotExist
 
 def startpage(request):
     return render(request, BASE_HTML)
@@ -115,6 +125,7 @@ def signup(request):
                     email=form.cleaned_data['email'],
                     password=form.clean_password2()
                 )
+                user.is_active = False
                 user.save()
                 userProfile = UserProfile(
                     user=user,
@@ -122,12 +133,92 @@ def signup(request):
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()
+                current_site = get_current_site(request)
+                mail_subject = 'Activate your account.'
+                message = render_to_string('acc_active_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                    'token':account_activation_token.make_token(user),
+                })
+                to_email = user.email
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
                 return redirect('registration_success')
             else:
             ########  report errors  ##########
                 return render(request, SIGNUP_HTML, {'form': form})
         form = UserForm()
         return render(request, SIGNUP_HTML, {'form': form})
+
+def confirm_email(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        #log in user or not?
+        #auth_login(request, user)
+        return redirect('activation_success')
+    else:
+        return redirect('index')
+
+def set_password(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        setnewpasswordform = CustomPasswordSetForm(user=user)
+        if request.method == 'POST':
+            setnewpasswordform = CustomPasswordSetForm(data=request.POST, user=user)
+            if setnewpasswordform.is_valid():
+                setnewpasswordform.save()
+                user.is_active = True
+                user.save()
+                return redirect('login')
+            else:
+                return render(request, SET_NEW_PASS_HTML, {'form': setnewpasswordform})
+        else:
+            setnewpasswordform = CustomPasswordSetForm(user=user)
+            return render(request, SET_NEW_PASS_HTML, {'form': setnewpasswordform})
+    else:
+        return redirect('index')
+
+def reset_password(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
+    if request.method == 'POST':
+        feedback_message = 'If a user with that email is found in our system, you will be sent a password reset link.'
+        form = CustomPasswordResetForm(request.POST)
+        if form.is_valid():
+            try:
+                to_email = form.cleaned_data['email']
+                user = User.objects.get(email=to_email)
+                user.is_active = False
+                user.save()
+                current_site = get_current_site(request)
+                mail_subject = 'Reset your password.'
+                message = render_to_string('acc_reset_pass.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                    'token': account_activation_token.make_token(user), #use the same hasing method as when activating user
+                })
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+                return render(request, RESET_PASS_HTML, {'form': form, 'message': feedback_message})
+            except ObjectDoesNotExist:
+                return render(request, RESET_PASS_HTML, {'form': form, 'message': feedback_message})
+        else:
+             return render(request, RESET_PASS_HTML, {'form': form})
+    form = CustomPasswordResetForm()
+    return render(request, RESET_PASS_HTML, {'form': form})
+
 
 @login_required(login_url='/login/')
 def logout_user(request):
