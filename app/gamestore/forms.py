@@ -363,3 +363,24 @@ class GameUpdateForm(forms.ModelForm):
         cleaned_data['price'] = check_price(self.cleaned_data['price'])
         cleaned_data['age_limit'] = check_age_limit(self.cleaned_data['age_limit'])
         return cleaned_data
+
+
+class SearchForm(forms.ModelForm):
+
+    class Meta:
+        model = Game
+        fields = (
+            'search_key',
+            'category',
+        )
+    search_key = forms.CharField(
+        required = False,
+        widget = forms.TextInput(attrs= {'class' : 'form-control here', 'maxlength' : 50})
+    )
+    category = forms.ChoiceField(
+        choices  = (('ALL', 'All'),) + CATEGORY_CHOICES,
+        label    = 'Category',
+        required = True,
+        initial = 'ALL',
+        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+    )

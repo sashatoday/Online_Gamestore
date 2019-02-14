@@ -8,7 +8,12 @@
 
 <form method="post" action="">{% csrf_token %}
   <div class="row">
-    <input class="form-control search-query col-9 mr-4 ml-3" type="text" id="search-key" maxlength="50" name="search-key">
+    <div class="col-7">
+        {{ form.search_key }}
+    </div>
+    <div class="col-3">
+        {{ form.category }}
+    </div>
     <button class="btn btn-primary col-2" name="searchgame" type="submit">Search</button>
   </div>
 </form>
