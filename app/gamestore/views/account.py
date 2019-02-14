@@ -1,13 +1,17 @@
 ##############################################################
 ##### This view provides actions related to user account: ####
 #####     * startpage                                     ####
-#####     * activate                                      ####
 #####     * login                                         ####
+#####     * activate                                      ####
 #####     * signup                                        ####
+#####     * confirm_email                                 ####
+#####     * set_password                                  ####
+#####     * reset_password                                ####
 #####     * logout_user                                   ####
 #####     * edit_profile                                  ####
 #####     * show_user                                     ####
 #####     * report_successful_registration                ####
+#####     * report_successful_restoring                   ####
 #####     * report_successful_activation                  ####
 ##############################################################
 
@@ -40,52 +44,9 @@ from django.core.exceptions import ObjectDoesNotExist
 def startpage(request):
     return render(request, BASE_HTML)
 
-def activate(request):
-    if request.user.is_authenticated:
-        return redirect('search_game')
-    else:
-    ########  process post request  ##############
-        if request.method == 'POST':
-            username = request.POST['username']
-            password = request.POST['password']
-            ########  check if user exists  ##############
-            try:
-                user_object = User.objects.get(username=username)
-            except User.DoesNotExist:
-                user_object = None
-            if user_object:
-                if not user_object.is_active:
-                    ########  activate account and save ######
-                    user_object.is_active = True
-                    user_object.save()
-                    user = authenticate(username=username, password=password)
-                    if user:
-                        return redirect('activation_success')
-                    else:
-                        ########  report errors  ##########
-                        user_object.is_active = False
-                        user_object.save()
-                        args = {
-                            'error' : "Incorrect password.",
-                        }
-                        return render(request, ACTIVATE_ACCOUNT_HTML, args)
-                else:
-                    args = {
-                        'error' : "User is already active. Please login.",
-                    }
-                    return render(request, ACTIVATE_ACCOUNT_HTML, args)
-            else:
-            ########  user does not exist  ##############
-                args = {
-                    'error' : "User does not exist. Please sign up.",
-                }
-                return render(request, ACTIVATE_ACCOUNT_HTML, args)
-    return render(request, ACTIVATE_ACCOUNT_HTML)
-        
-
 def login(request):
     ########## initial checks #############
-    next_page = request.GET.get('next') 
+    next_page = request.GET.get('next')
     if not next_page: #if request doesn't have ?next= parameter
         next_page = 'search_game' #keep search_game page as default redirect
     if request.user.is_authenticated:
@@ -106,6 +67,61 @@ def login(request):
                 auth_login(request, user)
                 return redirect(next_page)
         return render(request, LOGIN_HTML, {})
+
+def restore_account(request):
+    if request.user.is_authenticated:
+        return redirect('search_game')
+    else:
+    ########  process post request  ##############
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            ########  check if user exists  ##############
+            try:
+                user_object = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user_object = None
+            if user_object:
+                if not user_object.is_active:
+                    ########  activate account and save ######
+                    user_object.is_active = True
+                    user_object.save()
+                    user = authenticate(username=username, password=password)
+                    if user:
+                        user_object.is_active = False
+                        user_object.save()
+                        current_site = get_current_site(request)
+                        mail_subject = 'Activate your old account.'
+                        message = render_to_string(EMAIL_RESTORE_ACCOUNT_HTML, {
+                            'user': user_object,
+                            'domain': current_site.domain,
+                            'uid':urlsafe_base64_encode(force_bytes(user_object.pk)).decode(),
+                            'token':account_activation_token.make_token(user_object),
+                        })
+                        to_email = user_object.email
+                        email = EmailMessage(mail_subject, message, to=[to_email])
+                        email.send()
+                        return redirect('restoring_success')
+                    else:
+                        ########  report errors  ##########
+                        user_object.is_active = False
+                        user_object.save()
+                        args = {
+                            'error' : "Incorrect password.",
+                        }
+                        return render(request, ACTIVATE_ACCOUNT_HTML, args)
+                else:
+                    args = {
+                        'error' : "User is already active. Please login.",
+                    }
+                    return render(request, ACTIVATE_ACCOUNT_HTML, args)
+            else:
+            ########  user does not exist  ##############
+                args = {
+                    'error' : "User does not exist. Please sign up.",
+                }
+                return render(request, ACTIVATE_ACCOUNT_HTML, args)
+    return render(request, ACTIVATE_ACCOUNT_HTML)
 
 @transaction.atomic
 def signup(request):
@@ -134,8 +150,8 @@ def signup(request):
                 )
                 userProfile.save()
                 current_site = get_current_site(request)
-                mail_subject = 'Activate your account.'
-                message = render_to_string('acc_active_email.html', {
+                mail_subject = 'Activate your new account.'
+                message = render_to_string(ACTIVATE_EMAIL_HTML, {
                     'user': user,
                     'domain': current_site.domain,
                     'uid':urlsafe_base64_encode(force_bytes(user.pk)).decode(),
@@ -164,7 +180,7 @@ def confirm_email(request, uidb64, token):
         #auth_login(request, user)
         return redirect('activation_success')
     else:
-        return redirect('index')
+        return redirect('search_game')
 
 def set_password(request, uidb64, token):
     try:
@@ -187,7 +203,7 @@ def set_password(request, uidb64, token):
             setnewpasswordform = CustomPasswordSetForm(user=user)
             return render(request, SET_NEW_PASS_HTML, {'form': setnewpasswordform})
     else:
-        return redirect('index')
+        return redirect('search_game')
 
 def reset_password(request):
     if request.user.is_authenticated:
@@ -203,7 +219,7 @@ def reset_password(request):
                 user.save()
                 current_site = get_current_site(request)
                 mail_subject = 'Reset your password.'
-                message = render_to_string('acc_reset_pass.html', {
+                message = render_to_string(EMAIL_RESET_PASS_HTML, {
                     'user': user,
                     'domain': current_site.domain,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
@@ -301,6 +317,13 @@ def show_user(request, user_id):
 def report_successful_registration(request):
     args = {
         'thanks_for' : "registering",
+        'message' : "Please, confirm your email before login.",
+    }
+    return render(request, THANKS_HTML, args)
+
+def report_successful_restoring(request):
+    args = {
+        'thanks_for' : "restoring your account",
         'message' : "Please, confirm your email before login.",
     }
     return render(request, THANKS_HTML, args)

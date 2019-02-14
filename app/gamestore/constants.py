@@ -50,13 +50,17 @@ secret_key = '510ed4cc72a95c1972a18cedc5d16318'
 BASE_HTML = 'base.html'
 THANKS_HTML = 'extra/thanks.html'
 
-ACTIVATE_ACCOUNT_HTML = 'account/activate_account.html'
+ACTIVATE_ACCOUNT_HTML = 'account/restore_account.html'
 LOGIN_HTML = 'account/login.html'
 SIGNUP_HTML = 'account/signup.html'
 PROFILE_HTML = 'account/profile.html'
 PROFILE_PREVIEW_HTML = 'account/profile_preview.html'
 RESET_PASS_HTML = 'account/reset_password.html'
 SET_NEW_PASS_HTML = 'account/set_new_password.html'
+
+EMAIL_RESET_PASS_HTML = 'email/acc_reset_pass.html'
+ACTIVATE_EMAIL_HTML = 'email/acc_active_email.html'
+EMAIL_RESTORE_ACCOUNT_HTML = 'email/acc_active_account.html'
 
 SEARCH_GAME_HTML = 'games/search_game.html'
 MY_GAMES_HTML = 'games/my_games.html'

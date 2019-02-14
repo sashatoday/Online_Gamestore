@@ -4,6 +4,8 @@
 #####     * UserUpdateForm                ####
 #####     * UserProfileUpdateForm         ####
 #####     * ChangePasswordForm            ####
+#####     * CustomPasswordResetForm       ####
+#####     * CustomPasswordSetForm         ####
 #####     * GameForm                      ####
 #####     * GameUpdateForm                ####
 #####                                     ####
@@ -280,7 +282,7 @@ class GameForm(forms.ModelForm):
     description = forms.CharField(
         label  = "Description",
         required = False,
-        widget = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 200})
+        widget = forms.Textarea(attrs= {'class' : 'form-control here', 'maxlength' : 500})
     )
     game_url = forms.URLField(
         label  = "Game URL",

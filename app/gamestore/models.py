@@ -39,7 +39,7 @@ class Game(models.Model):
     name = models.CharField(max_length=50)
     price = models.FloatField()
     picture_url = models.URLField(blank=True)
-    description = models.TextField(max_length=200, blank=True)
+    description = models.TextField(max_length=500, blank=True)
     game_url = models.URLField()
     date = models.DateField(default=date.today)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
