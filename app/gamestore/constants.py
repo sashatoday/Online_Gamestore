@@ -41,6 +41,15 @@ CATEGORY_CHOICES = (
         ('OTHER', 'Other'),
     )
 
+SORT_CHOICES = (
+        ('name', 'Title ↑'),
+        ('-name', 'Title ↓'),
+        ('price', 'Price ↑'),
+        ('-price', 'Price ↓'),
+        ('age_limit', 'Age limit ↑'),
+        ('-age_limit', 'Age limit ↓'),
+    )
+
 ### Payment constants 
 sid = 'MusVinAle'
 secret_key = '510ed4cc72a95c1972a18cedc5d16318'

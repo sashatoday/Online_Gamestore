@@ -1,7 +1,8 @@
 #################################################
 ##### This view provides actions related     ####
-##### to games actions:                      ####
+##### to games:                              ####
 #####     * search_game                      ####
+#####     * apply_filter                     ####
 #####     * show_my_games                    ####
 #####     * show_wishlist                    ####
 #####     * show_game_description            ####
@@ -23,22 +24,32 @@ from gamestore.forms import SearchForm
 def search_game(request):
 
     games = Game.objects.all()
-    form = SearchForm()
-    search_applied = False
-    if 'searchgame' in request.POST:
-        search_applied = True
-        search_key = request.POST['search_key']
-        category = request.POST['category']
-        if category == 'ALL':
-            games = Game.objects.filter(name__contains=search_key)
-        else:
-            games = Game.objects.filter(name__contains=search_key, category=category)
+    form, games, search_applied = apply_filter(request, games)
     args = {
         'games' : games,
         'form' : form,
         'search_applied' : search_applied,
+        'req' : request,
     }
     return render(request, SEARCH_GAME_HTML, args)
+
+def apply_filter(request, games):
+
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+    else:
+        form = SearchForm()
+    search_applied = False
+    if 'searchgame' in request.POST:
+        search_applied = True
+        search_key = request.POST.get('search_key', False)
+        category = request.POST.get('category', False)
+        filter = request.POST['sort_type']
+        if category == 'ALL':
+            games = Game.objects.filter(name__contains=search_key).order_by(filter)
+        else:
+            games = Game.objects.filter(name__contains=search_key, category=category).order_by(filter)
+    return form, games, search_applied
 
 @login_required(login_url='/login/')
 def show_my_games(request):

@@ -4,18 +4,35 @@
 
 {% block content %}
 
-<h2>Search game</h2>
+<h2 class="mb-3">Search games</h2>
 
 <form method="post" action="">{% csrf_token %}
-  <div class="row">
-    <div class="col-7">
-        {{ form.search_key }}
+    <div class="row mb-3">
+        <div class="col-12">
+            {{ form.search_key }}
+        </div>
     </div>
-    <div class="col-3">
-        {{ form.category }}
+    <div class="container">
+      <div class="row mb-3">
+        <div >
+        <span class="text-muted">
+            {{ form.category.label }}
+        </span>
+        </div>
+        <div class="col-3 mr-4">
+            {{ form.category }}
+        </div>
+        <div>
+        <span class="text-muted">
+            {{ form.sort_type.label }}
+        </span>
+        </div>
+        <div class="col-3 mr-5">
+            {{ form.sort_type }}
+        </div>
+        <button class="btn btn-primary col-3" name="searchgame" type="submit">Search</button>
+      </div>
     </div>
-    <button class="btn btn-primary col-2" name="searchgame" type="submit">Search</button>
-  </div>
 </form>
 
 {% include 'games/games_list.html' %}

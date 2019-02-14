@@ -365,13 +365,12 @@ class GameUpdateForm(forms.ModelForm):
         return cleaned_data
 
 
-class SearchForm(forms.ModelForm):
-
+class SearchForm(forms.Form):
     class Meta:
-        model = Game
         fields = (
             'search_key',
             'category',
+            'sort_type',
         )
     search_key = forms.CharField(
         required = False,
@@ -379,8 +378,14 @@ class SearchForm(forms.ModelForm):
     )
     category = forms.ChoiceField(
         choices  = (('ALL', 'All'),) + CATEGORY_CHOICES,
-        label    = 'Category',
+        label    = 'Category:',
         required = True,
         initial = 'ALL',
         widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+    )
+    sort_type = forms.ChoiceField(
+        choices  = SORT_CHOICES,
+        label    = 'Sort by:',
+        required = True,
+        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 15})
     )
