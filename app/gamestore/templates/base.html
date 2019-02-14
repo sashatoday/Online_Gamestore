@@ -43,19 +43,23 @@
       </div>
       <!-- Sidebar -->
       <div class="sidebar col-md-2 order-md-2">
-        <h3>Sidebar</h3>
-        <ul class="row list-group">
+        <h3 class="mb-3">Sidebar</h3>
+        <ul class="row list-group mb-3">
           <li class="list-group-item"><a href="/search_game">Search game</a></li>
           {% if user.is_authenticated %}
               <li class="list-group-item"><a href="/my_games">My games</a></li>
               <li class="list-group-item"><a href="/wishlist">Wishlist</a></li>
               <li class="list-group-item"><a href="/profile">Profile</a></li>
+              </ul><ul class="row list-group mb-3">
               {% if user.userprofile.is_developer %}
+                  <li class="list-group-item"><a href="/add_game">Add game</a></li>
                   <li class="list-group-item"><a href="/uploaded_games">Uploaded games</a></li>
                   <li class="list-group-item"><a href="/statistics">Games statistics</a></li>
+                  </ul><ul class="row list-group mb-3">
               {% endif %}
               <li class="list-group-item"><a href="/logout"> Logout </a></li>
           {% else %}
+              </ul><ul class="row list-group mb-3">
               <li class="list-group-item"><a href="/signup"> Signup </a></li>
               <li class="list-group-item"><a href="/activation"> Activate account </a></li>
               <li class="list-group-item"><a href="/login"> Login </a></li>

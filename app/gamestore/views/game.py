@@ -29,7 +29,6 @@ def search_game(request):
         'games' : games,
         'form' : form,
         'search_applied' : search_applied,
-        'req' : request,
     }
     return render(request, SEARCH_GAME_HTML, args)
 
@@ -61,9 +60,14 @@ def show_my_games(request):
     purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
     games = Game.objects.all()
 
+    ########  apply filters  #####################
+    form, games, search_applied = apply_filter(request, games)
+
     ########  prepare arguments  ################
     args = {
         'games' : purchased_games,
+        'form' : form,
+        'search_applied' : search_applied,
     }
     return render(request, MY_GAMES_HTML, args)
 
@@ -82,10 +86,15 @@ def show_wishlist(request):
     wished_games = Game.objects.filter(wished_game__in=WishList.objects.filter(potential_buyer=user))
     games = Game.objects.all()
 
+    ########  apply filters  #####################
+    form, games, search_applied = apply_filter(request, games)
+
     ########  prepare arguments  ################
     args = {
         'games' : wished_games,
         'wishlist' : True,
+        'form' : form,
+        'search_applied' : search_applied,
     }
     return render(request, WISHLIST_HTML, args)
 

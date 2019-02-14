@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from gamestore.constants import *
 from django.db.models import Count, Sum
+from gamestore.views.game import apply_filter
 
 @login_required(login_url='/login/')
 def show_uploaded_games(request):
@@ -26,9 +27,14 @@ def show_uploaded_games(request):
     ########  get list of uploaded games  ########
     games = Game.objects.filter(developer=request.user.userprofile)
 
+    ########  apply filters  #####################
+    form, games, search_applied = apply_filter(request, games)
+
     ########  prepare arguments  #################
     args = {
         'games' : games,
+        'form' : form,
+        'search_applied' : search_applied,
     }
     return render(request, UPLOADED_GAMES_HTML, args)
 

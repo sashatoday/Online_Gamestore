@@ -6,34 +6,7 @@
 
 <h2 class="mb-3">Search games</h2>
 
-<form method="post" action="">{% csrf_token %}
-    <div class="row mb-3">
-        <div class="col-12">
-            {{ form.search_key }}
-        </div>
-    </div>
-    <div class="container">
-      <div class="row mb-3">
-        <div >
-        <span class="text-muted">
-            {{ form.category.label }}
-        </span>
-        </div>
-        <div class="col-3 mr-4">
-            {{ form.category }}
-        </div>
-        <div>
-        <span class="text-muted">
-            {{ form.sort_type.label }}
-        </span>
-        </div>
-        <div class="col-3 mr-5">
-            {{ form.sort_type }}
-        </div>
-        <button class="btn btn-primary col-3" name="searchgame" type="submit">Search</button>
-      </div>
-    </div>
-</form>
+{% include 'extra/game_search_bar.html' %}
 
 {% include 'games/games_list.html' %}
 
