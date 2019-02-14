@@ -15,7 +15,7 @@
 ##############################################
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth.models import User
 from gamestore.models import Game
 from datetime import date
@@ -211,6 +211,28 @@ class UserProfileUpdateForm(forms.ModelForm):
         birth_date = self.cleaned_data['birth_date']
         birth_date_is_valid(birth_date)
         return birth_date
+
+class CustomPasswordResetForm(PasswordResetForm):
+
+    class Meta:
+        fiels = ('email')
+
+    email = forms.CharField(
+            required = True,
+            widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email', 'maxlength' : 50, 'placeholder': 'you@example.com'})
+        )
+class CustomPasswordSetForm(PasswordChangeForm):
+
+    old_password = None
+
+    new_password1 = forms.CharField(
+        label  = "New password",
+        widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
+    )
+    new_password2 = forms.CharField(
+        label  = "Confirm new password",
+        widget = forms.PasswordInput(attrs= {'class' : 'form-control here'})
+    )
 
 class ChangePasswordForm(PasswordChangeForm):
 
