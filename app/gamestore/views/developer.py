@@ -5,6 +5,7 @@
 #####     * add_game                               ####
 #####     * edit_game                              ####
 #####     * show_statistics                        ####
+#####     * show_contract                          ####
 #####     * report_successful_game_adding          ####
 #######################################################
 
@@ -134,6 +135,14 @@ def show_statistics(request):
         'total_purchases' : total_purchases,
     }
     return render(request, GAMES_STATISTICS_HTML, args)
+
+def show_agreement(request):
+
+    ########  initial checks  ####################
+    if not request.user.userprofile.is_developer():
+        return redirect('search_game')
+
+    return render(request, DEVELOPER_AGREEMENT_HTML)
 
 def report_successful_game_adding(request):
     args = {

@@ -261,6 +261,7 @@ class GameForm(forms.ModelForm):
             'description',
             'game_url',
             'age_limit',
+            'check_agreement',
         )
     name = forms.CharField(
         label  = "Title",
@@ -298,6 +299,10 @@ class GameForm(forms.ModelForm):
         label  = "Age limit",
         required = True,
         widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'min' : 3, 'max' : 120, 'size' : 1})
+    )
+    check_agreement = forms.BooleanField(
+        required = True,
+        label  = "I understand developer agreement"
     )
 
     def clean(self):

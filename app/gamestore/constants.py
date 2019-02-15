@@ -80,6 +80,7 @@ UPLOADED_GAMES_HTML = 'developer/uploaded_games.html'
 ADD_GAME_HTML = 'developer/add_game.html'
 EDIT_GAME_HTML = 'developer/edit_game.html'
 GAMES_STATISTICS_HTML = 'developer/games_statistics.html'
+DEVELOPER_AGREEMENT_HTML = 'developer/developer_agreement.html'
 
 PAYMENT_SUCCESS_HTML = 'payment/success.html'
 PAYMENT_ERROR_HTML = 'payment/error.html'

@@ -37,4 +37,5 @@ urlpatterns = [
     re_path(r'^edit_game/(?P<game_id>[0-9]+)/$', developer.edit_game, name='editing_game'),
     re_path(r'^uploaded_games/$', developer.show_uploaded_games, name='uploaded_games'),
     re_path(r'^statistics/$', developer.show_statistics, name='statistics'),
+    re_path(r'^developer_agreement/$', developer.show_agreement, name='developer_agreement'),
 ]
