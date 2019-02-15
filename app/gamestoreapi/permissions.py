@@ -8,7 +8,18 @@ class IsOwnerOrAdminElseReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
+        print(obj.developer)
+        
         if request.method in SAFE_METHODS:
             return True
-        # Write permissions are only allowed to the owner or admin.
-        return (obj.user == request.user or request.user.is_staff == True)
+        # Write permissions are only allowed to the admin
+        if request.user.is_staff == True:
+            return True
+        # Write permissions are only allowed to the owner
+        if hasattr(obj, 'user'):
+            return obj.user == request.user
+        # Write permissions are only allowed to the owner
+        if hasattr(obj, 'developer'):
+            return obj.developer == request.user
+
+    

@@ -29,6 +29,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = models.Game.objects.all()
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticatedOrReadOnly,IsOwnerOrAdminElseReadOnly)
     serializer_class = serializers.GameSerializer
 
 class PurchaseViewSet(viewsets.ModelViewSet):
