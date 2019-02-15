@@ -68,6 +68,7 @@ PROFILE_HTML = 'account/profile.html'
 PROFILE_PREVIEW_HTML = 'account/profile_preview.html'
 RESET_PASS_HTML = 'account/reset_password.html'
 SET_NEW_PASS_HTML = 'account/set_new_password.html'
+USER_AGREEMENT_HTML = 'account/user_agreement.html'
 
 SEARCH_GAME_HTML = 'games/search_game.html'
 MY_GAMES_HTML = 'games/my_games.html'

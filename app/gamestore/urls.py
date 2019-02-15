@@ -18,6 +18,7 @@ urlpatterns = [
     re_path(r'^confirm_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', account.confirm_email, name='confirm_email'),
     re_path(r'^reset_password/$', account.reset_password, name='reset_password'),
     re_path(r'^set_password/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', account.set_password, name='set_password'),
+    re_path(r'^user_agreement/$', account.show_agreement, name='user_agreement'),
 
 ### Games
     re_path(r'^search_game/$', game.search_game, name='search_game'),

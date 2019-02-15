@@ -62,6 +62,7 @@ class UserForm(UserCreationForm):
             'gender', 
             'password1',
             'password2',
+            'check_agreement',
         )
     username = forms.CharField(
         help_text = 'Remember: You will be not able to change your username in future',
@@ -102,6 +103,10 @@ class UserForm(UserCreationForm):
         label  = "Repeat password",
         required = True,
         widget = forms.PasswordInput(attrs= {'class' : 'form-control here', 'maxlength' : 50})
+    )
+    check_agreement = forms.BooleanField(
+        required = True,
+        label  = "I understand user agreement"
     )
 
     def clean_email(self):

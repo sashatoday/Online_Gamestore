@@ -103,11 +103,15 @@ def show_wishlist(request):
     }
     return render(request, WISHLIST_HTML, args)
 
-@login_required(login_url='/login/')
 def show_game_description(request, game_id):
 
     ########  initialize variables  ##############
-    user = request.user.userprofile
+    if request.user.is_authenticated:
+        user = request.user.userprofile
+        anonym = False
+    else:
+        user = None
+        anonym = True
     game = get_object_or_404(Game, id=game_id)
 
     ########  check wishlist  ####################
@@ -124,8 +128,9 @@ def show_game_description(request, game_id):
 
     ########  check ownership  ###################
     owner = False
-    if game.developer == request.user.userprofile:
-        owner = True
+    if user:
+        if game.developer == request.user.userprofile:
+            owner = True
 
     ########  check if purchased  ################
     purchased_game = False
@@ -140,6 +145,7 @@ def show_game_description(request, game_id):
     args = {
         'game' : game,
         'owner' : owner,
+        'anonym' : anonym,
         'purchased_game' : purchased_game,
         'scores' : scores,
         'saved_game' : saved_game,

@@ -5,7 +5,7 @@
 #####     * add_game                               ####
 #####     * edit_game                              ####
 #####     * show_statistics                        ####
-#####     * show_contract                          ####
+#####     * show_agreement                         ####
 #####     * report_successful_game_adding          ####
 #######################################################
 
@@ -136,6 +136,7 @@ def show_statistics(request):
     }
     return render(request, GAMES_STATISTICS_HTML, args)
 
+@login_required(login_url='/login/')
 def show_agreement(request):
 
     ########  initial checks  ####################
@@ -144,6 +145,7 @@ def show_agreement(request):
 
     return render(request, DEVELOPER_AGREEMENT_HTML)
 
+@login_required(login_url='/login/')
 def report_successful_game_adding(request):
     args = {
         'thanks_for' : "adding the game",

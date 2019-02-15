@@ -7,6 +7,7 @@
 #####     * logout_user                                   ####
 #####     * edit_profile                                  ####
 #####     * show_user                                     ####
+#####     * show_agreement                                ####
 #####     * report_successful_registration                ####
 #####     * report_successful_activation                  ####
 ##############################################################
@@ -300,6 +301,10 @@ def show_user(request, user_id):
         'userprofile' : userprofile,
     }
     return render(request, PROFILE_PREVIEW_HTML, args)
+
+
+def show_agreement(request):
+    return render(request, USER_AGREEMENT_HTML)
 
 def report_successful_registration(request):
     args = {
