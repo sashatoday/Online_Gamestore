@@ -59,9 +59,9 @@
                 </table>
                     <input type="hidden" name="pid" value="{{ pid }}" />
                     <input type="hidden" name="sid" value="{{ sid }}" />
-                    <input type="hidden" name="success_url" value="/payment/success" />
-                    <input type="hidden" name="cancel_url" value="/buy_game/{{ game.id }}" />
-                    <input type="hidden" name="error_url" value="/payment/error" />
+                    <input type="hidden" name="success_url" value="{{ request.build_absolute_uri }}/payment/success" />
+                    <input type="hidden" name="cancel_url" value="{{ request.build_absolute_uri }}/buy_game/{{ game.id }}" />
+                    <input type="hidden" name="error_url" value="{{ request.build_absolute_uri }}/payment/error" />
                     <input type="hidden" name="checksum" value="{{ checksum }}" />
                     <input type="hidden" name="amount" value="{{ amount }}" />
                     <input type="submit" value="Pay now" class="btn btn-success btn-lg btn-block"/>
