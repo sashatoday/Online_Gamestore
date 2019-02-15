@@ -10,6 +10,7 @@
 #####     * logout_user                                   ####
 #####     * edit_profile                                  ####
 #####     * show_user                                     ####
+#####     * show_agreement                                ####
 #####     * report_successful_registration                ####
 #####     * report_successful_restoring                   ####
 #####     * report_successful_activation                  ####
@@ -149,6 +150,8 @@ def signup(request):
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()
+                
+                ####### send activation email ###########
                 current_site = get_current_site(request)
                 mail_subject = 'Activate your new account.'
                 message = render_to_string(ACTIVATE_EMAIL_HTML, {
@@ -213,6 +216,7 @@ def reset_password(request):
         form = CustomPasswordResetForm(request.POST)
         if form.is_valid():
             try:
+                ####### send activation email ###########
                 to_email = form.cleaned_data['email']
                 user = User.objects.get(email=to_email)
                 user.is_active = False
@@ -313,6 +317,10 @@ def show_user(request, user_id):
         'userprofile' : userprofile,
     }
     return render(request, PROFILE_PREVIEW_HTML, args)
+
+
+def show_agreement(request):
+    return render(request, USER_AGREEMENT_HTML)
 
 def report_successful_registration(request):
     args = {

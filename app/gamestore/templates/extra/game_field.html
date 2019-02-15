@@ -1,6 +1,12 @@
 <div class="form-group row">
-    <label for="id_{{ field.name }}" class="col-4 col-form-label">{{ field.label }} </label>
-    {% if field.name == 'name' or field.name == 'price' or field.name == 'category' or field.name == 'game_url' or field.name == 'age_limit'%}
+    <label for="id_{{ field.name }}" class="col-4 col-form-label">
+    {% if field.name == 'check_agreement' %}
+        <a href="/developer_agreement">{{ field.label }}</a>
+    {% else %}
+        {{ field.label }}
+    {% endif %}
+    </label>
+    {% if field.name == 'name' or field.name == 'price' or field.name == 'category' or field.name == 'game_url' or field.name == 'age_limit' or field.name == 'check_agreement' %}
         <i class="fa fa-asterisk text-danger"></i>
     {% else %}
         <i class="fa fa-asterisk invisible"></i>

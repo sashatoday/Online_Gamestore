@@ -49,7 +49,7 @@
 <hr>
 <dl>
   <dt>Category</dt>
-  <a href="#"><dd>{{ game.get_category_display }}</dd></a>
+  <a href="/search_game"><dd>{{ game.get_category_display }}</dd></a>
 </dl>
 <dl>
   <dt>Age limit</dt>
@@ -64,9 +64,12 @@
 <form action="" method="post">{% csrf_token %}
   {% if owner or purchased_game %}
     <a href="/play_game/{{game.id}}" class="btn btn-primary btn-block text-uppercase">Play</a>
+    {% if owner %}
+        <a class="btn btn-outline-primary btn-block" href="/edit_game/{{game.id}}" role="button">Edit game</a>
+    {% endif %}
   {% else %}
 	<a href="/buy_game/{{game.id}}" class="btn btn-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Buy now </a>
-    {% if saved_game %}
+    {% if saved_game or anonym %}
         <button class="btn btn-outline-primary btn-secondary" disabled> <i class="far fa-bookmark"></i> Save to wishlist </button>
     {% else %}
         <button name="wishlist" type="submit" class="btn btn-outline-primary"> <i class="far fa-bookmark"></i> Save to wishlist </button>
@@ -77,9 +80,5 @@
 		</aside> <!-- col.// -->
 	</div> <!-- row.// -->
 </div> <!-- card.// -->
-
-{% if owner %}
-    <a class="btn btn-outline-primary btn-block mt-3" href="/edit_game/{{game.id}}" role="button">Edit game</a>
-{% endif %}
 
 {% endblock %}

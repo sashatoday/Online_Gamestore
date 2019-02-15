@@ -47,23 +47,27 @@
         {% block content %}{% endblock %}
       </div>
       <!-- Sidebar -->
-      <div id="sidebar" class="sidebar order-md-2">
-        <h3>Sidebar</h3>
-        <div class="list-group">
-          <a class="list-group-item" href="/search_game">Search game</a>
+      <div class="sidebar col-md-2 order-md-2">
+        <h3 class="mb-3">Sidebar</h3>
+        <ul class="row list-group mb-3">
+          <li class="list-group-item"><a href="/search_game">Search game</a></li>
           {% if user.is_authenticated %}
-              <a class="list-group-item" href="/my_games">My games</a>
-              <a class="list-group-item" href="/wishlist">Wishlist</a>
-              <a class="list-group-item" href="/profile">Profile</a>
+              <li class="list-group-item"><a href="/my_games">My games</a></li>
+              <li class="list-group-item"><a href="/wishlist">Wishlist</a></li>
+              <li class="list-group-item"><a href="/profile">Profile</a></li>
+              </ul><ul class="row list-group mb-3">
               {% if user.userprofile.is_developer %}
-                  <a class="list-group-item" href="/uploaded_games">Uploaded games</a>
-                  <a class="list-group-item" href="/statistics">Games statistics</a>
+                  <li class="list-group-item"><a href="/add_game">Add game</a></li>
+                  <li class="list-group-item"><a href="/uploaded_games">Uploaded games</a></li>
+                  <li class="list-group-item"><a href="/statistics">Games statistics</a></li>
+                  </ul><ul class="row list-group mb-3">
               {% endif %}
               <a class="list-group-item" href="/logout"> Logout </a>
           {% else %}
-              <a class="list-group-item" href="/signup"> Signup </a>
-              <a class="list-group-item" href="/restore_account"> Restore account </a>
-              <a class="list-group-item" href="/login"> Login </a>
+              </ul><ul class="row list-group mb-3">
+              <li class="list-group-item"><a href="/signup"> Signup </a></li>
+              <li class="list-group-item"><a href="/activation"> Activate account </a></li>
+              <li class="list-group-item"><a href="/login"> Login </a></li>
           {% endif %}
         </div>
       </div>

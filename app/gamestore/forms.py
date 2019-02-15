@@ -64,6 +64,7 @@ class UserForm(UserCreationForm):
             'gender', 
             'password1',
             'password2',
+            'check_agreement',
         )
     username = forms.CharField(
         help_text = 'Remember: You will be not able to change your username in future',
@@ -104,6 +105,10 @@ class UserForm(UserCreationForm):
         label  = "Repeat password",
         required = True,
         widget = forms.PasswordInput(attrs= {'class' : 'form-control here', 'maxlength' : 50})
+    )
+    check_agreement = forms.BooleanField(
+        required = True,
+        label  = "I understand user agreement"
     )
 
     def clean_email(self):
@@ -263,6 +268,7 @@ class GameForm(forms.ModelForm):
             'description',
             'game_url',
             'age_limit',
+            'check_agreement',
         )
     name = forms.CharField(
         label  = "Title",
@@ -300,6 +306,10 @@ class GameForm(forms.ModelForm):
         label  = "Age limit",
         required = True,
         widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'min' : 3, 'max' : 120, 'size' : 1})
+    )
+    check_agreement = forms.BooleanField(
+        required = True,
+        label  = "I understand developer agreement"
     )
 
     def clean(self):
@@ -365,3 +375,29 @@ class GameUpdateForm(forms.ModelForm):
         cleaned_data['price'] = check_price(self.cleaned_data['price'])
         cleaned_data['age_limit'] = check_age_limit(self.cleaned_data['age_limit'])
         return cleaned_data
+
+
+class SearchForm(forms.Form):
+    class Meta:
+        fields = (
+            'search_key',
+            'category',
+            'sort_type',
+        )
+    search_key = forms.CharField(
+        required = False,
+        widget = forms.TextInput(attrs= {'class' : 'form-control here', 'maxlength' : 50})
+    )
+    category = forms.ChoiceField(
+        choices  = (('ALL', 'All'),) + CATEGORY_CHOICES,
+        label    = 'Category:',
+        required = True,
+        initial = 'ALL',
+        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+    )
+    sort_type = forms.ChoiceField(
+        choices  = SORT_CHOICES,
+        label    = 'Sort by:',
+        required = True,
+        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 15})
+    )
