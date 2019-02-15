@@ -9,10 +9,15 @@
 
   <title>{% block title %}Game Store{% endblock %}</title>
 
+  <meta property="og:title" content="{% block meta_title %}WSD Game Store{% endblock %}" />
+  <meta property="og:description" content="{% block meta_description %}Buy and play awesome games in WSD Game Store!{% endblock %}" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="{% block meta_image %}{% endblock %}" />
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
     crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
     crossorigin="anonymous"></script>
@@ -21,12 +26,7 @@
 
   <script src="http://code.highcharts.com/highcharts.js"></script>
   <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-  <style>
-    #sidebar div a:hover {
-        background-color: #e5eaef;
-    }
-  </style>
+  
 </head>
 
 <body>
@@ -47,27 +47,23 @@
         {% block content %}{% endblock %}
       </div>
       <!-- Sidebar -->
-      <div class="sidebar col-md-2 order-md-2">
+      <div id="sidebar" class="sidebar order-md-2">
         <h3 class="mb-3">Sidebar</h3>
-        <ul class="row list-group mb-3">
-          <li class="list-group-item"><a href="/search_game">Search game</a></li>
+        <div class="list-group">
+          <a class="list-group-item" href="/search_game">Search game</a>
           {% if user.is_authenticated %}
-              <li class="list-group-item"><a href="/my_games">My games</a></li>
-              <li class="list-group-item"><a href="/wishlist">Wishlist</a></li>
-              <li class="list-group-item"><a href="/profile">Profile</a></li>
-              </ul><ul class="row list-group mb-3">
+              <a class="list-group-item" href="/my_games">My games</a>
+              <a class="list-group-item" href="/wishlist">Wishlist</a>
+              <a class="list-group-item" href="/profile">Profile</a>
               {% if user.userprofile.is_developer %}
-                  <li class="list-group-item"><a href="/add_game">Add game</a></li>
-                  <li class="list-group-item"><a href="/uploaded_games">Uploaded games</a></li>
-                  <li class="list-group-item"><a href="/statistics">Games statistics</a></li>
-                  </ul><ul class="row list-group mb-3">
+                  <a class="list-group-item" href="/uploaded_games">Uploaded games</a>
+                  <a class="list-group-item" href="/statistics">Games statistics</a>
               {% endif %}
               <a class="list-group-item" href="/logout"> Logout </a>
           {% else %}
-              </ul><ul class="row list-group mb-3">
-              <li class="list-group-item"><a href="/signup"> Signup </a></li>
-              <li class="list-group-item"><a href="/activation"> Activate account </a></li>
-              <li class="list-group-item"><a href="/login"> Login </a></li>
+              <a class="list-group-item" href="/signup"> Signup </a>
+              <a class="list-group-item" href="/restore_account"> Restore account </a>
+              <a class="list-group-item" href="/login"> Login </a>
           {% endif %}
         </div>
       </div>
