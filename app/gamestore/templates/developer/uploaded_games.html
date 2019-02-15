@@ -4,9 +4,9 @@
 
 {% block content %}
 
-<h2>Uploaded games</h2>
+<h2 class="mb-3">Uploaded games</h2>
 
-<a class="btn btn-outline-primary btn-block" href="/add_game" role="button">Add game</a>
+{% include 'extra/game_search_bar.html' %}
 
 {% include 'games/games_list.html' %}
 

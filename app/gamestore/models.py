@@ -25,6 +25,7 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=200, blank=True)
     photo_url = models.URLField(blank=True)
     role = models.CharField(max_length=1, choices=ROLE_CHOICES, default=PLAYER)
+    
     class Meta:
         ordering = ["user_id"]
 
@@ -38,12 +39,15 @@ class Game(models.Model):
     name = models.CharField(max_length=50)
     price = models.FloatField()
     picture_url = models.URLField(blank=True)
-    description = models.TextField(max_length=200, blank=True)
+    description = models.TextField(max_length=500, blank=True)
     game_url = models.URLField()
     date = models.DateField(default=date.today)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     developer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='developer')
     age_limit = models.PositiveSmallIntegerField()
+
+    def get_developer(self):
+        return self.developer
 
     class Meta:
         ordering = ["-date", "name"]
@@ -53,6 +57,16 @@ class Purchase(models.Model):
     buyer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='buyer')
     purchased_game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='purchased_game')
     ref = models.CharField(max_length=50, blank=True)
+    complete = models.BooleanField(default=False)
+
+    def is_complete(self):
+        if self.complete == True:
+            return True
+        else:
+            return False
+
+    def get_purchased_game(self):
+        return self.purchased_game
 
     class Meta:
         ordering = ["-date"]

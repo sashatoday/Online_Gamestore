@@ -1,7 +1,8 @@
 #################################################
 ##### This view provides actions related     ####
-##### to games actions:                      ####
+##### to games:                              ####
 #####     * search_game                      ####
+#####     * apply_filter                     ####
 #####     * show_my_games                    ####
 #####     * show_wishlist                    ####
 #####     * show_game_description            ####
@@ -17,15 +18,42 @@ import json
 from gamestore.constants import *
 from django.http import JsonResponse
 from hashlib import md5
+from django.core.exceptions import ObjectDoesNotExist
+from gamestore.forms import SearchForm
 
 def search_game(request):
-
-    # TODO: process search input and filter objects
+    
+    ###### get all games and apply filters #######
     games = Game.objects.all()
+    form, games, search_applied = apply_filter(request, games)
     args = {
         'games' : games,
+        'form' : form,
+        'search_applied' : search_applied,
     }
     return render(request, SEARCH_GAME_HTML, args)
+
+def apply_filter(request, games):
+
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+    else:
+        form = SearchForm()
+    search_applied = False
+    
+    ####### get filter values ###########
+    if 'searchgame' in request.POST:
+        search_applied = True
+        search_key = request.POST.get('search_key', False)
+        category = request.POST.get('category', False)
+        filter = request.POST['sort_type']
+        
+        ####### get new list of games ###########
+        if category == 'ALL':
+            games = Game.objects.filter(name__contains=search_key).order_by(filter)
+        else:
+            games = Game.objects.filter(name__contains=search_key, category=category).order_by(filter)
+    return form, games, search_applied
 
 @login_required(login_url='/login/')
 def show_my_games(request):
@@ -34,12 +62,16 @@ def show_my_games(request):
     user = request.user.userprofile
 
     ########  get list of purchased games ########
-    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
-    games = Game.objects.all()
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
+
+    ########  apply filters  #####################
+    form, purchased_games, search_applied = apply_filter(request, purchased_games)
 
     ########  prepare arguments  ################
     args = {
         'games' : purchased_games,
+        'form' : form,
+        'search_applied' : search_applied,
     }
     return render(request, MY_GAMES_HTML, args)
 
@@ -56,20 +88,28 @@ def show_wishlist(request):
 
     ########  get list of wished games  ##########
     wished_games = Game.objects.filter(wished_game__in=WishList.objects.filter(potential_buyer=user))
-    games = Game.objects.all()
+
+    ########  apply filters  #####################
+    form, wished_games, search_applied = apply_filter(request, wished_games)
 
     ########  prepare arguments  ################
     args = {
         'games' : wished_games,
         'wishlist' : True,
+        'form' : form,
+        'search_applied' : search_applied,
     }
     return render(request, WISHLIST_HTML, args)
 
-@login_required(login_url='/login/')
 def show_game_description(request, game_id):
 
     ########  initialize variables  ##############
-    user = request.user.userprofile
+    if request.user.is_authenticated:
+        user = request.user.userprofile
+        anonym = False
+    else:
+        user = None
+        anonym = True
     game = get_object_or_404(Game, id=game_id)
 
     ########  check wishlist  ####################
@@ -86,12 +126,13 @@ def show_game_description(request, game_id):
 
     ########  check ownership  ###################
     owner = False
-    if game.developer == request.user.userprofile:
-        owner = True
+    if user:
+        if game.developer == request.user.userprofile:
+            owner = True
 
     ########  check if purchased  ################
     purchased_game = False
-    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
     if game in purchased_games:
         purchased_game = True
 
@@ -102,6 +143,7 @@ def show_game_description(request, game_id):
     args = {
         'game' : game,
         'owner' : owner,
+        'anonym' : anonym,
         'purchased_game' : purchased_game,
         'scores' : scores,
         'saved_game' : saved_game,
@@ -110,11 +152,18 @@ def show_game_description(request, game_id):
 
 @login_required(login_url='/login/')
 def buy_game(request, game_id):
-    game = get_object_or_404(Game, id=game_id)
-    purchase = Purchase.objects.filter(buyer=request.user.userprofile, purchased_game=game) #check if purchase exists
-    if purchase:
-        return redirect('index')
-    pid = game.id #payment ID
+    user = request.user.userprofile
+    game = get_object_or_404(Game, id=game_id) #return 404 if game not found
+    if game.get_developer() == user:
+        return redirect('play_game', game_id=game.id) #developers cannot buy their own games...
+    try:
+        purchase = Purchase.objects.get(buyer=user, purchased_game=game) #check if purchase is found
+        if purchase.is_complete(): #if the purchase is already completed
+            return redirect('play_game', game_id=game.id) #redirect user to the play game template
+    except ObjectDoesNotExist: #no purchase found, lets create a new one :)
+        purchase = Purchase(buyer=user, purchased_game=game) #create a new purchase
+        purchase.save()
+    pid = purchase.id #payment id (PID)
     amount = game.price
     checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
     m = md5(checksumstr.encode("ascii"))
@@ -127,19 +176,19 @@ def buy_game(request, game_id):
         'game': game
     }
     return render(request, BUY_GAME_HTML, args)
-
+    
 @login_required(login_url='/login/')
 def play_game(request, game_id):
 
     ########## initialize variables #############
     user = request.user.userprofile
     game = get_object_or_404(Game, id=game_id)
-    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user))
+    purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
     owner = False
     if game.developer == user:
         owner = True
     if game not in purchased_games and not owner:
-        return redirect('search_game')
+        return redirect('buying_game', game_id=game.id)
     args = {
         'game' : game,
     }

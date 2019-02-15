@@ -5,6 +5,7 @@
 #####     * add_game                               ####
 #####     * edit_game                              ####
 #####     * show_statistics                        ####
+#####     * show_agreement                         ####
 #####     * report_successful_game_adding          ####
 #######################################################
 
@@ -15,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from gamestore.constants import *
 from django.db.models import Count, Sum
+from gamestore.views.game import apply_filter
 
 @login_required(login_url='/login/')
 def show_uploaded_games(request):
@@ -26,9 +28,14 @@ def show_uploaded_games(request):
     ########  get list of uploaded games  ########
     games = Game.objects.filter(developer=request.user.userprofile)
 
+    ########  apply filters  #####################
+    form, games, search_applied = apply_filter(request, games)
+
     ########  prepare arguments  #################
     args = {
         'games' : games,
+        'form' : form,
+        'search_applied' : search_applied,
     }
     return render(request, UPLOADED_GAMES_HTML, args)
 
@@ -108,7 +115,7 @@ def show_statistics(request):
     total_purchases = 0
     for game in games:
         ## get list of purchases for each game by date ##
-        purchases = Purchase.objects.filter(purchased_game=game).values_list('date').annotate(count=Count('pk')).order_by('date')
+        purchases = Purchase.objects.filter(purchased_game=game, complete=True).values_list('date').annotate(count=Count('pk')).order_by('date')
         ## count the total number of purchases for the game ##
         total = purchases.aggregate(Sum('count'))['count__sum']
         if total:
@@ -129,6 +136,16 @@ def show_statistics(request):
     }
     return render(request, GAMES_STATISTICS_HTML, args)
 
+@login_required(login_url='/login/')
+def show_agreement(request):
+
+    ########  initial checks  ####################
+    if not request.user.userprofile.is_developer():
+        return redirect('search_game')
+
+    return render(request, DEVELOPER_AGREEMENT_HTML)
+
+@login_required(login_url='/login/')
 def report_successful_game_adding(request):
     args = {
         'thanks_for' : "adding the game",

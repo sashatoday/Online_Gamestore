@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h2>Login</h2>
+<h2 class="mb-3">Login</h2>
 <form method="post" action="">{% csrf_token %}
   {% if errors %}
       <small style="color:red">
@@ -29,7 +29,10 @@
     <div class="row">
       <div class="col-md-6 offset-md-6">
         <button type="submit" class="btn btn-primary btn-block">Login</button>
-        <span>New here? <a href="/signup">Sign up</a></span>
+        <div class="my-3">
+            <span>Forgot password? <a href="/reset_password">Reset your password</a></span><br>
+            <span>New here? <a href="/signup">Sign up</a></span>
+        </div>
       </div>
     </div>
   </form>

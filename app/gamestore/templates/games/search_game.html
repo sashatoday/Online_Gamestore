@@ -4,14 +4,9 @@
 
 {% block content %}
 
-<h2>Search game</h2>
+<h2 class="mb-3">Search games</h2>
 
-<form method="post" action="">{% csrf_token %}
-  <div class="row">
-    <input class="form-control search-query col-9 mr-4 ml-3" type="text" id="search" maxlength="50" name="search">
-    <a class="btn btn-primary col-2" href="#" role="button">Search</a>
-  </div>
-</form>
+{% include 'extra/game_search_bar.html' %}
 
 {% include 'games/games_list.html' %}
 

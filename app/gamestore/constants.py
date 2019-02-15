@@ -41,6 +41,17 @@ CATEGORY_CHOICES = (
         ('OTHER', 'Other'),
     )
 
+SORT_CHOICES = (
+        ('-date', 'Fresh first'),
+        ('date', 'Old first'),
+        ('name', 'Title abc'),
+        ('-name', 'Title cba'),
+        ('price', 'Low price first'),
+        ('-price', 'High price first'),
+        ('age_limit', 'Low age limit'),
+        ('-age_limit', 'High age limit'),
+    )
+
 ### Payment constants 
 sid = 'MusVinAle'
 secret_key = '510ed4cc72a95c1972a18cedc5d16318'
@@ -50,11 +61,18 @@ secret_key = '510ed4cc72a95c1972a18cedc5d16318'
 BASE_HTML = 'base.html'
 THANKS_HTML = 'extra/thanks.html'
 
-ACTIVATE_ACCOUNT_HTML = 'account/activate_account.html'
+ACTIVATE_ACCOUNT_HTML = 'account/restore_account.html'
 LOGIN_HTML = 'account/login.html'
 SIGNUP_HTML = 'account/signup.html'
 PROFILE_HTML = 'account/profile.html'
 PROFILE_PREVIEW_HTML = 'account/profile_preview.html'
+RESET_PASS_HTML = 'account/reset_password.html'
+SET_NEW_PASS_HTML = 'account/set_new_password.html'
+USER_AGREEMENT_HTML = 'account/user_agreement.html'
+
+EMAIL_RESET_PASS_HTML = 'email/acc_reset_pass.html'
+ACTIVATE_EMAIL_HTML = 'email/acc_active_email.html'
+EMAIL_RESTORE_ACCOUNT_HTML = 'email/acc_active_account.html'
 
 SEARCH_GAME_HTML = 'games/search_game.html'
 MY_GAMES_HTML = 'games/my_games.html'
@@ -67,6 +85,7 @@ UPLOADED_GAMES_HTML = 'developer/uploaded_games.html'
 ADD_GAME_HTML = 'developer/add_game.html'
 EDIT_GAME_HTML = 'developer/edit_game.html'
 GAMES_STATISTICS_HTML = 'developer/games_statistics.html'
+DEVELOPER_AGREEMENT_HTML = 'developer/developer_agreement.html'
 
 PAYMENT_SUCCESS_HTML = 'payment/success.html'
 PAYMENT_ERROR_HTML = 'payment/error.html'

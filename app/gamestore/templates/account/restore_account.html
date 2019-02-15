@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Activate account{% endblock %}
+{% block title %}Restore account{% endblock %}
 
 {% block content %}
 
-<h2>Activate account</h2>
+<h2 class="mb-3">Activate account</h2>
 <p>You can activate your account if you deleted it before.</p>
 <br>
 <form method="post" action="">{% csrf_token %}
@@ -30,7 +30,10 @@
     <div class="row">
       <div class="col-md-6 offset-md-6">
         <button type="submit" class="btn btn-primary btn-block">Activate</button>
-        <span>New here? <a href="/signup">Signup</a></span>
+        <div class="my-3">
+            <span>Forgot password? <a href="/reset_password">Reset your password</a></span><br>
+            <span>New here? <a href="/signup">Signup</a></span>
+        </div>
       </div>
     </div>
   </form>
