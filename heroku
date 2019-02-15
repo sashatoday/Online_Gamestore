@@ -1,0 +1,9 @@
+
+
+git push heroku heroku:master
+
+heroku config:set DISABLE_COLLECTSTATIC=1
+
+git push heroku heroku:master
+
+heroku run python manage.py migrate
