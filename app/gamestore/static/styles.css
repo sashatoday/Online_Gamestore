@@ -1,0 +1,19 @@
+.social-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 10px 0px;
+}
+
+.social-media i {
+    font-size: 30px;
+}
+
+.social-media a:hover {
+    text-decoration: none;
+}
+
+#sidebar div a:hover {
+    background-color: #e5eaef;
+}

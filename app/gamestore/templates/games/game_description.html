@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ game.name }}{% endblock %}
+{% block title %}{{ game.name }} {% endblock %}
+
+{% block meta_description %}{{ game.description }} {% endblock %}
+{% block meta_title %}{{ game.name }} {% endblock %}
+{% block meta_image %}{{ game.picture_url }} {% endblock %}
 
 {% block content %}
 
@@ -19,6 +23,29 @@
 </article> 
 <article class="card-body p-5">
   <div>
+    <div class="social-media">
+      <div>
+          <strong>Share this game!</strong>
+      </div>
+      <div>
+       <!-- Twitter -->
+      <a href="http://twitter.com/share?url={{ request.build_absolute_uri }}&text=Play this awesome game:&via=wsdgamestore" target="_blank" class="share-btn twitter">
+          <i class="fab fa-twitter-square"></i>
+      </a>
+      <!-- Reddit -->
+      <a href="http://reddit.com/submit?url={{ request.build_absolute_uri }}&amp;title=Play this awesome game!" target="_blank">
+          <i class="fab fa-reddit-square"></i>
+      </a>
+      <!-- Facebook -->
+      <a href="http://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+          <i class="fab fa-facebook"></i>
+      </a>
+      <!-- Email -->
+      <a href="mailto:?subject=Play this awesome game!&body=Play this awesome game at: {{ request.build_absolute_uri}}" class="share-btn email">
+          <i class="fa fa-envelope"></i>
+      </a>
+      </div>
+    </div>
       <h5 class="title mb-3">Best scores</h5>
     <table style="width:100%">
       {% for score in scores %}
