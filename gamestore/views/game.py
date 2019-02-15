@@ -20,6 +20,7 @@ from django.http import JsonResponse
 from hashlib import md5
 from django.core.exceptions import ObjectDoesNotExist
 from gamestore.forms import SearchForm
+from django.contrib.sites.shortcuts import get_current_site
 
 def search_game(request):
     
@@ -168,12 +169,14 @@ def buy_game(request, game_id):
     checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, sid, amount, secret_key)
     m = md5(checksumstr.encode("ascii"))
     checksum = m.hexdigest() #checksum is sent to payment service
+    domain_url = get_current_site(request).domain
     args = {
         'pid': pid,
         'sid': sid,
         'amount': amount,
         'checksum': checksum,
-        'game': game
+        'game': game,
+        'domain_url' : domain_url,
     }
     return render(request, BUY_GAME_HTML, args)
     
