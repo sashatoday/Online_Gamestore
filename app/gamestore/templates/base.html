@@ -56,6 +56,7 @@
               <a class="list-group-item" href="/wishlist">Wishlist</a>
               <a class="list-group-item" href="/profile">Profile</a>
               {% if user.userprofile.is_developer %}
+                  <a class="list-group-item" href="/add_game">Add game</a>
                   <a class="list-group-item" href="/uploaded_games">Uploaded games</a>
                   <a class="list-group-item" href="/statistics">Games statistics</a>
               {% endif %}
