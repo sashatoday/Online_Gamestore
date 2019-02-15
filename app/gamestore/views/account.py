@@ -133,6 +133,8 @@ def signup(request):
                     gender=form.cleaned_data['gender']
                 )
                 userProfile.save()
+                
+                ####### send activation email ###########
                 current_site = get_current_site(request)
                 mail_subject = 'Activate your account.'
                 message = render_to_string('acc_active_email.html', {
@@ -197,6 +199,7 @@ def reset_password(request):
         form = CustomPasswordResetForm(request.POST)
         if form.is_valid():
             try:
+                ####### send activation email ###########
                 to_email = form.cleaned_data['email']
                 user = User.objects.get(email=to_email)
                 user.is_active = False

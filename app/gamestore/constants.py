@@ -42,12 +42,14 @@ CATEGORY_CHOICES = (
     )
 
 SORT_CHOICES = (
-        ('name', 'Title ↑'),
-        ('-name', 'Title ↓'),
-        ('price', 'Price ↑'),
-        ('-price', 'Price ↓'),
-        ('age_limit', 'Age limit ↑'),
-        ('-age_limit', 'Age limit ↓'),
+        ('-date', 'Fresh first'),
+        ('date', 'Old first'),
+        ('name', 'Title abc'),
+        ('-name', 'Title cba'),
+        ('price', 'Low price first'),
+        ('-price', 'High price first'),
+        ('age_limit', 'Low age limit'),
+        ('-age_limit', 'High age limit'),
     )
 
 ### Payment constants 

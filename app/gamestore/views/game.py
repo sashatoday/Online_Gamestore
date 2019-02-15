@@ -22,7 +22,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from gamestore.forms import SearchForm
 
 def search_game(request):
-
+    
+    ###### get all games and apply filters #######
     games = Game.objects.all()
     form, games, search_applied = apply_filter(request, games)
     args = {
@@ -39,11 +40,15 @@ def apply_filter(request, games):
     else:
         form = SearchForm()
     search_applied = False
+    
+    ####### get filter values ###########
     if 'searchgame' in request.POST:
         search_applied = True
         search_key = request.POST.get('search_key', False)
         category = request.POST.get('category', False)
         filter = request.POST['sort_type']
+        
+        ####### get new list of games ###########
         if category == 'ALL':
             games = Game.objects.filter(name__contains=search_key).order_by(filter)
         else:
