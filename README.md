@@ -67,7 +67,7 @@ In 'Game statistics' you can see your sales on a chart for the whole period of p
 | Basic developer functionalities | 200/200 | All requirements are implemented. Developer can add game, edit, delete, see sales statistics (chart with number of purchases by date and table with total numbers of purchases). Developer can manage games that he/she uploaded. |
 | Game/service interaction | 150/200 | (!!!!TODO) Play view process SCORE, SAVE and LOAD request, i.e., you can save score, save game state and load game state respectively. |
 | Quality of Work | 75/100 | We think that requirements are satisfied apart testing. (!!!!TODO) |
-| Non-functional requirements | 200/200 | Project plan is done. Final documentation is done. We get great experience during project management and [teamworking](#<teamwork>). |
+| Non-functional requirements | 200/200 | Project plan is done. Final documentation is done. We get great experience during project management and [teamworking](#teamwork). |
 
 #### More features
 
@@ -81,7 +81,7 @@ In 'Game statistics' you can see your sales on a chart for the whole period of p
 | Mobile Friendly | 0/50 |  |
 | Social media sharing | 50/50 |  |
 
-## [Team work](#teamwork)
+## <a name="teamwork"></a>Team work
 
 We controlled the development process in Trello where we assigned tasks to team members as it is shown in the screenshot:
 
