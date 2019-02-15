@@ -63,10 +63,9 @@ def show_my_games(request):
 
     ########  get list of purchased games ########
     purchased_games = Game.objects.filter(purchased_game__in=Purchase.objects.filter(buyer=user, complete=True))
-    games = Game.objects.all()
 
     ########  apply filters  #####################
-    form, games, search_applied = apply_filter(request, games)
+    form, purchased_games, search_applied = apply_filter(request, purchased_games)
 
     ########  prepare arguments  ################
     args = {
@@ -89,10 +88,9 @@ def show_wishlist(request):
 
     ########  get list of wished games  ##########
     wished_games = Game.objects.filter(wished_game__in=WishList.objects.filter(potential_buyer=user))
-    games = Game.objects.all()
 
     ########  apply filters  #####################
-    form, games, search_applied = apply_filter(request, games)
+    form, wished_games, search_applied = apply_filter(request, wished_games)
 
     ########  prepare arguments  ################
     args = {
