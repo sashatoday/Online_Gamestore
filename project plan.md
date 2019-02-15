@@ -140,7 +140,7 @@ We extend Django&#39;s User model with OneToOneField relationship in UserAccount
 
 The figure below shows the ER modeling for our tables.
 
-![figure](models.png "Models")
+![figure](readme_pictures/models.png "Models")
 
 ### 3.3. Views
 
@@ -167,11 +167,11 @@ The figure below shows the ER modeling for our tables.
 - We don&#39;t plan to meet regularly, we will decide about meetings during the development process. For example, we found it necessary to discuss in person how our models should look like, so we had a meeting for this. For now, we plan to communicate online and make appointments if it will be necessary.
 - Apart from the **Telegram** group, we have a **Google Drive** folder. We will use it for some additional documents like current schemes, tasks, notes, etc. to summarise our ideas from the Telegram chat. It is easier to find some information in one place instead of searching chat history. Moreover, we will control the development process in **Trello** , where we will assign tasks to team members as it is shown in the screenshot:
 
-![figure](trello2.png "Trello")
+![figure](readme_pictures/trello2.png "Trello")
 
 - A single card in trello will represent a small deliverable feature of the web service. In our weekly follow up meeting we will update the orders of the cards in the backlog to avoid dependencies between tasks that eventually will arise when we go deep in to the project. Moreover, we will discuss in to the details of the features&#39; implementation and update the card description to guarantee that every team member is on the same page and knows what he/she is supposed to do. Card detail will look like the screenshot below
 
-![figure](trello1.png "Trello")
+![figure](readme_pictures/trello1.png "Trello")
 
 - When team member starts working on the features, first he/she moves the task from the &quot;Backlog&quot; to &quot;In Progress&quot; column in trello and create a branch in the repository. One or more team member can participate in a feature. When the work is ready, the developer will do a pull request to another team member and move the trello card to &quot;In Test&quot; column. Then the code reviewer checks the code and run manual/automated test to guarantee that all the functionalities are implemented as expected. If everything went well, the code reviewer merges the branch to master and move the card to &quot;Done&quot; column.
 

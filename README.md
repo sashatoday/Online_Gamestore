@@ -51,7 +51,7 @@ Online Game Store for JavaScript games &ndash; Project for Web Software Developm
 
 We controlled the development process in Trello , where we assigned tasks to team members as it is shown in the screenshot:
 
-![figure](trello_development.png "Trello development")
+![figure](readme_pictures/trello_development.png "Trello development")
 
 Below is a list of tasks that each team member has completed.
 
