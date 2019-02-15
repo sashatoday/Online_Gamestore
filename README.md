@@ -1,214 +1,129 @@
-# Project Plan
+# Game Store
 
-## 1. Team
+Online Game Store for JavaScript games &ndash; Project for Web Software Development course at Aalto University.
+
+## Links
+
+#### App in Heroku
+[django-game-store.herokuapp.com/](https://django-game-store.herokuapp.com/)
+
+#### Project Plan
+[Project Plan](project plan.md)
+
+#### Description
+
+This project is a prototype of real game store service which provides functionality for players and game developers. Players can search games, buy them, save to wishlist and play. Developers can add new games through external link to html page with JavaScript game. Also, they are able to track number and dates of games sales.
+
+Game Store uses Django Framework (Python 3.6) and such tools as Bootstrap, JQuery, HighCharts.
+
+## Instructions to use application
+
+Online Game Store is hosted at [Heroku](https://django-game-store.herokuapp.com/).
+
+A guest user is able to search games and see game details. Other functionality (buy, save, play) is available after authorization.
+
+To register in our service you should click to 'Sign Up' and provide the following data: username, first name, last name, email, birthday, gender, password and mark that you read User Agreement (you can read by the link).
+
+Note that user must be at least 14 years old and at most 120 years old. The first limitation is due to cash transactions when purchasing games. In our service, people under the age of 14 do not have the authority to perform these operations. The second restriction is added to avoid fictional dates.
+
+After registration, you get an email with the link on address that you provided. Please click on this link, thus, we can validate your email address and make your user profile active.
+
+When you confirm your email, you can login. Click 'Login' and type your username and password.
+
+All new users have 'Player' role that means that you can only player functionality (search, buy, save, play). If you want to upload your own games and track statistics, please, change your role to 'Developer' on profile page.
+
+Click 'Profile' on sidebar menu. Here your current personal data is shown, and you can update it, change your password or delete account. To figure out how other users see your profile, click the link on the top of the page.
+
+After you delete your account, your username and scores will be shown for users but the other info is hidden and profile preview says that the account is deleted.
+
+If you changed your mind and decided to return to our service, you can restore your account by clicking 'Restore account'. Just type username and your last password. Then, repeat process with email letter like after registration.
+
+In game searching, you can choose all games or any desired category. You can apply empty search or type some search key. By default, search results are sorted in descending order of uploading date, i.e., fresh games come first. Try to sort games by date, price, title or age limit.
+
+Search functionality is provided in other sections as well. Check at my games, wishlist or uploaded games.
+
+'My games' include games that you bought. Wishlist contains games that you saved to buy later. You can delete any game from wishlist if you don't want it anymore. To save to wishlist you need to click button 'Save to wishlist' in game description view.
+
+Click on game title or picture to open detailed game view. While short game preview shows game picture, title, category, price, age limit, detailed view gives you game descriptions, developer username and table of 10 best scores. In addition, here you can share this game in social media, e.g., Twitter, Reddit, Facebook or send by email.
+
+(!!!TODO) To buy game you must be older than game age restriction. See age limit field in game description. Payment is made using [mock payment service](http://payments.webcourse.niksula.hut.fi/ ) provided by WSD course.
+
+When you chose 'Developer' role, you can add games, edit added games, delete them, see list of uploaded games and track games sales.
+
+To add game you should provide at least title, price, category, game URL and age limit. Age limit is used to check that user is older than your stated limit. To complete procedure, you have to mark combobox that you understand Developer agreement. Additionally, you can paste game description and picture URL. By default, there will be simple default image.
+
+'Uploaded games' are developer's game inventory.
+
+In 'Game statistics' you can see your sales on a chart for the whole period of purchasing. You can click on series to add or remove them from plot. Below is the table with total numbers of sales for each game.
+
+## Implemented features
+
+#### Mandatory requirements
+
+| **Features** | **Supposed points** | **Comments &ndash; issues and success** |
+| --- | --- | --- |
+| Authentication  | 200/200 | Implemented actions: login/logout, signup, restore account, reset password, set new password. All users register as players and then they are able to change their status on profile page. We implemented email validation using Django's Console Backend.  |
+| Basic player functionalities | 300/300 | All requirements are implemented. Players can search games, buy them, save to wishlist and play games that were bought. |
+| Basic developer functionalities | 200/200 | All requirements are implemented. Developer can add game, edit, delete, see sales statistics (chart with number of purchases by date and table with total numbers of purchases). Developer can manage games that he/she uploaded. |
+| Game/service interaction | 150/200 | (!!!!TODO) Play view process SCORE, SAVE and LOAD request, i.e., you can save score, save game state and load game state respectively. |
+| Quality of Work | 75/100 | We think that requirements are satisfied apart testing. (!!!!TODO) |
+| Non-functional requirements | 200/200 | Project plan is done. Final documentation is done. We get great experience during project management and [teamworking](#<teamwork>). |
+
+#### More features
+
+| **Features** | **Supposed points** | **Comments** |
+| --- | --- | --- |
+| Wishlist | ??? | We implemented Wishlist for games as planned at the beginning of the development (see [Project Plan](project plan.md)). Users can save desired games here while they can not buy them. |
+| RESTful API | ???/100  |  |
+| Own game | 0/100 |  |
+| Save/load and resolution feature | 0/100 |  |
+| 3rd party login | 0/100 |  |
+| Mobile Friendly | 0/50 |  |
+| Social media sharing | 50/50 |  |
+
+## [Team work](#teamwork)
+
+We controlled the development process in Trello where we assigned tasks to team members as it is shown in the screenshot:
+
+![figure](readme_pictures/trello_development.png "Trello development")
+
+Below is a list of tasks that each team member has completed.
+
+#### Musse Alemu `717869`
+
+* Implemented **models**
+* Applied **bootstrap** for login and signup templates
+* Implemented **REST API**
+* Implemented games **search** by title
+
+#### Vincent Eurasto `711690`
+
+* Implemented forms for **update profile** and **change password** actions as well as view and template for them
+* Made improvements for login and register views and templates
+* Implemented **game/service interaction**
+* Implemented view and template for **play game** action
+* Implemented view and template for **buy game** action
+* Implement **email validation** (send a letter to email after registering)
+* Added **social media** sharing
+
+#### Aleksandra Zhuravleva `723523`
+
+* Implemented **login** and **signup** forms, views and templates
+* Implemented forms, views and templates for **add and edit game** actions (for developers)
+* Implemented view and template for **uploaded games** (for developers) and **my games** (for all)
+* Implemented view and template for **game details and scores**
+* Implemented view and template for **profile preview**
+* Added functionality to **delete and activate user account**
+* Implemented view and template for **sales statistics** (for developers)
+* Implemented view and template for **wishlist**
+* Implemented games **search** by category, added filters to sort by date, title, age limit and price
+
+In addition to the presented tasks, each of us reviewed Gitlab merge requests from other team members.
+
+## Authors
+
 ```
 723523 Aleksandra Zhuravleva
 711690 Vincent Eurasto
 717869 Musse Alemu
 ```
-## 2. Goal
-
-In this project, we will develop an online game store for JavaScript games. We aim to meet minimum requirements as well as additional ones and strive for the best grade. In addition to that, our goals are to gain experience in team development of a web project and to learn much more about the Django framework.
-
-## 3. Plans
-
-### 3.1. Additional requirements that we plan to implement
-
-We are going to implement all the mandatory features first and after that if we have time we will start to implement additional features.
-
-**1. Save/load and resolution feature (0-100 points)**
-
-We will save and load users current game state with the window.postMessage protocol. When saving gamestate, we will use Gamestate model to save it into database.
-
-**2. 3rd party login (0-100 points)**
-
-We will try to integrate Facebook and/or Google authentication and authorisation to the web service. We will filter out personal information from Facebook and/or Google OAuth. So that users can use our system without the need to manually filling the registration form.
-
-**3. RESTful API (0-100 points)**
-
-We will implement RESTful API for the web service. The table below will summarize the API methods and endpoints.
-
-| **Method** | **Endpoint** | **Description** |
-| --- | --- | --- |
-| GET | /api/games | Return list of available games in the inventory |
-| GET | /api/games/{id} | Return the specified game information |
-| POST | /api/games/{id} | Add new game to the inventory |
-| PUT | /api/games/{id} | Update the specified game |
-| PATCH | /api/games/{id} | Update the specified game partally |
-| DELETE | /api/games/{id} | Delete the specified game from the inventory |
-| GET | /api/users/ | Return list of users |
-| GET | /api/users/{id} | Return the specified user |
-| POST | /api/users/{id} | Add a new user |
-| PUT | /api/users/{id} | Update the specified user |
-| PATCH | /api/users/{id} | Update the specified user partially |
-| DELETE | /api/users/{id} | Delete the specified user |
-| GET | /api/users/{id}/purchases | Return list of all purchases related to  the specified user |
-| GET | /api/users/{id}/purchases/{id}  | Return single purchase information related to the specified user |
-| GET | /api/scores | Return all scores sorted by score value in descending order |
-| GET | /api/scores/{id} | Return single score |
-| POST | /api/scores/{id} | Add new score to scores table |
-| PUT | /api/scores/{id} | Update specified  score value |
-| PATCH | /api/scores/{id} | Update specified score value partially |
-| DELETE | /api/scores/{id} | Delete specified score value |
-
-
-**4. Social media sharing (0-50 points)**
-
-We will integrate Facebook and/or twitter sharing options. So that players can share their favourite game and top score. The user clicking the shared link will be redirected to game marketplace.
-
-**5. Mobile Friendly**
-
-We will use &quot;Mobile first&quot; approach when we develop the system, i.e, we first target and design the system assuming smaller devices which can easily be customised to match bigger screens.
-
-**6. Own game**
-
-**7. Wishlist**
-
-If we manage to go according to our schedule, we will have the time to implement wishlist functionality. Users will have the possibility to add games to their wishlist if they can&#39;t purchase a game right away. Also from their account there will be a possibility to see list of games from their wishlist.
-
-### 3.2. Models
-
-We have one model for developers and players. When you register, you are automatically a player. If you want to be a developer you need to change your status in a profile page, then you will have possibilities to stay a player (buy and play games) but also to load and edit your games.
-
-We extend Django&#39;s User model with OneToOneField relationship in UserAccount. This model includes Purchases which are described through Purchase model and Wishlist which is presented as a list of Games. Each Game has scores which we define with Score model.
-
-**1. UserAccount**
-
-| Prop      | Type                                |
-|-----------|-------------------------------------|
-| id        | AutoField                           |
-| user      | OneToOneField(extend User model)    |
-| birthDate | DateField                           |
-| gender    | CharField(Male, Female, Unknown)    |
-| country   | CharField                           |
-| city      | CharField                           |
-| address   | CharField                           |
-| bio       | TextField                           |
-| photoUrl  | URLField                            |
-| role      | CharField(Admin, Developer, Player) |
-
-**2. Game**
-
-| Prop        | Type                 |
-|-------------|----------------------|
-| id          | AutoField            |
-| price       | PositiveIntegerField |
-| pictureUrl  | URLField             |
-| description | TextField            |
-| gameUrl     | URLField             |
-| date        | DateField            |
-| category    | CharField            |
-| developer   | ForeignKey(User)     |
-
-**3. Purchase**
-
-| Prop          | Type             |
-|---------------|------------------|
-| id            | AutoField        |
-| date          | DateField        |
-| buyer         | ForeignKey(User) |
-| purchasedGame | ForeignKey(Game) |
-
-**4. Score**
-
-| Prop        | Type                 |
-|-------------|----------------------|
-| id          | AutoField            |
-| value       | PositiveIntegerField |
-| date        | DateField            |
-| scorer      | ForeignKey(User)     |
-| gameInScore | ForeignKey(Game)     |
-
-**5. Wishlist**
-
-| Prop           | Type             |
-|----------------|------------------|
-| id             | AutoField        |
-| date           | DateField        |
-| potentialBuyer | ForeignKey(User) |
-| wishedGame     | ForeignKey(Game) |
-
-**6. Gamestate**
-
-| Prop        | Type             |
-|-------------|------------------|
-| id          | AutoField        |
-| state       | TextField        |
-| date        | DateField        |
-| player      | ForeignKey(User) |
-| gameInState | ForeignKey(Game) |
-
-The figure below shows the ER modeling for our tables.
-
-![figure](models.png "Models")
-
-### 3.3. Views
-
-- Register
-- Login
-- Profile page (personal info)
-- MyGames view (purchases, wishlist)
-- Page with games and search field
-- Buy game view
-- Play game view
-- Game view (picture, description and scores)
-- Loaded games view (only for developers)
-- Load/edit game view (only for developers)
-- Sales statistics (only for developers)
-- ThankYou view (after purchasing)
-- Successful Registering
-
-
-## 4. Process and Time Schedule
-
-**4.1. Process**
-
-- We are going to start working when the third period begins. So we have 6 weeks to complete the project before the deadline.
-- We don&#39;t plan to meet regularly, we will decide about meetings during the development process. For example, we found it necessary to discuss in person how our models should look like, so we had a meeting for this. For now, we plan to communicate online and make appointments if it will be necessary.
-- Apart from the **Telegram** group, we have a **Google Drive** folder. We will use it for some additional documents like current schemes, tasks, notes, etc. to summarise our ideas from the Telegram chat. It is easier to find some information in one place instead of searching chat history. Moreover, we will control the development process in **Trello** , where we will assign tasks to team members as it is shown in the screenshot:
-
-![figure](trello2.png "Trello")
-
-- A single card in trello will represent a small deliverable feature of the web service. In our weekly follow up meeting we will update the orders of the cards in the backlog to avoid dependencies between tasks that eventually will arise when we go deep in to the project. Moreover, we will discuss in to the details of the features&#39; implementation and update the card description to guarantee that every team member is on the same page and knows what he/she is supposed to do. Card detail will look like the screenshot below
-
-![figure](trello1.png "Trello")
-
-- When team member starts working on the features, first he/she moves the task from the &quot;Backlog&quot; to &quot;In Progress&quot; column in trello and create a branch in the repository. One or more team member can participate in a feature. When the work is ready, the developer will do a pull request to another team member and move the trello card to &quot;In Test&quot; column. Then the code reviewer checks the code and run manual/automated test to guarantee that all the functionalities are implemented as expected. If everything went well, the code reviewer merges the branch to master and move the card to &quot;Done&quot; column.
-
-**4.2. Time Schedule**
-
-First two weeks will be hard so we should spend more on it.
-
-**Week 1 (Jan 7 - Jan 13)**
-We are going to implement a model for users and views/templates for login and registration actions, start working on some player models, views and templates.
-
-**Week 2 (Jan 14 - Jan 20)**
-We plan to develop all player and developer models, views, templates. Check first deployment process.
-
-**Week 3 (Jan 21 - Jan 27)**
-We aim to have stable models in the project at this moment, working payment service, and implement game/service interaction properly.
-
-**Week 4 (Jan 28 - Feb 3)**
-Second deployment with debug turned off; code review, working on additional requirements.
-
-**Week 5 (Feb 4 - Feb 10)**
-Finish work on additional requirements, testing, code review.
-
-**Week 5 (Feb 11 - Feb 17)**
-Final deployment to Heroku, write documentation.
-
-**19.2.2019 midnight (end of period III) - Final submission**
-
-**Project demonstration**
-
-
-
-## 5. Testing
-
-[https://docs.djangoproject.com/en/2.1/topics/testing/](https://docs.djangoproject.com/en/2.1/topics/testing/)
-
-We will write automated unit test to test modules of the application works as expected. Additionally, having the unit test as part of the development process will guarantee that newer changes in the application is not going to break the existing functionality.
-
-## 6. Risk Analysis
-
-As we said in section 4.2, our first two weeks will be difficult because we are planning to implement the most part of mandatory requirements. If we don&#39;t cope with planning tasks we&#39;ll understand this early. If it happens, we will revise our time schedule and decide to devote more time to the project or we will not implement some additional requirements. Also, we will consult through Piazza to get an experience of other student groups.
