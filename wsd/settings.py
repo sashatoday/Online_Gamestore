@@ -132,7 +132,7 @@ STATIC_ROOT = normpath(join(BASE_DIR, 'staticfiles'))
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    normpath(os.path.join(BASE_DIR, 'static'))
+    os.path.normpath(os.path.join(BASE_DIR, 'static'))
 )
 
 REST_FRAMEWORK = {
