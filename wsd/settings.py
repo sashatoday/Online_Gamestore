@@ -146,4 +146,4 @@ if "DYNO" in os.environ:
     DATABASES['default'] =  dj_database_url.config()
 
     DEBUG = False
-    ALLOWED_HOSTS = ['http://online-gamestore.herokuapp.com']
+    #ALLOWED_HOSTS = ['http://online-gamestore.herokuapp.com']
