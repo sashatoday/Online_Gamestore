@@ -186,12 +186,16 @@ def confirm_email(request, uidb64, token):
         return redirect('search_game')
 
 def set_password(request, uidb64, token):
+    if request.user.is_authenticated:
+        return redirect('profile')
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = False
+        user.save()
         setnewpasswordform = CustomPasswordSetForm(user=user)
         if request.method == 'POST':
             setnewpasswordform = CustomPasswordSetForm(data=request.POST, user=user)
@@ -219,8 +223,6 @@ def reset_password(request):
                 ####### send activation email ###########
                 to_email = form.cleaned_data['email']
                 user = User.objects.get(email=to_email)
-                user.is_active = False
-                user.save()
                 current_site = get_current_site(request)
                 mail_subject = 'Reset your password.'
                 message = render_to_string(EMAIL_RESET_PASS_HTML, {
