@@ -137,7 +137,13 @@ def show_game_description(request, game_id):
         purchased_game = True
 
     ########  find scores  #######################
-    scores = Score.objects.filter(game_in_score=game)[:10]
+    scores = Score.objects.filter(game_in_score=game).order_by('-value')
+    distinct_scores, scorers = [], []
+    for score in scores:
+        if score.scorer not in scorers:
+            distinct_scores.append(score)
+            scorers.append(score.scorer)
+    
 
     ########  prepare arguments  #################
     args = {
@@ -145,7 +151,7 @@ def show_game_description(request, game_id):
         'owner' : owner,
         'anonym' : anonym,
         'purchased_game' : purchased_game,
-        'scores' : scores,
+        'scores' : distinct_scores[:10],
         'saved_game' : saved_game,
     }
     return render(request, GAME_DESCRIPTION_HTML, args)
