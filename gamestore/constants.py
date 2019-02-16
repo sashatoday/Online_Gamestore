@@ -42,10 +42,10 @@ CATEGORY_CHOICES = (
     )
 
 SORT_CHOICES = (
-        ('-date', 'Fresh first'),
-        ('date', 'Old first'),
         ('name', 'Title abc'),
         ('-name', 'Title cba'),
+        ('-date', 'Fresh first'),
+        ('date', 'Old first'),
         ('price', 'Low price first'),
         ('-price', 'High price first'),
         ('age_limit', 'Low age limit'),

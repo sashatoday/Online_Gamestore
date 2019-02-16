@@ -5,7 +5,7 @@ Online Game Store for JavaScript games &ndash; Project for Web Software Developm
 ## Links
 
 #### App in Heroku
-[django-game-store.herokuapp.com/](https://django-game-store.herokuapp.com/)
+[django-game-store.herokuapp.com/](http://online-gamestore.herokuapp.com/search_game/)
 
 #### Project Plan
 [Project Plan](project plan.md)
@@ -18,7 +18,7 @@ Game Store uses Django Framework (Python 3.6) and such tools as Bootstrap, JQuer
 
 ## Instructions to use application
 
-Online Game Store is hosted at [Heroku](https://django-game-store.herokuapp.com/).
+Online Game Store is hosted at [Heroku](http://online-gamestore.herokuapp.com/search_game/).
 
 A guest user is able to search games and see game details. Other functionality (buy, save, play) is available after authorization.
 
