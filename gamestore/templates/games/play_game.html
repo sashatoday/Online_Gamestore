@@ -132,7 +132,9 @@
     });
 </script>
 <div>
-    <h3 class="mb-3">You are playing: <span class="text-danger">{{ game.name }}</span></h3>
+    <div>
+        <h3 class="mb-3">You are playing: <a href="/games/{{ game.id }}">{{ game.name }}</a></h3>
+    </div>
     <iframe id="game" src="{{ game.game_url }}"></iframe>
 </div>
 
