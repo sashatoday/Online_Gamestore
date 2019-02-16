@@ -25,7 +25,11 @@ SECRET_KEY = '@hgmcm6vh^o4!u!njw9s@az)rs1$vdh$3r2clo6scd$465_^qz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'http://online-gamestore.herokuapp.com'
+]
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -145,5 +149,5 @@ if "DYNO" in os.environ:
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
 
-    #DEBUG = False
+    DEBUG = False
     ALLOWED_HOSTS = ['*']
