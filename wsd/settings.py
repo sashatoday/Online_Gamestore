@@ -28,8 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'localhost',
-    'http://online-gamestore.herokuapp.com'
+    'localhost'
 ]
 
 EMAIL_USE_TLS = True
@@ -143,6 +142,6 @@ REST_FRAMEWORK = {
 #Heroku
 if "DYNO" in os.environ:
     DEBUG = False
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS += ['http://online-gamestore.herokuapp.com']
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
