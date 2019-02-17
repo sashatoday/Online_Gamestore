@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Own game</title>
+  <meta charset="utf-8" />
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script>
+
+    $(document).ready(function () {
+      "use strict";
+
+      let points = 0;
+      let message = '';
+
+      let drank = {
+        'beer': 0,
+        'wine': 0,
+        'shot': 0,
+        'water': 0
+      }
+
+      $(".game-button").click(function () {
+        let value = parseInt($(this).val());
+        if (points + value > 1000) {
+          alert("Please stop drinking! Your gonna kill yourself!")
+        } else if (!(points + value < 0)) {
+          points += value;
+          drank[this.id] += 1;
+          renderPoints();
+          renderDrunkItems();
+        }
+      });
+
+      function renderPoints() {
+        $('#drunkess-meter').val(points)
+        $('#score').text(points)
+      }
+
+      function renderDrunkItems() {
+        $("#drink-list").html("");
+        for (let key in drank) {
+          if (drank.hasOwnProperty(key)) {
+            $("#drink-list").append("<li>You have drank " + drank[key] + " " + key + "s</li>");  
+          }
+        }
+      }
+
+      $("#submit_score").click(function () {
+        message = {
+          "messageType": "SCORE",
+          "score": parseFloat($("#score").text())
+        };
+        window.parent.postMessage(message, "*");
+      });
+
+      $("#save").click(function () {
+        message = {
+          "messageType": "SAVE",
+          "gameState": {
+            "playerItems": drank,
+            "score": parseFloat($("#score").text())
+          }
+        };
+        window.parent.postMessage(message, "*");
+      });
+
+      $("#load").click(function () {
+        message = {
+          "messageType": "LOAD_REQUEST",
+        };
+        window.parent.postMessage(message, "*");
+      });
+
+      window.addEventListener("message", function (evt) {
+        if (evt.data.messageType === "LOAD") {
+          drank = evt.data.gameState.playerItems;
+          points = evt.data.gameState.score;
+          renderDrunkItems();
+          renderPoints();
+        } else if (evt.data.messageType === "ERROR") {
+          alert(evt.data.info);
+        }
+      });
+
+      message = {
+        messageType: "SETTING",
+        options: {
+          "width": 400,
+          "height": 700
+        }
+      };
+      window.parent.postMessage(message, "*");
+    });
+  </script>
+</head>
+<body>
+  <style>
+    #game {
+      padding: 10px;
+    }
+
+    .game-buttons {
+      display: grid;
+      grid-template-columns: 70px 70px;
+      grid-template-rows: 70px 70px;
+      grid-gap: 10px;
+    }
+
+    .game-button {
+      align-self: center;
+      background-color: #529292;
+      justify-self: center;
+      padding: 10px;
+      border-radius: 5px;
+      transition: 0.5s;
+    }
+
+    .game-button:hover {
+      background-color: #799494;
+      cursor: pointer;
+      transform: scale(1.2);
+    }
+
+    .game-control {
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 10px 0px;
+      font-size: 20px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      outline: none;
+      color: #fff;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 9px #999;
+    }
+
+    .game-control:hover {
+      background-color: #3e8e41
+    }
+
+    .game-control:active {
+      background-color: #3e8e41;
+      box-shadow: 0 5px #666;
+      transform: translateY(4px);
+    }
+
+    #drink-list {
+      padding: 0px;
+    }
+  </style>
+  <div id="game">
+    <h1>The drinking game</h1>
+    <stron>Rules:</stron>
+    <ul>
+      <li>Drink something</li>
+      <li>Avoid water!</li>
+    </ul>
+    <div class="game-buttons">
+      <button id="beer" class="game-button" value="10">
+        <img src="./icons/icons8-beer-48.png" alt></img>
+      </button>
+      <button id="wine" class="game-button" value="20">
+        <img src="./icons/icons8-wine-glass-48.png" alt></img>
+      </button>
+      <button id="shot" class="game-button" value="30">
+        <img src="./icons/icons8-coctail-shot-48.png" alt></img>
+      </button>
+      <button id="water" class="game-button" value="-10">
+        <img src="./icons/icons8-bottle-of-water-48.png" alt></img>
+      </button>
+    </div>
+  </div>
+  <div id="drunk-level">
+    <div>
+      <span>You have drank:</span>
+      <ul id="drink-list">Nothing yet! Drink something!</ul>
+    </div>
+  </div>
+  <ul id="drink-list"></ul>
+  <div><span>Drunk score:</span>
+    <span id="score">0</span>
+    <meter id="drunkess-meter" min="0" low="200" high="400" max="1000" value="0"></meter>
+  </div>
+  <button class="game-control" id="submit_score">Submit your drunkness score</button><br>
+  <button class="game-control" id="save">Save your drunkness for later</button><br>
+  <button class="game-control" id="load">Load your your drunkness</button>
+</body>
+</html>
