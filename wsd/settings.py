@@ -26,6 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'this secret key is moved to Heroku environment variables because of production'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -135,7 +136,4 @@ if "DYNO" in os.environ:
     
     ALLOWED_HOSTS += ['http://online-gamestore.herokuapp.com']
     DEBUG = False
-
-# Get secret key for debug mode
-if DEBUG == True:
-    SECRET_KEY = get_env_variable('SECRET_KEY')
+    
