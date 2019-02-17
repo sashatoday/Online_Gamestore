@@ -142,6 +142,6 @@ REST_FRAMEWORK = {
 #Heroku
 if "DYNO" in os.environ:
     DEBUG = False
-    ALLOWED_HOSTS += ['http://online-gamestore.herokuapp.com']
+    ALLOWED_HOSTS += ['online-gamestore.herokuapp.com']
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
