@@ -3,9 +3,13 @@
 
 {% block title %}{{ game.name }} {% endblock %}
 
-{% block meta_description %}{{ game.description }} {% endblock %}
-{% block meta_title %}{{ game.name }} {% endblock %}
-{% block meta_image %}{{ game.picture_url }} {% endblock %}
+{% block meta_description %}{{ game.description }}{% endblock %}
+{% block meta_title %}{{ game.name }}{% endblock %}
+{% block meta_image %}{{ game.picture_url }}{% endblock %}
+
+{% block twitter_image %}{{ game.picture_url }}{% endblock %}
+{% block twitter_title %}{{ game.name }}{% endblock %}
+{% block twitter_description %}{{ game.description }}{% endblock %}
 
 {% block content %}
 
