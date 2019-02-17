@@ -133,7 +133,7 @@ if "DYNO" in os.environ:
 
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
-    
+
     ALLOWED_HOSTS += ['http://online-gamestore.herokuapp.com']
     DEBUG = False
     #SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
