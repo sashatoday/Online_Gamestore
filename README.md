@@ -46,7 +46,7 @@ Search functionality is provided in other sections as well. Check at my games, w
 
 Click on game title or picture to open detailed game view. While short game preview shows game picture, title, category, price, age limit, detailed view gives you game descriptions, developer username and table of 10 best scores. In addition, here you can share this game in social media, e.g., Twitter, Reddit, Facebook or send by email.
 
-(!!!TODO) To buy game you must be older than game age restriction. See age limit field in game description. Payment is made using [mock payment service](http://payments.webcourse.niksula.hut.fi/ ) provided by WSD course.
+To buy game you must be older than game age restriction. See age limit field in game description. Payment is made using [mock payment service](http://payments.webcourse.niksula.hut.fi/ ) provided by WSD course.
 
 When you chose 'Developer' role, you can add games, edit added games, delete them, see list of uploaded games and track games sales.
 
@@ -76,7 +76,7 @@ In 'Game statistics' you can see your sales on a chart for the whole period of p
 | Wishlist | ??? | We implemented Wishlist for games as planned at the beginning of the development (see [Project Plan](project plan.md)). Users can save desired games here while they can not buy them. |
 | RESTful API | ???/100  |  |
 | Own game | 100/100 | We added our own game. In this game it has the same basic idea as the exaple game; LOAD, SAVE and SUBMIT features. When adding a new game put this into the URL field: http://online-gamestore.herokuapp.com/static/games/owngame.html |
-| Save/load and resolution feature | 0/100 | Players can save and load gamestates. Gamestates are stored as a JSON field in database. JSON field allows custom gamestates for different games. User can only have one gamestate per one game. Resolution feature is also added. |
+| Save/load and resolution feature | 100/100 | Players can save and load gamestates. Gamestates are stored as a JSON field in database. JSON field allows custom gamestates for different games. User can only have one gamestate per one game. Resolution feature is also added. |
 | 3rd party login | 0/100 |  |
 | Mobile Friendly | 0/50 |  |
 | Social media sharing | 50/50 | We added social media sharing. It supports Facebook, Twitter, Reddit and E-mail sharing. We didn't add Google+ since it is being deleted soon. |
