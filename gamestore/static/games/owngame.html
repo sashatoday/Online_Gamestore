@@ -24,7 +24,7 @@
         var value = parseInt($(this).val());
         if (points + value > 1000) {
           alert("Please stop drinking! Your gonna kill yourself!");
-        } else if (!(points + value < 0)) {
+        } else if (points + value > 0) {
           points += value;
           drank[this.id] += 1;
           renderPoints();
