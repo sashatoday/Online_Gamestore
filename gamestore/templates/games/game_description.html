@@ -33,11 +33,11 @@
       </div>
       <div>
        <!-- Twitter -->
-      <a href="http://twitter.com/share?url={{ request.build_absolute_uri }}&text=Play this awesome game:&via=wsdgamestore" target="_blank" class="share-btn twitter">
+      <a href="http://twitter.com/share?url={{ request.build_absolute_uri }}&text=Play%20this%20awesome%20game:&via=wsdgamestore" target="_blank" class="share-btn twitter">
           <i class="fab fa-twitter-square"></i>
       </a>
       <!-- Reddit -->
-      <a href="http://reddit.com/submit?url={{ request.build_absolute_uri }}&amp;title=Play this awesome game!" target="_blank">
+      <a href="http://reddit.com/submit?url={{ request.build_absolute_uri }}&amp;title=Play%20this%20awesome%20game!" target="_blank">
           <i class="fab fa-reddit-square"></i>
       </a>
       <!-- Facebook -->
@@ -45,7 +45,7 @@
           <i class="fab fa-facebook"></i>
       </a>
       <!-- Email -->
-      <a href="mailto:?subject=Play this awesome game!&body=Play this awesome game at: {{ request.build_absolute_uri}}" class="share-btn email">
+      <a href="mailto:?subject=Play%20this%20awesome%20game!&body=Play%20this%20awesome%20game%20at:%20{{ request.build_absolute_uri}}" class="share-btn email">
           <i class="fa fa-envelope"></i>
       </a>
       </div>
@@ -80,7 +80,7 @@
 <hr>
 <dl>
   <dt>Category</dt>
-  <a href="/search_game"><dd>{{ game.get_category_display }}</dd></a>
+  <dd><a href="/search_game">{{ game.get_category_display }}</a></dd>
 </dl>
 <dl>
   <dt>Age limit</dt>
@@ -88,11 +88,11 @@
 </dl>
 <dl>
   <dt>Developer</dt>
-  <a href="/user/{{ game.developer.user.id }}"><dd>{{ game.developer.user.username }}</dd></a>
+  <dd><a href="/user/{{ game.developer.user.id }}">{{ game.developer.user.username }}</a></dd>
 </dl>
 
 <hr>
-<form action="" method="post">{% csrf_token %}
+<form method="post">{% csrf_token %}
   {% if owner or purchased_game %}
     <a href="/play_game/{{game.id}}" class="btn btn-primary btn-block text-uppercase">Play</a>
     {% if owner %}

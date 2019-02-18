@@ -93,7 +93,7 @@ class UserForm(UserCreationForm):
         choices  = GENDER_CHOICES,
         label    = 'Gender',
         required = True,
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 1})
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
     password1 = forms.CharField(
         label  = "Password",
@@ -174,7 +174,7 @@ class UserProfileUpdateForm(forms.ModelForm):
         choices  = GENDER_CHOICES, 
         label    = 'Gender',
         required = True,
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 1})
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
     country = forms.CharField(
         label    = 'Country',
@@ -200,7 +200,7 @@ class UserProfileUpdateForm(forms.ModelForm):
         choices  = ROLE_CHOICES, 
         label    = 'Role',
         required = True,
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 1})
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
     birth_date = forms.DateField(
         help_text = 'Your age should be more than 14 and less than 120',
@@ -278,7 +278,7 @@ class GameForm(forms.ModelForm):
     price = forms.FloatField(
         label  = "Price in EUR",
         required = True,
-        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000, 'size' : 0.01})
+        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000})
     )
     picture_url = forms.URLField(
         label  = "Picture URL",
@@ -299,7 +299,7 @@ class GameForm(forms.ModelForm):
         choices  = CATEGORY_CHOICES,
         label    = 'Category',
         required = True,
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
     age_limit = forms.IntegerField(
         help_text = 'Indicate age limit for users. You can enter number between 3 and 120',
@@ -340,7 +340,7 @@ class GameUpdateForm(forms.ModelForm):
     price = forms.FloatField(
         label  = "Price in EUR",
         required = True,
-        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000, 'size' : 0.01})
+        widget = forms.NumberInput(attrs= {'class' : 'form-control here', 'placeholder': "0.00", 'min' : 0, 'max' : 10000})
     )
     picture_url = forms.URLField(
         label  = "Picture URL",
@@ -361,7 +361,7 @@ class GameUpdateForm(forms.ModelForm):
         choices  = CATEGORY_CHOICES,
         label    = 'Category',
         required = True,
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
     age_limit = forms.IntegerField(
         help_text = 'Indicate age limit for users. You can enter number between 3 and 120',
@@ -393,11 +393,11 @@ class SearchForm(forms.Form):
         label    = 'Category:',
         required = True,
         initial = 'ALL',
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 20})
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
     sort_type = forms.ChoiceField(
         choices  = SORT_CHOICES,
         label    = 'Sort by:',
         required = True,
-        widget   = forms.Select(attrs = {'class' : 'form-control here', 'maxlength' : 15})
+        widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )

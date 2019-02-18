@@ -8,123 +8,122 @@
 <h2 class="mb-3">Play game!</h2>
 <script>
     $(document).ready(function () {
-        'use strict';
+        "use strict";
 
-        const $game = $("#game");
+        var $game = $("#game");
 
-        $(window).on('message', function (evt) {
-            const data = evt.originalEvent.data;
+        $(window).on("message", function (evt) {
+            var data = evt.originalEvent.data;
 
-            if (data.messageType === 'SETTING') {
+            if (data.messageType === "SETTING") {
 
-                $(game).attr('width', data.options.width);
-                $(game).attr('height', data.options.height);
+                $($game).attr("width", data.options.width);
+                $($game).attr("height", data.options.height);
 
             }
 
-            if (data.messageType === 'SCORE') {
+            if (data.messageType === "SCORE") {
 
                 $.ajax({
                     url: window.location,
-                    type: 'POST',
+                    type: "POST",
                     beforeSend: function (xhr, settings) {
-                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
                     },
                     data: JSON.stringify({
-                        'score': data.score,
-                        'type': 'SCORE'
+                        "score": data.score,
+                        "type": "SCORE"
                     }),
-                    dataType: 'json',
+                    dataType: "json",
 
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
                     },
                     success: function (data) {
-                        alert(data.message)
-                        let msg = {
-                            messageType: 'RESET',
-                        }
-                        $game[0].contentWindow.postMessage(msg, '*');
+                        alert(data.message);
+                        var msg = {
+                            messageType: "RESET",
+                        };
+                        $game[0].contentWindow.postMessage(msg, "*");
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        let msg = {
-                            messageType: 'ERROR',
-                            info: 'Score save failed.'
-                        }
-                        $game[0].contentWindow.postMessage(msg, '*');
-                        //alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                        var msg = {
+                            messageType: "ERROR",
+                            info: "Score save failed."
+                        };
+                        $game[0].contentWindow.postMessage(msg, "*");
+                        
                     }
                 });
             }
 
-            if (data.messageType === 'SAVE') {
+            if (data.messageType === "SAVE") {
 
                 $.ajax({
                     url: window.location,
-                    type: 'POST',
+                    type: "POST",
                     beforeSend: function (xhr, settings) {
-                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
                     },
                     data: JSON.stringify({
                         "gameState": data.gameState,
                         "type": "SAVE"
                     }),
-                    dataType: 'json',
+                    dataType: "json",
 
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
                     },
                     success: function (data) {
-                        alert("saved")
+                        alert("saved");
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        let msg = {
-                            messageType: 'ERROR',
-                            info: 'Saving failed.'
-                        }
-                        $game[0].contentWindow.postMessage(msg, '*');
-                        //alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                        var msg = {
+                            messageType: "ERROR",
+                            info: "Saving failed."
+                        };
+                        $game[0].contentWindow.postMessage(msg, "*");
+                    
                     }
                 });
 
             }
 
-            if (data.messageType === 'LOAD_REQUEST') {
+            if (data.messageType === "LOAD_REQUEST") {
 
                 $.ajax({
                     url: window.location,
-                    type: 'GET',
+                    type: "GET",
                     beforeSend: function (xhr, settings) {
-                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
                     },
                     data: JSON.stringify({
-                        'type': 'LOAD_REQUEST'
+                        "type": "LOAD_REQUEST"
                     }),
-                    dataType: 'json',
+                    dataType: "json",
 
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
                     },
                     success: function (data) {
-                        alert(data.message)
-                        data = JSON.parse(data.state)
-                        let msg = {
-                            messageType: 'LOAD',
+                        alert(data.message);
+                        data = JSON.parse(data.state);
+                        var msg = {
+                            messageType: "LOAD",
                             gameState: data
-                        }
-                        $game[0].contentWindow.postMessage(msg, '*');
+                        };
+                        $game[0].contentWindow.postMessage(msg, "*");
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        let msg = {
-                            messageType: 'ERROR',
-                            info: 'Load failed.'
-                        }
-                        $game[0].contentWindow.postMessage(msg, '*');
-                        //alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                        var msg = {
+                            messageType: "ERROR",
+                            info: "Load failed."
+                        };
+                        $game[0].contentWindow.postMessage(msg, "*");
                     }
                 });
             }

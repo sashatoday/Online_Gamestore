@@ -10,21 +10,21 @@
     $(document).ready(function () {
       "use strict";
 
-      let points = 0;
-      let message = '';
+      var points = 0;
+      var message = "";
 
-      let drank = {
-        'beer': 0,
-        'wine': 0,
-        'shot': 0,
-        'water': 0
-      }
+      var drank = {
+        "beer": 0,
+        "wine": 0,
+        "shot": 0,
+        "water": 0
+      };
 
       $(".game-button").click(function () {
-        let value = parseInt($(this).val());
+        var value = parseInt($(this).val());
         if (points + value > 1000) {
-          alert("Please stop drinking! Your gonna kill yourself!")
-        } else if (!(points + value < 0)) {
+          alert("Please stop drinking! Your gonna kill yourself!");
+        } else if (points + value > 0) {
           points += value;
           drank[this.id] += 1;
           renderPoints();
@@ -33,13 +33,13 @@
       });
 
       function renderPoints() {
-        $('#drunkess-meter').val(points)
-        $('#score').text(points)
+        $("#drunkess-meter").val(points);
+        $("#score").text(points);
       }
 
       function renderDrunkItems() {
         $("#drink-list").html("");
-        for (let key in drank) {
+        for (var key in drank) {
           if (drank.hasOwnProperty(key)) {
             $("#drink-list").append("<li>You have drank " + drank[key] + " " + key + "s</li>");  
           }
