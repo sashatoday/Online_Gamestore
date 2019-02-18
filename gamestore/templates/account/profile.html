@@ -15,12 +15,11 @@
     {% for field in profileform %}
         {% include 'extra/profile_field.html' %}
     {% endfor %}
-    <div class="d-flex justify-content-around">
-        <div class="offset-4">
-            <button name="deleteuser" type="submit" class="btn btn-danger btn-block">Delete account</button>
-        </div>
-        <div class="offset-2 col-md-3">
-            <button name="updateprofile" type="submit" class="btn btn-primary">Update My Profile</button>
+    <div class="form-group row">
+        <div class="col-5"></div>
+        <div class="col-7">
+            <button name="deleteuser" type="submit" class="btn btn-danger ">Delete account</button>
+            <button name="updateprofile" type="submit" class="btn btn-primary float-right">Update My Profile</button>
         </div>
     </div>
 </form>
@@ -32,8 +31,8 @@
         {% include 'extra/profile_field.html' %}
     {% endfor %}
     <div class="form-group row">
-        <div class="offset-9 col-8">
-            <button name="changepassword" type="submit" class="btn btn-primary">Change My Password</button>
+        <div class="col-12">
+            <button name="changepassword" type="submit" class="btn btn-primary float-right">Change My Password</button>
         </div>
     </div>
 </form>
