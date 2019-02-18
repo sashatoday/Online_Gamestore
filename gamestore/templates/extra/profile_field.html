@@ -1,16 +1,18 @@
 <div class="form-group row">
-    <label for="id_{{ field.name }}" class="col-4 col-form-label">
-    {% if field.name == 'check_agreement' %}
-        <a href="/user_agreement">{{ field.label }}</a>
-    {% else %}
-        {{ field.label }}
-    {% endif %}
-    </label>
-    {% if field.name == 'username' or field.name == 'first_name' or field.name == 'last_name' or field.name == 'email' or field.name == 'birth_date' or field.name == 'gender' or field.name == 'password1' or field.name == 'password2' or field.name == 'check_agreement'%}
-        <i class="fa fa-asterisk text-danger"></i>
-    {% else %}
-        <i class="fa fa-asterisk invisible"></i>
-    {% endif %}
+    <div class="col-5">
+        <label for="id_{{ field.name }}" class="col-form-label">
+        {% if field.name == 'check_agreement' %}
+            <a target="_blank" href="/user_agreement">{{ field.label }}</a>
+        {% else %}
+            {{ field.label }}
+        {% endif %}
+        </label>
+        {% if field.name == 'username' or field.name == 'first_name' or field.name == 'last_name' or field.name == 'email' or field.name == 'birth_date' or field.name == 'gender' or field.name == 'password1' or field.name == 'password2' or field.name == 'check_agreement'%}
+            <i class="fa fa-asterisk text-danger"></i>
+        {% else %}
+            <i class="fa fa-asterisk invisible"></i>
+        {% endif %}
+    </div>
     <div class="col-7">
     {% if field.name == 'username' %}
         <div class="input-group">
