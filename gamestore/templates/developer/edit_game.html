@@ -5,7 +5,7 @@
 {% block content %}
 
 <h2 class="mb-3">Edit game</h2>
-<form method="post" action="">{% csrf_token %}
+<form method="post">{% csrf_token %}
     {% for field in form %}
         {% include 'extra/game_field.html' %}
     {% endfor %}

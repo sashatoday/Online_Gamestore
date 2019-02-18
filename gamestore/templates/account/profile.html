@@ -8,7 +8,7 @@
 <br>
 <p><strong>Look how users see your profile <a href="/user/{{ user.id }}">here</a></strong></p>
 
-<form action="" method="post">{% csrf_token %}
+<form method="post">{% csrf_token %}
     {% for field in userform %}
         {% include 'extra/profile_field.html' %}
     {% endfor %}
@@ -27,7 +27,7 @@
 <br>
 <br>
 <h2>Change your password</h2>
-<form action="" method="post">{% csrf_token %}
+<form method="post">{% csrf_token %}
     {% for field in changepasswordform %}
         {% include 'extra/profile_field.html' %}
     {% endfor %}
