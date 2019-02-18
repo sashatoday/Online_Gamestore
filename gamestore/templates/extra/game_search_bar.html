@@ -6,25 +6,25 @@
             {{ form.search_key }}
         </div>
     </div>
-    <div class="container">
-      <div class="row mb-3">
-        <div >
-        <span class="text-muted">
-            {{ form.category.label }}
-        </span>
+    <div class="row mb-3">
+        <div class="col-4 col-sm-4">
+            <span class="text-muted">
+                {{ form.category.label }}
+            </span>
+            <span class="col-3 mr-4">
+                {{ form.category }}
+            </span>
         </div>
-        <div class="col-3 mr-4">
-            {{ form.category }}
+        <div class="col-4 col-sm-4">
+            <span class="text-muted">
+                {{ form.sort_type.label }}
+            </span>
+            <span class="col-3 mr-5">
+                {{ form.sort_type }}
+            </span>
         </div>
-        <div>
-        <span class="text-muted">
-            {{ form.sort_type.label }}
-        </span>
+        <div class="col-4 col-sm-4">
+            <button class="btn btn-primary search-game" name="searchgame" type="submit">Search</button>
         </div>
-        <div class="col-3 mr-5">
-            {{ form.sort_type }}
-        </div>
-        <button class="btn btn-primary col-3" name="searchgame" type="submit">Search</button>
-      </div>
     </div>
 </form>

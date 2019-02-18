@@ -10,13 +10,12 @@
         {% include 'extra/game_field.html' %}
     {% endfor %}
     <hr class="mb-3">
-    <div class="d-flex justify-content-around">
-      <div class="col-md-3">
-        <button name="deletegame" type="submit" class="btn btn-danger btn-block">Delete game</button>
-      </div>
-      <div class="col-md-5 offset-md-2">
-        <button name="updategame" type="submit" class="btn btn-primary btn-block">Update game</button>
-      </div>
+    <div class="form-group row">
+        <div class="col-5"></div>
+        <div class="col-7">
+          <button name="deletegame" type="submit" class="btn btn-danger ">Delete game</button>
+          <button name="updategame" type="submit" class="btn btn-primary float-right">Update game</button>
+        </div>
     </div>
   </form>
 

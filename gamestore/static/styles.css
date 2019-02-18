@@ -17,3 +17,58 @@
 #sidebar div a:hover {
     background-color: #e5eaef;
 }
+
+.fa-asterisk {
+    font-weight: 600;
+    font-size: 7px;
+    line-height: 4;
+    float: right;
+}
+
+.search-game {
+    width: 100%;
+    margin-top: 25px;
+}
+
+/* Large desktop */
+@media (min-width: 1200px) { 
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) { 
+
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+    .row {
+        width: 100%;
+    }
+
+    .col-sm-4 {
+        width: inherit;
+        flex: none; 
+        max-width: 100%;
+    }
+
+    .form-group.row .col-5,
+    .form-group.row .col-7 {
+        width: 100%; 
+        max-width: 100%;
+        flex: none;
+    }
+
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+    .row {
+        width: 100%;
+
+    }
+    
+    .col-sm-4 {
+        width: inherit;   
+    }
+}
