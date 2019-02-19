@@ -53,8 +53,6 @@ def save_profile(backend, user, response, *args, **kwargs):
         birth_date = datetime.datetime.now() - datetime.timedelta(days=13*365) # 13 years by default
         User.objects.filter(username=user).update(first_name=response['first_name'],last_name=response['last_name'])
         user_object = User.objects.get(username=user)
-        user_object.is_active = True
-        user_object.save()
         userProfile = UserProfile(
             user=user_object,
             birth_date=birth_date,
