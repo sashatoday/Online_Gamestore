@@ -21,6 +21,7 @@ from hashlib import md5
 from django.core.exceptions import ObjectDoesNotExist
 from gamestore.forms import SearchForm
 from django.contrib.sites.shortcuts import get_current_site
+from ..forms import calculate_age
 
 def search_game(request):
     
@@ -161,6 +162,11 @@ def show_game_description(request, game_id):
 def buy_game(request, game_id):
     user = request.user.userprofile
     game = get_object_or_404(Game, id=game_id) #return 404 if game not found
+    birth_date = request.user.userprofile.birth_date
+    age = calculate_age(birth_date)
+    if age < game.age_limit:
+        message = "You cannot buy this game. Age limit is: {}".format(game.age_limit)
+        return render(request, BUY_GAME_HTML, {'message': message})
     if game.get_developer() == user:
         return redirect('play_game', game_id=game.id) #developers cannot buy their own games...
     try:

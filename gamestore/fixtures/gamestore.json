@@ -1,0 +1,206 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "username": "vincent",
+        "first_name": "Vincent",
+        "last_name": "Eurasto",
+        "email": "vincent.eurasto1@gmail.com",
+        "is_active": true
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "username": "test",
+        "first_name": "Test",
+        "last_name": "Test",
+        "email": "vincent.eurasto@gmail.com",
+        "is_active": true
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "username": "mosbek",
+        "first_name": "Musse",
+        "last_name": "Alemu",
+        "email": "musse.bekabil@gmail.com",
+        "is_active": true
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+        "username": "test_user",
+        "first_name": "Alice",
+        "last_name": "Bob",
+        "email": "alice@gmail.com",
+        "is_active": true
+    }
+},
+{
+    "model": "gamestore.userprofile",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "birth_date": "2000-02-01",
+        "gender": "M",
+        "country": "",
+        "city": "",
+        "address": "",
+        "bio": "",
+        "photo_url": "",
+        "role": "D"
+    }
+},
+{
+    "model": "gamestore.userprofile",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "birth_date": "1999-02-01",
+        "gender": "M",
+        "country": "",
+        "city": "",
+        "address": "",
+        "bio": "",
+        "photo_url": "",
+        "role": "D"
+    }
+},
+{
+    "model": "gamestore.userprofile",
+    "pk": 3,
+    "fields": {
+        "user": 3,
+        "birth_date": "1990-11-11",
+        "gender": "M",
+        "country": "",
+        "city": "",
+        "address": "",
+        "bio": "",
+        "photo_url": "",
+        "role": "P"
+    }
+},
+{
+    "model": "gamestore.userprofile",
+    "pk": 4,
+    "fields": {
+        "user": 4,
+        "birth_date": "1949-11-11",
+        "gender": "F",
+        "country": "Finland",
+        "city": "Helsinki",
+        "address": "Antinkatu 1",
+        "bio": "Hey im alice. i like to play online game",
+        "photo_url": "http://brickingaround.com/wp-content/uploads/2017/10/sophia-cu-with-chat.png",
+        "role": "D"
+    }
+},
+{
+    "model": "gamestore.game",
+    "pk": 1,
+    "fields": {
+        "name": "Test",
+        "price": 60.0,
+        "picture_url": "http://www.vectorfree.com/media/vectors/angry-birds-vector.jpg",
+        "description": "Testing",
+        "game_url": "http://online-gamestore.herokuapp.com/static/games/owngame.html",
+        "date": "2019-02-17",
+        "category": "ACTION",
+        "developer": 1,
+        "age_limit": 5
+    }
+},
+{
+    "model": "gamestore.game",
+    "pk": 2,
+    "fields": {
+        "name": "50",
+        "price": 50.0,
+        "picture_url": "",
+        "description": "f",
+        "game_url": "http://online-gamestore.herokuapp.com/static/games/owngame.html",
+        "date": "2019-02-18",
+        "category": "ACTION",
+        "developer": 2,
+        "age_limit": 25
+    }
+},
+{
+    "model": "gamestore.purchase",
+    "pk": 1,
+    "fields": {
+        "date": "2019-02-18",
+        "buyer": 1,
+        "purchased_game": 2,
+        "ref": "29528",
+        "complete": true
+    }
+},
+{
+    "model": "gamestore.purchase",
+    "pk": 2,
+    "fields": {
+        "date": "2019-02-18",
+        "buyer": 3,
+        "purchased_game": 1,
+        "ref": "29539",
+        "complete": true
+    }
+},
+{
+    "model": "gamestore.wishlist",
+    "pk": 1,
+    "fields": {
+        "date": "2019-02-18",
+        "potential_buyer": 3,
+        "wished_game": 1
+    }
+},
+{
+    "model": "gamestore.wishlist",
+    "pk": 2,
+    "fields": {
+        "date": "2019-02-18",
+        "potential_buyer": 3,
+        "wished_game": 2
+    }
+},
+{
+    "model": "gamestore.gamestate",
+    "pk": 1,
+    "fields": {
+        "state": {
+            "playerItems" : {
+                "beer": 2, 
+                "wine": 2, 
+                "shot": 2, 
+                "water": 1
+            },
+            "score": 110,
+            "type": "SAVE"
+        },
+        "date": "2019-02-18",
+        "player": 3,
+        "game_in_state": 2
+    }
+},
+{
+    "model": "gamestore.score",
+    "pk": 1,
+    "fields": {
+        "value":  210,
+        "date": "2019-02-18",
+        "scorer": 3,
+        "game_in_score": 2
+    }
+}   
+]
+
