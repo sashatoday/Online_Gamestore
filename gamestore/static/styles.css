@@ -30,6 +30,11 @@
     margin-top: 25px;
 }
 
+.btn-facebook {
+    color: #fff;
+    background-color: #3b5998;
+    border-color: rgba(0,0,0,0.2);
+
 /* Large desktop */
 @media (min-width: 1200px) { 
 
