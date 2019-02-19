@@ -1,4 +1,4 @@
-from django.urls import re_path
+from django.urls import re_path, include
 from gamestore.views import account, game, payment, developer
 
 urlpatterns = [
