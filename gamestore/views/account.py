@@ -72,6 +72,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                     message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
                     return render(request, ERROR_HTML, {'message': message})
                 ####### Signup with Facebook ##########
+                user_object = User.objects.get(username=response['email'])
                 User.objects.filter(username=response['email']).update(first_name=response['first_name'],last_name=response['last_name'])
                 birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
                 userProfile = UserProfile(
