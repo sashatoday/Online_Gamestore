@@ -37,11 +37,13 @@
       </div>
     </div>
   </form>
-  
-<div class="text-center social-btn">
-    <a class="btn btn-primary btn-block" href="{% url 'social:begin' 'facebook' %}">
-        <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
-    </a>
+
+<div class="col-md-6 offset-md-6">  
+    <div class="text-center social-btn">
+        <a class="btn btn-primary" href="{% url 'social:begin' 'facebook' %}">
+            <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
+        </a>
+    </div>
 </div>
 {% endblock %}
 
