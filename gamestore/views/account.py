@@ -50,7 +50,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         profile = user
         resp = response
         birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
-        User.objects.filter(username=user).update(first_name=response['first_name'],last_name=response['last_name'],username=)
+        User.objects.filter(username=user).update(first_name=response['first_name'],last_name=response['last_name'])
         user_object = User.objects.get(username=user)
         userProfile = UserProfile(
             user=user_object,
