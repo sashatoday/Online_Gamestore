@@ -48,8 +48,11 @@ def startpage(request):
     return render(request, BASE_HTML)
 
 def save_facebook_profile(backend, user, response, *args, **kwargs):
-    request = kwargs.get('request', None)
     if backend.name == 'facebook':
+        request = kwargs.get('request', None)
+        if ! response['email']:
+            message = "Sorry, Facebook didn't provide your email. Please try again or sign up manually"
+            return render(request, ERROR_HTML, {'message': message})
         if user:
             if User.objects.filter(username=response['email']).exists():
                 user_object = User.objects.get(username=response['email'])
@@ -95,7 +98,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
             return render(request, ERROR_HTML, {'message': message})
     else:
         message = "Sorry, we didn't recognize Facebook request."
-        return render(request, ERROR_HTML, {'message': message}) 
+        return render(None, ERROR_HTML, {'message': message}) 
 
 def login(request):
     ########## initial checks #############
@@ -306,7 +309,6 @@ def edit_profile(request):
     ########  initialize variables  ##############
     user = request.user
     userprofile = user.userprofile
-    username = user.username
 
     userform = UserUpdateForm(instance=user)
     profileform = UserProfileUpdateForm(instance=userprofile)
@@ -326,9 +328,14 @@ def edit_profile(request):
         if 'updateprofile' in request.POST:
             userform = UserUpdateForm(request.POST, instance=user)
             profileform = UserProfileUpdateForm(request.POST, instance=userprofile)
-            if userform.data['username'] != username:
+            if userform.data['username'] != user.username:
                 userform.add_error('username', "You are not allowed to change your username")
                 userform.errors['email'] = ""
+                args['userform'] = userform
+                return render(request, PROFILE_HTML, args)
+            if userform.data['email'] != user.email:
+                userform.add_error('email', "You are not allowed to change your email")
+                userform.errors['username'] = ""
                 args['userform'] = userform
                 return render(request, PROFILE_HTML, args)
             if userform.is_valid() and profileform.is_valid():
@@ -399,6 +406,6 @@ def report_successful_activation(request):
 def report_successful_facebook_signup(request):
     args = {
         'thanks_for' : "registering",
-        'message' : "You are already logged in. Check your profile, we added birthday and gender as default values (14 years old and Unknown respectively). Other personal data is taken from your Facebook account.",
+        'message' : "You are logged in now. Check your profile, we added birthday and gender as default values (14 years old and Unknown respectively). Other personal data is taken from your Facebook account.",
     }
     return render(request, THANKS_HTML, args)

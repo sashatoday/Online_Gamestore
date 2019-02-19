@@ -80,6 +80,7 @@ class UserForm(UserCreationForm):
         widget   = forms.TextInput(attrs = {'class' : 'form-control here', 'maxlength' : 50})
     )
     email = forms.CharField(
+        help_text = 'Remember: You will be not able to change your email in future',
         required = True,
         widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email', 'maxlength' : 50, 'placeholder': 'you@example.com'})
     )
