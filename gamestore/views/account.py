@@ -56,7 +56,7 @@ def save_profile(backend, user, response, *args, **kwargs):
             last_name=response['last_name'],
             username=user,
             email=response['email'],
-            password=id+user
+            password=id
         )
         user.save()
         userProfile = UserProfile(
