@@ -3,7 +3,7 @@ from gamestore.views import account, game, payment, developer
 
 urlpatterns = [
 
-    re_path(r'', include('social.apps.django_app.urls')),
+    re_path('', include('social_django.urls', namespace='social')),
 
 ### Base view
     re_path(r'^$', account.startpage, name='index'),

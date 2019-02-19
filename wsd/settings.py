@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'gamestore',
     'gamestoreapi',
     'rest_framework',
-    'social.apps.django_app.default',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +133,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_DATA = [('gender', 'gender')]
