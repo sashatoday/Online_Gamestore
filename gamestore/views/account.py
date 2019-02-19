@@ -48,13 +48,13 @@ def startpage(request):
     return render(request, BASE_HTML)
 
 def save_facebook_profile(backend, user, response, *args, **kwargs):
+    request = kwargs.get('request', None)
     if backend.name == 'facebook':
         if user:
             if User.objects.filter(username=response['email']).exists():
                 ####### Login with Facebook ##########
                 user_object = User.objects.get(username=response['email'])
                 user_auth = authenticate(username=user_object.username)
-                request = kwargs.get('request', None)
                 auth_login(request, user_auth)
                 return redirect('search_game')
             else:
@@ -81,7 +81,6 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                 )
                 userProfile.save()
                 user_auth = authenticate(username=user_object.username)
-                request = kwargs.get('request', None)
                 auth_login(request, user_auth)
                 return redirect('facebook_signup_seccess')
         else:
