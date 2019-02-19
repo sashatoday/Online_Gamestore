@@ -1,6 +1,7 @@
 ##############################################################
 ##### This view provides actions related to user account: ####
-#####     * startpage                                     ####
+#####     * startpage (base)                              ####
+#####     * save_facebook_profile                         ####
 #####     * login                                         ####
 #####     * activate                                      ####
 #####     * signup                                        ####
@@ -14,6 +15,7 @@
 #####     * report_successful_registration                ####
 #####     * report_successful_restoring                   ####
 #####     * report_successful_activation                  ####
+#####     * report_successful_facebook_signup             ####
 ##############################################################
 
 from django.shortcuts import render, redirect
@@ -45,27 +47,49 @@ import datetime
 def startpage(request):
     return render(request, BASE_HTML)
 
-def save_profile(backend, user, response, *args, **kwargs):
+def save_facebook_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
-        profile = user
-        resp = response
-        birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
-        User.objects.filter(username=user).update(first_name=response['first_name'],last_name=response['last_name'])
-        user_object = User.objects.get(username=user)
-        userProfile = UserProfile(
-            user=user_object,
-            birth_date=birth_date,
-            gender='U'
-        )
-        userProfile.save()
-        #user_auth = authenticate(username=username, password=password)
-        user_auth = authenticate(username=user_object.username)
-        request = kwargs.get('request', None)
-        
-        auth_login(request, user_auth)
-    if profile is None:
-        pass
-    return render(request, BASE_HTML, {})
+        if user:
+            if User.objects.filter(username=response['email']).exists():
+                ####### Login with Facebook ##########
+                user_object = User.objects.get(username=response['email'])
+                user_auth = authenticate(username=user_object.username)
+                request = kwargs.get('request', None)
+                auth_login(request, user_auth)
+                return redirect('search_game')
+            else:
+                ####### Check that username and email unique ##########
+                if User.objects.filter(email=response['email']).exists():
+                    user_object = User.objects.get(username=user)
+                    user_object.delete()
+                    message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+                try:
+                    User.objects.filter(username=user).update(username=response['email'])
+                except:
+                    user_object = User.objects.get(username=user)
+                    user_object.delete()
+                    message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+                ####### Signup with Facebook ##########
+                User.objects.filter(username=response['email']).update(first_name=response['first_name'],last_name=response['last_name'])
+                birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
+                userProfile = UserProfile(
+                    user=user_object,
+                    birth_date=birth_date,
+                    gender='U'
+                )
+                userProfile.save()
+                user_auth = authenticate(username=user_object.username)
+                request = kwargs.get('request', None)
+                auth_login(request, user_auth)
+                return redirect('facebook_signup_seccess')
+        else:
+            message = "Sorry, an error occurred during Facebook login process."
+            return render(request, ERROR_HTML, {'message': message})
+    else:
+        message = "Sorry, we didn't recognize Facebook request."
+        return render(request, ERROR_HTML, {'message': message})
 
 def login(request):
     ########## initial checks #############
@@ -342,7 +366,6 @@ def show_user(request, user_id):
     }
     return render(request, PROFILE_PREVIEW_HTML, args)
 
-
 def show_agreement(request):
     return render(request, USER_AGREEMENT_HTML)
 
@@ -364,5 +387,12 @@ def report_successful_activation(request):
     args = {
         'thanks_for' : "activating your account",
         'message' : "Now you can login in our system.",
+    }
+    return render(request, THANKS_HTML, args)
+
+def report_successful_facebook_signup(request):
+    args = {
+        'thanks_for' : "registering",
+        'message' : "You are already logged in. Check your profile, we added birthday and gender as default values (14 years old and Unknown respectively). Other personal data is from your Facebook account.",
     }
     return render(request, THANKS_HTML, args)
