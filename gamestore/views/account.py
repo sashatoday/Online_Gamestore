@@ -52,10 +52,10 @@ def save_profile(backend, user, response, *args, **kwargs):
         resp = backend
         birth_date = datetime.datetime.now() - datetime.timedelta(days=15*365) # 15 years by default
         user_object = User.objects.create_user(
-            first_name=response.first_name,
-            last_name=response.last_name,
+            first_name=response['first_name'],
+            last_name=response.['last_name'],
             username=user,
-            email=response.email,
+            email=response.['email'],
             password=id+user
         )
         user.save()
