@@ -52,11 +52,15 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
         if user:
             if User.objects.filter(username=response['email']).exists():
-                ####### Login with Facebook ##########
                 user_object = User.objects.get(username=response['email'])
-                user_auth = authenticate(username=user_object.username)
-                auth_login(request, user_auth)
-                return redirect('search_game')
+                if UserProfile.objects.filter(user=user_object).exists():
+                    ####### Login with Facebook ##########
+                    user_auth = authenticate(username=user_object.username)
+                    auth_login(request, user_auth)
+                    return redirect('search_game')
+                else:
+                    message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
             else:
                 ####### Check that username and email unique ##########
                 if User.objects.filter(email=response['email']).count() > 1:
