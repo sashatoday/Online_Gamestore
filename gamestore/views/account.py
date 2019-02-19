@@ -49,8 +49,8 @@ def save_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
         profile = user
         resp = response
-        birth_date = datetime.datetime.now() - datetime.timedelta(days=13*365) # 13 years by default
-        User.objects.filter(username=user).update(first_name=response['first_name'],last_name=response['last_name'])
+        birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
+        User.objects.filter(username=user).update(first_name=response['first_name'],last_name=response['last_name'],username=)
         user_object = User.objects.get(username=user)
         userProfile = UserProfile(
             user=user_object,
@@ -65,7 +65,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         auth_login(request, user_auth)
     if profile is None:
         pass
-    return render(request, BASE_HTML, {'profile': backend, 'resp' : resp})
+    return render(request, BASE_HTML, {})
 
 def login(request):
     ########## initial checks #############
