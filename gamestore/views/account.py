@@ -331,59 +331,63 @@ def show_agreement(request):
     return render(request, USER_AGREEMENT_HTML)
 
 def save_facebook_profile(backend, user, response, *args, **kwargs):
-    try:
-        if backend.name == 'facebook':
-            request = kwargs.get('request', None)
-            if user:
-                if User.objects.filter(username=response['email']).exists():
-                    user_object = User.objects.get(username=response['email'])
-                    auto_user = User.objects.get(username=user)
-                    auto_user.delete()
-                    if UserProfile.objects.filter(user=user_object).exists():
-                        ####### Login with Facebook ##########
+    if backend.name == 'facebook':
+        request = kwargs.get('request', None)
+        if user:
+            if User.objects.filter(username=response['email']).exists():
+                user_object = User.objects.get(username=response['email'])
+                auto_user = User.objects.get(username=user)
+                auto_user.delete()
+                if UserProfile.objects.filter(user=user_object).exists():
+                    ####### Login with Facebook ##########
+                    try:
                         user_auth = authenticate(username=user_object.username)
                         auth_login(request, user_auth)
                         domain_url = get_current_site(request).domain
                         return redirect('http://{0}/search_game/'.format(domain_url))
-                    else:
-                        message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
+                    except:
+                        message = "Sorry, something went wrong :(")
                         return render(request, ERROR_HTML, {'message': message})
                 else:
-                    ####### Check that username and email unique ##########
-                    if User.objects.filter(email=response['email']).count() > 1:
-                        auto_user = User.objects.get(username=user)
-                        auto_user.delete()
-                        message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
-                        return render(request, ERROR_HTML, {'message': message})
-                    try:
-                        User.objects.filter(username=user).update(username=response['email'])
-                    except:
-                        auto_user = User.objects.get(username=user)
-                        auto_user.delete()
-                        message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
-                        return render(request, ERROR_HTML, {'message': message})
-                    ####### Signup with Facebook ##########
-                    user_object = User.objects.get(username=response['email'])
-                    User.objects.filter(username=response['email']).update(first_name=response['first_name'],last_name=response['last_name'])
-                    birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
-                    userProfile = UserProfile(
-                        user=user_object,
-                        birth_date=birth_date,
-                        gender='U'
-                    )
-                    userProfile.save()
+                    message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+            else:
+                ####### Check that username and email unique ##########
+                if User.objects.filter(email=response['email']).count() > 1:
+                    auto_user = User.objects.get(username=user)
+                    auto_user.delete()
+                    message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+                try:
+                    User.objects.filter(username=user).update(username=response['email'])
+                except:
+                    auto_user = User.objects.get(username=user)
+                    auto_user.delete()
+                    message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+                ####### Signup with Facebook ##########
+                user_object = User.objects.get(username=response['email'])
+                User.objects.filter(username=response['email']).update(first_name=response['first_name'],last_name=response['last_name'])
+                birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
+                userProfile = UserProfile(
+                    user=user_object,
+                    birth_date=birth_date,
+                    gender='U'
+                )
+                userProfile.save()
+                try:
                     user_auth = authenticate(username=user_object.username)
                     auth_login(request, user_auth)
                     domain_url = get_current_site(request).domain
                     return redirect('http://{0}/facebook_signup/thanks/'.format(domain_url))
-            else:
-                message = "Sorry, an error occurred during Facebook login process."
-                return render(request, ERROR_HTML, {'message': message})
+                except:
+                    message = "Sorry, something went wrong :(")
+                    return render(request, ERROR_HTML, {'message': message})
         else:
-            message = "Sorry, we didn't recognize Facebook request."
-            return render(None, ERROR_HTML, {'message': message})
-    except:
-        message = "Sorry, something went wrong :("
+            message = "Sorry, an error occurred during Facebook login process."
+            return render(request, ERROR_HTML, {'message': message})
+    else:
+        message = "Sorry, we didn't recognize Facebook request."
         return render(None, ERROR_HTML, {'message': message})
 
 def report_successful_registration(request):

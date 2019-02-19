@@ -109,7 +109,7 @@ class UserForm(UserCreationForm):
     )
     check_agreement = forms.BooleanField(
         required = True,
-        label  = "I understand user agreement"
+        label  = "I accept user agreement"
     )
 
     def clean_email(self):
@@ -310,7 +310,7 @@ class GameForm(forms.ModelForm):
     )
     check_agreement = forms.BooleanField(
         required = True,
-        label  = "I understand developer agreement"
+        label  = "I accept developer agreement"
     )
 
     def clean(self):
