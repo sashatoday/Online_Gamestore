@@ -56,6 +56,20 @@ To add game you should provide at least title, price, category, game URL and age
 
 In 'Game statistics' you can see your sales on a chart for the whole period of purchasing. You can click on series to add or remove them from plot. Below is the table with total numbers of sales for each game.
 
+#### Rest API Usage 
+
+We used [Django REST framework](https://www.django-rest-framework.org) library to build RESTful API. This framework is self documenting. Forward slash api to the base url lists available endpoints.
+
+http://online-gamestore.herokuapp.com/api/ 
+
+We have Users, Games, Purchases, Wishlists, Scores and GameStates modules. Each can be accessed with this pattern /api/users or /api/games
+
+Every user has read access to all endpoints. 
+
+Logged in user has access to modify data which is added by him/her. For example, Logged in user can edit game developed by him/her.
+
+Admin user has read, write, update and delete access for all endpoints.
+
 ## Implemented features
 
 #### Mandatory requirements
@@ -74,11 +88,11 @@ In 'Game statistics' you can see your sales on a chart for the whole period of p
 | **Features** | **Supposed points** | **Comments** |
 | --- | --- | --- |
 | Wishlist | ??? | We implemented Wishlist for games as planned at the beginning of the development (see [Project Plan](project plan.md)). Users can save desired games here while they can not buy them. |
-| RESTful API | ???/100  |  |
+| RESTful API | 90/100  |  |
 | Own game | 100/100 | We added our own game. In this game it has the same basic idea as the exaple game; LOAD, SAVE and SUBMIT features. When adding a new game put this into the URL field: http://online-gamestore.herokuapp.com/static/games/owngame.html |
 | Save/load and resolution feature | 100/100 | Players can save and load gamestates. Gamestates are stored as a JSON field in database. JSON field allows custom gamestates for different games. User can only have one gamestate per one game. Resolution feature is also added. |
 | 3rd party login | 0/100 |  |
-| Mobile Friendly | 0/50 |  |
+| Mobile Friendly | 50/50 |  |
 | Social media sharing | 50/50 | We added social media sharing. It supports Facebook, Twitter, Reddit and E-mail sharing. We didn't add Google+ since it is being deleted soon. |
 
 ## <a name="teamwork"></a>Team work
@@ -95,6 +109,8 @@ Below is a list of tasks that each team member has completed.
 * Applied **bootstrap** for login and signup templates
 * Implemented **REST API**
 * Implemented games **search** by title
+* Implemented **Responsive Design**
+* Implemented **Automated Test**
 
 #### Vincent Eurasto `711690`
 
@@ -106,6 +122,7 @@ Below is a list of tasks that each team member has completed.
 * Implement **email validation** (send a letter to email after registering)
 * Added **social media** sharing
 * Added **own game**
+* Implemented **Automated Test**
 
 #### Aleksandra Zhuravleva `723523`
 
