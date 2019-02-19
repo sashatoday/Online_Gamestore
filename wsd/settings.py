@@ -135,17 +135,11 @@ SOCIAL_AUTH_PIPELINE = (
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_DATA = [('gender', 'gender')]
-#  'locale': 'ru_RU',
-# 'fields': 'id, name, email, age_range'
-#}
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'locale': 'en_US',
-    'fields': 'id,name,email,gender,about,birthday,first_name,last_name,hometown,age_range', 
+    'fields': 'id,email,first_name,last_name', 
 }
-
 
 SOCIAL_AUTH_FACEBOOK_API_VERSION = '2.10'
 
