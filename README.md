@@ -20,6 +20,8 @@ Game Store uses Django Framework (Python 3.6) and such tools as Bootstrap, JQuer
 
 Online Game Store is hosted at [Heroku](http://online-gamestore.herokuapp.com/search_game/).
 
+#### User functionality in general
+
 A guest user is able to search games and see game details. Other functionality (buy, save, play) is available after authorization.
 
 To register in our service you should click to 'Sign Up' and provide the following data: username, first name, last name, email, birthday, gender, password and mark that you read User Agreement (you can read by the link).
@@ -47,6 +49,8 @@ Search functionality is provided in other sections as well. Check at my games, w
 Click on game title or picture to open detailed game view. While short game preview shows game picture, title, category, price, age limit, detailed view gives you game descriptions, developer username and table of 10 best scores. In addition, here you can share this game in social media, e.g., Twitter, Reddit, Facebook or send by email.
 
 To buy game you must be older than game age restriction. See age limit field in game description. Payment is made using [mock payment service](http://payments.webcourse.niksula.hut.fi/ ) provided by WSD course.
+
+#### Developer functionality
 
 When you chose 'Developer' role, you can add games, edit added games, delete them, see list of uploaded games and track games sales.
 
@@ -87,11 +91,11 @@ Admin user has read, write, update and delete access for all endpoints.
 
 | **Features** | **Supposed points** | **Comments** |
 | --- | --- | --- |
-| Wishlist | ??? | We implemented Wishlist for games as planned at the beginning of the development (see [Project Plan](project plan.md)). Users can save desired games here while they can not buy them. |
+| Wishlist | 50 | We implemented Wishlist for games as planned at the beginning of the development (see [Project Plan](project plan.md)). Users can save desired games here while they can not buy them. |
 | RESTful API | 90/100  |  |
 | Own game | 100/100 | We added our own game. In this game it has the same basic idea as the exaple game; LOAD, SAVE and SUBMIT features. When adding a new game put this into the URL field: http://online-gamestore.herokuapp.com/static/games/owngame.html |
 | Save/load and resolution feature | 100/100 | Players can save and load gamestates. Gamestates are stored as a JSON field in database. JSON field allows custom gamestates for different games. User can only have one gamestate per one game. Resolution feature is also added. |
-| 3rd party login | 0/100 |  |
+| 3rd party login | 70/100 | Implemented login with Facebook. If user login first time, then new profile will be created. In case of login with Facebook, the username will be the same as email. When user login next times, we only check his/her email and authenticate user. Sometimes this feature doesn't work from first try, so you need to click 'Login with Facebook' two or three times. We think this can be caused by some problems with session parameters or cookies. |
 | Mobile Friendly | 50/50 |  |
 | Social media sharing | 50/50 | We added social media sharing. It supports Facebook, Twitter, Reddit and E-mail sharing. We didn't add Google+ since it is being deleted soon. |
 
@@ -137,6 +141,8 @@ Below is a list of tasks that each team member has completed.
 * Implemented view and template for **sales statistics** (for developers)
 * Implemented view and template for **wishlist**
 * Implemented games **search** by category, added filters to sort by date, title, age limit and price
+* Implemented **3rd-party login** with Facebook
+* **Deploying**
 
 In addition to the presented tasks, each of us reviewed Gitlab merge requests from other team members.
 
