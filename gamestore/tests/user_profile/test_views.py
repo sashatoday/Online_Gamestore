@@ -39,21 +39,6 @@ class UserAccountTest(TestCase):
         response = self.client.get("/restore_account/")
         self.assertRedirects(response, '/search_game/')
 
-    ''' TODO: NOT WORKING?
-    def test_restore_account(self): 
-        self.user.is_active = False
-        response = self.client.post("/restore_account/", {'username': 'test_user', 'password': '12345'}, follow=True)
-        self.assertRedirects(response, "/restore_account/thanks/")
-
-    ### test confirm email ###
-    def test_confirm_email(self):
-        uid = urlsafe_base64_encode(force_bytes(self.user.pk)).decode()
-        token = account_activation_token.make_token(self.user)
-        url = "/confirm_email/{}/{}".format(uid, token)
-        response = self.client.get(url)
-        self.assertRedirects(response, "/thanks/")
-    '''
-
     ### test reset_password ###
     def test_reset_password_if_not_logged_in(self):
         response = self.client.get("/reset_password/")
