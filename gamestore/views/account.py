@@ -337,7 +337,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
             response.raise_for_status()
             request = kwargs.get('request', None)
         except HTTPError:
-            message = "HTTP Error".
+            message = "HTTP Error"
             return render(request, ERROR_HTML, {'message': message})
         if user:
             if User.objects.filter(username=response['email']).exists():
