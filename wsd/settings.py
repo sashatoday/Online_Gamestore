@@ -143,7 +143,7 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'locale': 'en_US',
-    'fields': 'id,name,email,gender,about,birthday,first_name,hometown,age_range', 
+    'fields': 'id,name,email,gender,about,birthday,first_name,last_name,hometown,age_range', 
 }
 
 
