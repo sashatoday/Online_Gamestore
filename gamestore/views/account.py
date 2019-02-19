@@ -89,7 +89,7 @@ def login(request):
                 ########  login  ##################
                 auth_login(request, user)
                 return redirect(next_page)
-        return render(request, LOGIN_HTML, {'resp':request})
+        return render(request, LOGIN_HTML, {})
 
 def restore_account(request):
     if request.user.is_authenticated:
