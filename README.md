@@ -65,7 +65,7 @@ In 'Game statistics' you can see your sales on a chart for the whole period of p
 | Authentication  | 200/200 | Implemented actions: login/logout, signup, restore account, reset password, set new password. All users register as players and then they are able to change their status on profile page. We implemented email validation using Django's Console Backend.  |
 | Basic player functionalities | 300/300 | All requirements are implemented. Players can search games, buy them, save to wishlist and play games that were bought. |
 | Basic developer functionalities | 200/200 | All requirements are implemented. Developer can add game, edit, delete, see sales statistics (chart with number of purchases by date and table with total numbers of purchases). Developer can manage games that he/she uploaded. |
-| Game/service interaction | 150/200 | (!!!!TODO) Play view process SCORE, SAVE and LOAD request, i.e., you can save score, save game state and load game state respectively. |
+| Game/service interaction | 200/200 | Play view process SCORE, SAVE and LOAD request, i.e., you can save score, save game state and load game state respectively. |
 | Quality of Work | 75/100 | We think that requirements are satisfied apart testing. (!!!!TODO) |
 | Non-functional requirements | 200/200 | Project plan is done. Final documentation is done. We get great experience during project management and [teamworking](#teamwork). |
 
@@ -105,9 +105,9 @@ Below is a list of tasks that each team member has completed.
 * Implemented view and template for **buy game** action
 * Implemented **forgot password** functionality (needs email confirmation) 
 * Implemented **email validation** (send a letter to email after registering)
-* Added **social media** sharing *
-* Made HTML and Javascript valid *
-* Added some automated tests *
+* Added **social media** sharing 
+* Made HTML and Javascript valid 
+* Added some automated tests 
 * Added **own game**
 
 #### Aleksandra Zhuravleva `723523`
