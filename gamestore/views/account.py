@@ -50,7 +50,7 @@ def startpage(request):
 def save_facebook_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
         request = kwargs.get('request', None)
-        if not response['email']:
+        if response.status_code == 400: # Bad request status code
             message = "Sorry, Facebook didn't provide your email. Please try again or sign up manually"
             return render(request, ERROR_HTML, {'message': message})
         if user:
