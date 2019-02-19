@@ -64,7 +64,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         user_auth = authenticate(username=user_object.username)
         #request = HttpRequest()
         rf = RequestFactory()
-        post_request = rf.post('/login/', {'username': username})
+        post_request = rf.post('/login/', {'username': user_object.username})
         auth_login(request, user_auth)
     if profile is None:
         pass
