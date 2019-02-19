@@ -20,6 +20,8 @@ Game Store uses Django Framework (Python 3.6) and such tools as Bootstrap, JQuer
 
 Online Game Store is hosted at [Heroku](http://online-gamestore.herokuapp.com/search_game/).
 
+You can login with username `test_user` and password `dummypassword`.
+
 #### User functionality in general
 
 A guest user is able to search games and see game details. Other functionality (buy, save, play) is available after authorization.
