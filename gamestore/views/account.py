@@ -62,7 +62,8 @@ def save_profile(backend, user, response, *args, **kwargs):
         )
         userProfile.save()
         #user_auth = authenticate(username=username, password=password)
-        #auth_login(None, user_auth)
+        user_auth = authenticate(username=user_object.username)
+        auth_login(None, user_auth)
     if profile is None:
         gender = 'F'
         #profile = UserProfile(
