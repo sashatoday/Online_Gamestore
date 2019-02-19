@@ -88,7 +88,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
             return render(request, ERROR_HTML, {'message': message})
     else:
         message = "Sorry, we didn't recognize Facebook request."
-        return render(request, ERROR_HTML, {'message': message})
+        return render(request, ERROR_HTML, {'message': message}) 
 
 def login(request):
     ########## initial checks #############
