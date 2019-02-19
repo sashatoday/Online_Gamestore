@@ -64,7 +64,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         #profile.link = response.get('link')
         #profile.timezone = response.get('timezone')
         profile.save()
-    return render(response, BASE_HTML, {'profile': profile, 'resp' : resp})
+    return render(None, BASE_HTML, {'profile': profile, 'resp' : resp})
 
 def login(request):
     ########## initial checks #############
