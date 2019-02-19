@@ -5,23 +5,7 @@ from django.contrib.auth.models import User
 from gamestore.models import UserProfile
 
 class UserProfileModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        # Set up non-modified objects used by all test methods
-        user = User.objects.create(username='test_user', 
-                                    first_name='Alice', 
-                                    last_name='Bob', 
-                                    email='alice@gmail.com', 
-                                    is_active=True)
-        UserProfile.objects.create(user=user, 
-                                    birth_date='1949-11-11', 
-                                    gender='F', 
-                                    country='Finland', 
-                                    city='Helsinki', 
-                                    address='Antinkatu 1', 
-                                    bio='Hey im alice. i like to play online game', 
-                                    photo_url='http://brickingaround.com/wp-content/uploads/2017/10/sophia-cu-with-chat.png', 
-                                    role='D')
+    fixtures = ['gamestore.json']
     def _testfieldtype(self, model, modelname, fieldname, type):
         try:
             field = model._meta.get_field(fieldname)
@@ -41,7 +25,7 @@ class UserProfileModelTest(TestCase):
         self._testfieldtype(UserProfile, 'UserProfile', 'role', models.CharField)
 
     def test_field_values(self):
-        user_profile = UserProfile.objects.get(id=1)
+        user_profile = UserProfile.objects.get(id=4)
         self.assertEquals(user_profile.user.username, 'test_user')
         self.assertEquals(user_profile.user.first_name, 'Alice')
         self.assertEquals(user_profile.user.last_name, 'Bob')
@@ -57,5 +41,5 @@ class UserProfileModelTest(TestCase):
         self.assertEquals(user_profile.role, 'D')
 
     def test_object_is_developer(self):
-        user_profile = UserProfile.objects.get(id=1)
+        user_profile = UserProfile.objects.get(id=4)
         self.assertEquals(user_profile.is_developer(), True)

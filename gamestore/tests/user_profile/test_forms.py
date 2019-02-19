@@ -18,23 +18,7 @@ form_data = {"username": "testuser",
             "password2": "TestPassword1!",
             "check_agreement": "on"}
 class UserFormTest(TestCase): 
-    @classmethod
-    def setUpTestData(cls):
-        # Set up non-modified objects used by all test methods
-        user = User.objects.create(username='test_user', 
-                                    first_name='Alice', 
-                                    last_name='Bob', 
-                                    email='alice@gmail.com', 
-                                    is_active=True)
-        UserProfile.objects.create(user=user, 
-                                    birth_date='1949-11-11', 
-                                    gender='F', 
-                                    country='Finland', 
-                                    city='Helsinki', 
-                                    address='Antinkatu 1', 
-                                    bio='Hey im alice. i like to play online game', 
-                                    photo_url='http://brickingaround.com/wp-content/uploads/2017/10/sophia-cu-with-chat.png', 
-                                    role='D')
+    fixtures = ['gamestore.json']
     
     def _assert_invalid_form(self, data):
         invalid_form = UserForm(data=data)

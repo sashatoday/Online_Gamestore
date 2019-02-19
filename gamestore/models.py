@@ -67,6 +67,9 @@ class Purchase(models.Model):
 
     def get_purchased_game(self):
         return self.purchased_game
+    
+    def get_buyer(self):
+        return self.buyer
 
     class Meta:
         ordering = ["-date"]
