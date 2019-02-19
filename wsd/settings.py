@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'gamestore',
     'gamestoreapi',
     'rest_framework',
-    'django_nose'
+    'django_nose',
     'social_django',
 ]
 
