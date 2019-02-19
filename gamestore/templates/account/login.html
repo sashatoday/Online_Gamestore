@@ -4,8 +4,16 @@
 
 {% block content %}
 
-<h2 class="mb-3">Login</h2>
+<h2 class="mb-3">Login with Facebook</h2>
+<div class="col-md-6 offset-md-6">  
+    <div class="text-center social-btn">
+        <a class="btn btn-primary btn-block" href="{% url 'social:begin' 'facebook' %}">
+            <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
+        </a>
+    </div>
+</div>
 
+<h2 class="mb-3">Login</h2>
 <form method="post">{% csrf_token %}
   {% if errors %}
       <small style="color:red">
@@ -38,12 +46,5 @@
     </div>
   </form>
 
-<div class="col-md-6 offset-md-6">  
-    <div class="text-center social-btn">
-        <a class="btn btn-primary btn-block" href="{% url 'social:begin' 'facebook' %}">
-            <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
-        </a>
-    </div>
-</div>
 {% endblock %}
 
