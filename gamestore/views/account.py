@@ -43,6 +43,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
+from django.contrib.sites.shortcuts import get_current_site
 
 def startpage(request):
     return render(request, BASE_HTML)
@@ -59,7 +60,8 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                     ####### Login with Facebook ##########
                     user_auth = authenticate(username=user_object.username)
                     auth_login(request, user_auth)
-                    return redirect('search_game')
+                    domain_url = get_current_site(request).domain
+                    return redirect('http://{{ domain_url }}/search_game/')
                 else:
                     message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
                     return render(None, ERROR_HTML, {'message': message})
@@ -89,7 +91,8 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                 userProfile.save()
                 user_auth = authenticate(username=user_object.username)
                 auth_login(request, user_auth)
-                return redirect('facebook_signup_seccess')
+                domain_url = get_current_site(request).domain
+                return redirect('http://{{ domain_url }}/facebook_signup/thanks/')
         else:
             message = "Sorry, an error occurred during Facebook login process."
             return render(None, ERROR_HTML, {'message': message})
