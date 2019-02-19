@@ -3,7 +3,10 @@
 {% block title %}Buy game{% endblock %}
 
 {% block content %}
-
+{% if message %}
+<strong> {{ message }}</strong>
+<a class="btn btn-success btn-lg btn-block" href="/search_game">Go back</a>
+{% else %}
 <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
 <div class="container">
     <div class="row">
@@ -69,5 +72,6 @@
     </div>
 </div>
 </form>
+{% endif %}
 
 {% endblock %}
