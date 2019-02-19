@@ -18,7 +18,7 @@ import jsonfield
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
     birth_date = models.DateField()
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=UNKNOWN)
     country = models.CharField(max_length=20, blank=True)
     city = models.CharField(max_length=20, blank=True)
     address = models.CharField(max_length=100, blank=True)

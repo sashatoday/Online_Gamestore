@@ -1,6 +1,6 @@
 ##############################################################
 ##### This view provides actions related to user account: ####
-#####     * startpage                                     ####
+#####     * startpage (base)                              ####
 #####     * login                                         ####
 #####     * activate                                      ####
 #####     * signup                                        ####
@@ -11,9 +11,11 @@
 #####     * edit_profile                                  ####
 #####     * show_user                                     ####
 #####     * show_agreement                                ####
+#####     * save_facebook_profile                         ####
 #####     * report_successful_registration                ####
 #####     * report_successful_restoring                   ####
 #####     * report_successful_activation                  ####
+#####     * report_successful_facebook_signup             ####
 ##############################################################
 
 from django.shortcuts import render, redirect
@@ -33,7 +35,6 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from gamestore.constants import *
-
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from ..tokens import account_activation_token
@@ -41,6 +42,8 @@ from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.exceptions import ObjectDoesNotExist
+import datetime
+from django.contrib.sites.shortcuts import get_current_site
 
 def startpage(request):
     return render(request, BASE_HTML)
@@ -254,7 +257,6 @@ def edit_profile(request):
     ########  initialize variables  ##############
     user = request.user
     userprofile = user.userprofile
-    username = user.username
 
     userform = UserUpdateForm(instance=user)
     profileform = UserProfileUpdateForm(instance=userprofile)
@@ -274,9 +276,14 @@ def edit_profile(request):
         if 'updateprofile' in request.POST:
             userform = UserUpdateForm(request.POST, instance=user)
             profileform = UserProfileUpdateForm(request.POST, instance=userprofile)
-            if userform.data['username'] != username:
+            if userform.data['username'] != user.username:
                 userform.add_error('username', "You are not allowed to change your username")
                 userform.errors['email'] = ""
+                args['userform'] = userform
+                return render(request, PROFILE_HTML, args)
+            if userform.data['email'] != user.email:
+                userform.add_error('email', "You are not allowed to change your email")
+                userform.errors['username'] = ""
                 args['userform'] = userform
                 return render(request, PROFILE_HTML, args)
             if userform.is_valid() and profileform.is_valid():
@@ -320,9 +327,68 @@ def show_user(request, user_id):
     }
     return render(request, PROFILE_PREVIEW_HTML, args)
 
-
 def show_agreement(request):
     return render(request, USER_AGREEMENT_HTML)
+
+def save_facebook_profile(backend, user, response, *args, **kwargs):
+    if backend.name == 'facebook':
+        request = kwargs.get('request', None)
+        if user:
+            if User.objects.filter(username=response['email']).exists():
+                user_object = User.objects.get(username=response['email'])
+                auto_user = User.objects.get(username=user)
+                auto_user.delete()
+                if UserProfile.objects.filter(user=user_object).exists():
+                    ####### Login with Facebook ##########
+                    try:
+                        user_auth = authenticate(username=user_object.username)
+                        auth_login(request, user_auth)
+                        domain_url = get_current_site(request).domain
+                        return redirect('http://{0}/search_game/'.format(domain_url))
+                    except:
+                        message = "Sorry, something went wrong :("
+                        return render(request, ERROR_HTML, {'message': message})
+                else:
+                    message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+            else:
+                ####### Check that username and email unique ##########
+                if User.objects.filter(email=response['email']).count() > 1:
+                    auto_user = User.objects.get(username=user)
+                    auto_user.delete()
+                    message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+                try:
+                    User.objects.filter(username=user).update(username=response['email'])
+                except:
+                    auto_user = User.objects.get(username=user)
+                    auto_user.delete()
+                    message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
+                    return render(request, ERROR_HTML, {'message': message})
+                ####### Signup with Facebook ##########
+                user_object = User.objects.get(username=response['email'])
+                User.objects.filter(username=response['email']).update(first_name=response['first_name'],last_name=response['last_name'])
+                birth_date = datetime.datetime.now() - datetime.timedelta(days=14*365) # 14 years by default
+                userProfile = UserProfile(
+                    user=user_object,
+                    birth_date=birth_date,
+                    gender='U'
+                )
+                userProfile.save()
+                try:
+                    user_auth = authenticate(username=user_object.username)
+                    auth_login(request, user_auth)
+                    domain_url = get_current_site(request).domain
+                    return redirect('http://{0}/facebook_signup/thanks/'.format(domain_url))
+                except:
+                    message = "Sorry, something went wrong :("
+                    return render(request, ERROR_HTML, {'message': message})
+        else:
+            message = "Sorry, an error occurred during Facebook login process."
+            return render(request, ERROR_HTML, {'message': message})
+    else:
+        message = "Sorry, we didn't recognize Facebook request."
+        return render(None, ERROR_HTML, {'message': message})
 
 def report_successful_registration(request):
     args = {
@@ -342,5 +408,12 @@ def report_successful_activation(request):
     args = {
         'thanks_for' : "activating your account",
         'message' : "Now you can login in our system.",
+    }
+    return render(request, THANKS_HTML, args)
+
+def report_successful_facebook_signup(request):
+    args = {
+        'thanks_for' : "registering",
+        'message' : "You are logged in now. Check your profile, we added birthday and gender as default values (14 years old and Unknown respectively). Other personal data is taken from your Facebook account.",
     }
     return render(request, THANKS_HTML, args)

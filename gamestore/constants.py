@@ -15,9 +15,9 @@ DEVELOPER = 'D'
 PLAYER = 'P'
 
 GENDER_CHOICES = (
+    (UNKNOWN, 'Unknown'),
     (MALE, 'Male'),
     (FEMALE, 'Female'),
-    (UNKNOWN, 'Unknown'),
 )
 ROLE_CHOICES = (
     (DEVELOPER, 'Developer'),
@@ -58,6 +58,7 @@ secret_key = '510ed4cc72a95c1972a18cedc5d16318'
 
 BASE_HTML = 'base.html'
 THANKS_HTML = 'extra/thanks.html'
+ERROR_HTML = 'extra/error.html'
 
 ACTIVATE_ACCOUNT_HTML = 'account/restore_account.html'
 LOGIN_HTML = 'account/login.html'

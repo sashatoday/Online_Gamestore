@@ -1,7 +1,9 @@
-from django.urls import re_path
+from django.urls import re_path, include
 from gamestore.views import account, game, payment, developer
 
 urlpatterns = [
+
+    re_path('', include('social_django.urls', namespace='social')),
 
 ### Base view
     re_path(r'^$', account.startpage, name='index'),
@@ -9,6 +11,7 @@ urlpatterns = [
 ### Account
     re_path(r'^login/$', account.login, name='login'),
     re_path(r'^logout/$', account.logout_user, name='logout_user'),
+    re_path(r'^facebook_signup/thanks/$', account.report_successful_facebook_signup, name='facebook_signup_seccess'),
     re_path(r'^signup/$', account.signup, name='signup'),
     re_path(r'^signup/thanks/$', account.report_successful_registration, name='registration_success'),
     re_path(r'^restore_account/$', account.restore_account, name='restore_account'),

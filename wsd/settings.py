@@ -21,8 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'Moved to Heroku variables'
-SECRET_KEY = '@hgmcm6vh^o4!u!njw9s@az)rs1$vdh$3r2clo6scd$465_^qz'
-#SECRET_KEY = os.environ.get('SECRET_KEY')
+#SECRET_KEY = '@hgmcm6vh^o4!u!njw9s@az)rs1$vdh$3r2clo6scd$465_^qz'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'gamestoreapi',
     'rest_framework',
     'django_nose'
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -112,6 +113,37 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Facebook
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET')
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'gamestore.auth_backend.PasswordlessAuthBackend',
+)
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'gamestore.views.account.save_facebook_profile',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'locale': 'en_US',
+    'fields': 'id,email,first_name,last_name', 
+}
+
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '2.10'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
