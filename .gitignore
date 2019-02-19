@@ -1,5 +1,5 @@
 .DS_Store
 .vscode/*
-
+.coverage
 *.sqlite3
 __pycache__/
