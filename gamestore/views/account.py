@@ -49,23 +49,20 @@ def startpage(request):
 def save_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
         profile = user
-        resp = backend
-        birth_date = datetime.datetime.now() - datetime.timedelta(days=15*365) # 15 years by default
-        #user_object = User.objects.create_user(
-        #    first_name=response['first_name'],
-        #    last_name=response['last_name'],
-        #    username=user,
-        #    email=response['email'],
-        #    password=id
-        #)
+        resp = response
+        birth_date = datetime.datetime.now() - datetime.timedelta(days=13*365) # 13 years by default
         user_object = User.objects.get(username=user)
-        #user.save()
+        user_object['first_name'] = response['first_name']
+        user_object['last_name'] = response['last_name']
+        user_object.save()
         userProfile = UserProfile(
             user=user_object,
             birth_date=birth_date,
             gender='U'
         )
         userProfile.save()
+        user_auth = authenticate(username=username, password=password)
+        auth_login(None, user_auth)
     if profile is None:
         gender = 'F'
         #profile = UserProfile(

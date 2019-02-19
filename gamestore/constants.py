@@ -16,9 +16,9 @@ DEVELOPER = 'D'
 PLAYER = 'P'
 
 GENDER_CHOICES = (
+    (UNKNOWN, 'Unknown'),
     (MALE, 'Male'),
     (FEMALE, 'Female'),
-    (UNKNOWN, 'Unknown'),
 )
 ROLE_CHOICES = (
     (ADMIN, 'Admin'),

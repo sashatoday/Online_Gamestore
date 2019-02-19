@@ -34,7 +34,7 @@ def birth_date_is_valid(birth_date):
     age = calculate_age(birth_date)
     if age > 120:
         raise forms.ValidationError("You are overage (>120).")
-    if age < 14:
+    if age < 13:
         raise forms.ValidationError("You are underage (<14).")
 
 def check_price(price):
@@ -84,10 +84,10 @@ class UserForm(UserCreationForm):
         widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email', 'maxlength' : 50, 'placeholder': 'you@example.com'})
     )
     birth_date = forms.DateField(
-        help_text = 'Your age should be more than 14 and less than 120',
+        help_text = 'Your age should be more than 13 and less than 120',
         label     = 'Birth date',
         required  = True,
-        widget    = forms.DateInput(attrs = {'type' : 'date', 'class' : 'form-control here', 'min': date.today() + relativedelta(years=-120), 'max' : date.today() + relativedelta(years=-14)})
+        widget    = forms.DateInput(attrs = {'type' : 'date', 'class' : 'form-control here', 'min': date.today() + relativedelta(years=-120), 'max' : date.today() + relativedelta(years=-13)})
     )
     gender = forms.ChoiceField(
         choices  = GENDER_CHOICES,
@@ -203,10 +203,10 @@ class UserProfileUpdateForm(forms.ModelForm):
         widget   = forms.Select(attrs = {'class' : 'form-control here'})
     )
     birth_date = forms.DateField(
-        help_text = 'Your age should be more than 14 and less than 120',
+        help_text = 'Your age should be more than 13 and less than 120',
         label     = 'Birth date',
         required  = True,
-        widget    = forms.DateInput(attrs = {'type' : 'date', 'class' : 'form-control here', 'min': date.today() + relativedelta(years=-120), 'max' : date.today() + relativedelta(years=-14)})
+        widget    = forms.DateInput(attrs = {'type' : 'date', 'class' : 'form-control here', 'min': date.today() + relativedelta(years=-120), 'max' : date.today() + relativedelta(years=-13)})
     )
     bio = forms.CharField(
         label    = 'Bio',
