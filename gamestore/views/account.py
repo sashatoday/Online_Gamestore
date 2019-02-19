@@ -42,6 +42,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from django.http import HttpRequest
+from django.test.client import RequestFactory
 
 def startpage(request):
     return render(request, BASE_HTML)
@@ -61,18 +62,12 @@ def save_profile(backend, user, response, *args, **kwargs):
         userProfile.save()
         #user_auth = authenticate(username=username, password=password)
         user_auth = authenticate(username=user_object.username)
-        request = HttpRequest()
+        #request = HttpRequest()
+        rf = RequestFactory()
+        post_request = rf.post('/login/', {'username': username})
         auth_login(request, user_auth)
     if profile is None:
-        gender = 'F'
-        #profile = UserProfile(
-        #    user=user,
-        #    birth_date=birth_date,
-        #    gender=gender
-        #)
-        #profile.link = response.get('link')
-        #profile.timezone = response.get('timezone')
-        profile.save()
+        
     return render(None, BASE_HTML, {'profile': backend, 'resp' : resp, 'args':args})
 
 def login(request):
