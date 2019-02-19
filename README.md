@@ -123,7 +123,6 @@ Below is a list of tasks that each team member has completed.
 * Implemented **email validation** (send a letter to email after registering)
 * Added **social media** sharing 
 * Made HTML and Javascript valid 
-* Added some automated tests 
 * Added **own game**
 * Implemented **Automated Test**
 
