@@ -62,9 +62,11 @@ To add game you should provide at least title, price, category, game URL and age
 
 In 'Game statistics' you can see your sales on a chart for the whole period of purchasing. You can click on series to add or remove them from plot. Below is the table with total numbers of sales for each game.
 
-#### Rest API Usage 
+NB: Please use http protocol for our site, because some views can be unavailable (game play, payment view, sales statistics).
 
-We used [Django REST framework](https://www.django-rest-framework.org) library to build RESTful API. This framework is self documenting. Forward slash api to the base url lists available endpoints.
+#### <a name="rest-api"></a>REST API Usage
+
+We used [Django REST framework](https://www.django-rest-framework.org) library to build RESTful API. This framework is self documenting. Forward slash api to the base url, lists available endpoints.
 
 http://online-gamestore.herokuapp.com/api/ 
 
@@ -94,13 +96,14 @@ Admin user has read, write, update and delete access for all endpoints.
 | **Features** | **Supposed points** | **Comments** |
 | --- | --- | --- |
 | Wishlist | 50 | We implemented Wishlist for games as planned at the beginning of the development (see [Project Plan](project plan.md)). Users can save desired games here while they can not buy them. |
-| RESTful API | 90/100  |  |
+| RESTful API | 90/100  | We implemented an API to create, delete, update and view data using RESTful web services. For detailed information, please look section [REST API Usage](#rest-api) |
 | Own game | 100/100 | We added our own game. In this game it has the same basic idea as the exaple game; LOAD, SAVE and SUBMIT features. When adding a new game put this into the URL field: http://online-gamestore.herokuapp.com/static/games/owngame.html |
 | Save/load and resolution feature | 100/100 | Players can save and load gamestates. Gamestates are stored as a JSON field in database. JSON field allows custom gamestates for different games. User can only have one gamestate per one game. Resolution feature is also added. |
 | 3rd party login | 70/100 | Implemented login with Facebook. If user logins first time, then new profile will be created. In case of login with Facebook, the username will be the same as email. When user logins next times, we only check his/her email and authenticate user. Sometimes this feature doesn't work from the first try, so you need to click 'Login with Facebook' two or three times. We think this can be caused by some problems with session parameters or cookies. |
-| Mobile Friendly | 50/50 |  |
+| Mobile Friendly | 50/50 | We implemented responsive design by using bootstrap best practices. So now, our application fits well in smaller devices(mobile and tablet) as well. |
 | Social media sharing | 50/50 | We added social media sharing. It supports Facebook, Twitter, Reddit and E-mail sharing. We didn't add Google+ since it is being deleted soon. |
 
+Total Points <b>1710</b> 
 ## <a name="teamwork"></a>Team work
 
 We controlled the development process in Trello where we assigned tasks to team members as it is shown in the screenshot:
