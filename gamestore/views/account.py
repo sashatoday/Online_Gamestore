@@ -55,7 +55,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         #profile = UserProfile(user_id=user.id)
         gender = response.get('gender')
         gender = 'F'
-        birth_date = datetime.datetime.now() - datetime.timedelta(days=20*365) # 20 years by default
+        birth_date = datetime.datetime.now() - datetime.timedelta(days=15*365) # 15 years by default
         profile = UserProfile(
             user=user,
             birth_date=birth_date,
