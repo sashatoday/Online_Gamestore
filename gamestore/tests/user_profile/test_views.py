@@ -3,6 +3,9 @@ from django.urls import reverse
 from django.test import TestCase
 from django.contrib.auth.models import User
 from gamestore.models import UserProfile
+from gamestore.tokens import account_activation_token
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 class UserAccountTest(TestCase):
     def setUp(self):
@@ -41,12 +44,37 @@ class UserAccountTest(TestCase):
         self.user.is_active = False
         response = self.client.post("/restore_account/", {'username': 'test_user', 'password': '12345'}, follow=True)
         self.assertRedirects(response, "/restore_account/thanks/")
-    '''
 
     ### test confirm email ###
     def test_confirm_email(self):
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-                    'token': account_activation_token.make_token(user), #use the same hasing method as when activating user
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk)).decode()
+        token = account_activation_token.make_token(self.user)
+        url = "/confirm_email/{}/{}".format(uid, token)
+        response = self.client.get(url)
+        self.assertRedirects(response, "/thanks/")
+    '''
+
+    ### test reset_password ###
+    def test_reset_password_if_not_logged_in(self):
+        response = self.client.get("/reset_password/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account/reset_password.html")
+        self.assertTemplateUsed(response, "base.html")
+
+    def test_reset_password_if_logged_in(self):
+        user_login = self.client.login(username="test_user", password="12345")
+        self.assertTrue(user_login)
+        response = self.client.get("/reset_password/")
+        self.assertRedirects(response, '/profile/')
+
+    def test_reset_password_with_valid_email(self):
+        response = self.client.post("/reset_password/", {'email': 'test@test.com'})
+        self.assertTrue(response.context['message'])
+
+    def test_reset_password_with_invalid_email(self):
+        response = self.client.post("/reset_password/", {'email': ''})
+        with self.assertRaises(KeyError):
+            response.context['message']
 
     ### test signup (get and post) ###
     def test_signup_if_not_logged_in(self):
@@ -107,3 +135,10 @@ class UserAccountTest(TestCase):
     def test_login_with_correct_credintials(self):
         response = self.client.post("/login/", {'username': 'test_user', 'password': '12345'}, follow=True)
         self.assertTrue(response.context['user'].is_authenticated)
+
+    ### test logout ###
+    def test_logout(self):
+        user_login = self.client.login(username="test_user", password="12345")
+        self.assertTrue(user_login)
+        response = self.client.get("/logout/")
+        self.assertRedirects(response, '/search_game/')
