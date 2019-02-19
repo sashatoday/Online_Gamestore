@@ -346,7 +346,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                         domain_url = get_current_site(request).domain
                         return redirect('http://{0}/search_game/'.format(domain_url))
                     except:
-                        message = "Sorry, something went wrong :(")
+                        message = "Sorry, something went wrong :("
                         return render(request, ERROR_HTML, {'message': message})
                 else:
                     message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
@@ -381,7 +381,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                     domain_url = get_current_site(request).domain
                     return redirect('http://{0}/facebook_signup/thanks/'.format(domain_url))
                 except:
-                    message = "Sorry, something went wrong :(")
+                    message = "Sorry, something went wrong :("
                     return render(request, ERROR_HTML, {'message': message})
         else:
             message = "Sorry, an error occurred during Facebook login process."

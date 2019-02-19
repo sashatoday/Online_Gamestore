@@ -6,11 +6,6 @@
 
 <h2 class="mb-3">Login</h2>
 
-<div class="text-center social-btn">
-    <a class="btn btn-primary btn-block" href="{% url 'social:begin' 'facebook' %}">
-        <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
-    </a>
-</div>
 <form method="post">{% csrf_token %}
   {% if errors %}
       <small style="color:red">
@@ -42,5 +37,11 @@
       </div>
     </div>
   </form>
+  
+<div class="text-center social-btn">
+    <a class="btn btn-primary btn-block" href="{% url 'social:begin' 'facebook' %}">
+        <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
+    </a>
+</div>
 {% endblock %}
 
