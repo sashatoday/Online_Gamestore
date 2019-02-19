@@ -3,7 +3,7 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-
+<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
 <h2 class="mb-3">Registration</h2>
 <form method="post">{% csrf_token %}
     {% for field in form %}

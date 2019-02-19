@@ -41,9 +41,28 @@ from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.exceptions import ObjectDoesNotExist
+import datetime
 
 def startpage(request):
     return render(request, BASE_HTML)
+
+def save_profile(backend, user, response, *args, **kwargs):
+    if backend.name == 'facebook':
+        profile = user.get_profile()
+    if profile is None:
+        #profile = UserProfile(user_id=user.id)
+        gender = response.get('gender')
+        gender = 'F'
+        birth_date = datetime.datetime.now() - datetime.timedelta(days=20*365) # 20 years by default
+        profile = UserProfile(
+            user=user,
+            birth_date=birth_date,
+            gender=gender
+        )
+        #profile.link = response.get('link')
+        #profile.timezone = response.get('timezone')
+        profile.save()
+    return render(request, BASE_HTML, {'profile': profile})
 
 def login(request):
     ########## initial checks #############
