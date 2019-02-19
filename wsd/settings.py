@@ -139,7 +139,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_DATA = [('gender', 'gender')]
 #  'locale': 'ru_RU',
 # 'fields': 'id, name, email, age_range'
 #}
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','first_name', 'last_name',]
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'locale': 'en_US',
