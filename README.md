@@ -103,8 +103,11 @@ Below is a list of tasks that each team member has completed.
 * Implemented **game/service interaction**
 * Implemented view and template for **play game** action
 * Implemented view and template for **buy game** action
-* Implement **email validation** (send a letter to email after registering)
-* Added **social media** sharing
+* Implemented **forgot password** functionality (needs email confirmation) 
+* Implemented **email validation** (send a letter to email after registering)
+* Added **social media** sharing *
+* Made HTML and Javascript valid *
+* Added some automated tests *
 * Added **own game**
 
 #### Aleksandra Zhuravleva `723523`
