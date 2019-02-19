@@ -2,13 +2,11 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 class IsOwnerOrAdminElseReadOnly(BasePermission):
     """
-    Custom permission to only allow owners of an object to edit it.
+    Custom permission to only allow owners or admin of an object to edit it.
     """
-
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
-        print(obj.developer)
         
         if request.method in SAFE_METHODS:
             return True
@@ -20,6 +18,4 @@ class IsOwnerOrAdminElseReadOnly(BasePermission):
             return obj.user == request.user
         # Write permissions are only allowed to the owner
         if hasattr(obj, 'developer'):
-            return obj.developer == request.user
-
-    
+            return obj.developer.user == request.user
