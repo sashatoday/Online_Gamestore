@@ -132,6 +132,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_DATA = [('gender', 'gender')]
 #  'locale': 'ru_RU',
