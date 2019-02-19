@@ -146,7 +146,7 @@ class UserUpdateForm(forms.ModelForm):
     )
     email = forms.CharField(
         required = True,
-        widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email'})
+        widget   = forms.TextInput(attrs= {'class' : 'form-control here', 'type' : 'email', 'readonly' : 'readonly'})
     )
     def clean_email(self):
         email = self.cleaned_data['email']

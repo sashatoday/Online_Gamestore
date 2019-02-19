@@ -53,6 +53,8 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
         if user:
             if User.objects.filter(username=response['email']).exists():
                 user_object = User.objects.get(username=response['email'])
+                auto_user = User.objects.get(username=user)
+                auto_user.delete()
                 if UserProfile.objects.filter(user=user_object).exists():
                     ####### Login with Facebook ##########
                     user_auth = authenticate(username=user_object.username)
@@ -64,15 +66,15 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
             else:
                 ####### Check that username and email unique ##########
                 if User.objects.filter(email=response['email']).count() > 1:
-                    user_object = User.objects.get(username=user)
-                    user_object.delete()
+                    auto_user = User.objects.get(username=user)
+                    auto_user.delete()
                     message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
                     return render(request, ERROR_HTML, {'message': message})
                 try:
                     User.objects.filter(username=user).update(username=response['email'])
                 except:
-                    user_object = User.objects.get(username=user)
-                    user_object.delete()
+                    auto_user = User.objects.get(username=user)
+                    auto_user.delete()
                     message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
                     return render(request, ERROR_HTML, {'message': message})
                 ####### Signup with Facebook ##########
