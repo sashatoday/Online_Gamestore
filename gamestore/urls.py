@@ -30,7 +30,7 @@ urlpatterns = [
     re_path(r'^wishlist/$', game.show_wishlist, name='wishlist'),
     re_path(r'^games/(?P<game_id>[0-9]+)/$', game.show_game_description, name='game_description'),
     re_path(r'^buy_game/(?P<game_id>[0-9]+)/$', game.buy_game, name='buying_game'),
-    re_path(r'^play_game/(?P<game_id>[0-9]+)/$', game.play_game, name='play_game'),
+    re_path(r'^play_game/(?P<game_id>[0-9]+)/$', game.play_game, name='play_game', {'SSL': False),
 
 ### Payments
     re_path(r'^payment/success/$', payment.report_success, name='payment_success'),

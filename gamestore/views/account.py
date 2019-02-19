@@ -58,25 +58,25 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                 if UserProfile.objects.filter(user=user_object).exists():
                     ####### Login with Facebook ##########
                     user_auth = authenticate(username=user_object.username)
-                    auth_login(response, user_auth)
+                    auth_login(request, user_auth)
                     return redirect('search_game')
                 else:
                     message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
-                    return render(response, ERROR_HTML, {'message': message})
+                    return render(None, ERROR_HTML, {'message': message})
             else:
                 ####### Check that username and email unique ##########
                 if User.objects.filter(email=response['email']).count() > 1:
                     auto_user = User.objects.get(username=user)
                     auto_user.delete()
                     message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
-                    return render(response, ERROR_HTML, {'message': message})
+                    return render(None, ERROR_HTML, {'message': message})
                 try:
                     User.objects.filter(username=user).update(username=response['email'])
                 except:
                     auto_user = User.objects.get(username=user)
                     auto_user.delete()
                     message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
-                    return render(response, ERROR_HTML, {'message': message})
+                    return render(None, ERROR_HTML, {'message': message})
                 ####### Signup with Facebook ##########
                 user_object = User.objects.get(username=response['email'])
                 User.objects.filter(username=response['email']).update(first_name=response['first_name'],last_name=response['last_name'])
@@ -88,11 +88,11 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                 )
                 userProfile.save()
                 user_auth = authenticate(username=user_object.username)
-                auth_login(response, user_auth)
+                auth_login(request, user_auth)
                 return redirect('facebook_signup_seccess')
         else:
             message = "Sorry, an error occurred during Facebook login process."
-            return render(response, ERROR_HTML, {'message': message})
+            return render(None, ERROR_HTML, {'message': message})
     else:
         message = "Sorry, we didn't recognize Facebook request."
         return render(None, ERROR_HTML, {'message': message}) 

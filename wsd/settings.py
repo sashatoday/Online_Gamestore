@@ -60,7 +60,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'ssl_redirect.middleware.SSLRedirectMiddleware',
 ]
+
+SSL_ON = False
 
 ROOT_URLCONF = 'wsd.urls'
 
