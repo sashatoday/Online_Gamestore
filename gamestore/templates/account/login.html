@@ -6,8 +6,11 @@
 
 <h2 class="mb-3">Login</h2>
 
-<a class="fb-login-button" href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
-
+<div class="text-center social-btn">
+    <a class="btn btn-primary" href="{% url 'social:begin' 'facebook' %}">
+        <i class="fa fa-facebook"></i> Login with Facebook
+    </a>
+</div>
 <form method="post">{% csrf_token %}
   {% if errors %}
       <small style="color:red">
