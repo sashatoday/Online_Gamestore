@@ -59,7 +59,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                 return redirect('search_game')
             else:
                 ####### Check that username and email unique ##########
-                if User.objects.filter(email=response['email']).exists():
+                if User.objects.filter(email=response['email']).count() > 1:
                     user_object = User.objects.get(username=user)
                     user_object.delete()
                     message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
