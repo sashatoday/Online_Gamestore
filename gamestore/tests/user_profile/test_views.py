@@ -36,12 +36,17 @@ class UserAccountTest(TestCase):
         response = self.client.get("/restore_account/")
         self.assertRedirects(response, '/search_game/')
 
-    '''
+    ''' TODO: NOT WORKING?
     def test_restore_account(self): 
         self.user.is_active = False
         response = self.client.post("/restore_account/", {'username': 'test_user', 'password': '12345'}, follow=True)
         self.assertRedirects(response, "/restore_account/thanks/")
     '''
+
+    ### test confirm email ###
+    def test_confirm_email(self):
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                    'token': account_activation_token.make_token(user), #use the same hasing method as when activating user
 
     ### test signup (get and post) ###
     def test_signup_if_not_logged_in(self):
