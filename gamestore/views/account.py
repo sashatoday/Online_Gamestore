@@ -67,7 +67,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         post_request = rf.post('/login/', {'username': username})
         auth_login(request, user_auth)
     if profile is None:
-        
+        pass
     return render(None, BASE_HTML, {'profile': backend, 'resp' : resp, 'args':args})
 
 def login(request):
