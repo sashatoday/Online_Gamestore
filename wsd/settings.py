@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gamestore',
     'gamestoreapi',
-    'rest_framework'
+    'rest_framework',
+    'social.apps.django_app.default',
 ]
 
 MIDDLEWARE = [
