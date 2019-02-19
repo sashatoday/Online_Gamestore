@@ -48,7 +48,9 @@ def startpage(request):
 
 def save_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
-        profile = user.get_profile()
+        #profile = user.get_profile()
+        profile = user
+        resp = response
     if profile is None:
         #profile = UserProfile(user_id=user.id)
         gender = response.get('gender')
@@ -62,7 +64,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         #profile.link = response.get('link')
         #profile.timezone = response.get('timezone')
         profile.save()
-    return render(request, BASE_HTML, {'profile': profile})
+    return render(request, BASE_HTML, {'profile': profile, 'resp' : resp})
 
 def login(request):
     ########## initial checks #############
