@@ -118,7 +118,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
-    'wsd.auth_backend.PasswordlessAuthBackend',
+    'gamestore.auth_backend.PasswordlessAuthBackend',
 )
 
 SOCIAL_AUTH_PIPELINE = (
