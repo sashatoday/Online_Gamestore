@@ -5,11 +5,13 @@
 {% block content %}
 
 <h2 class="mb-3">Login with Facebook</h2>
-<div class="col-md-6 mb-7">  
-    <div class="text-center social-btn">
-        <a class="btn btn-success btn-block form-control" href="{% url 'social:begin' 'facebook' %}">
-            <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
-        </a>
+<div class="row">
+    <div class="col-md-4">  
+        <div class="text-center social-btn mb-7">
+            <a class="btn btn-success btn-block " href="{% url 'social:begin' 'facebook' %}">
+                <i class="fab fa-facebook-square"></i>&nbsp; Login with Facebook
+            </a>
+        </div>
     </div>
 </div>
 
