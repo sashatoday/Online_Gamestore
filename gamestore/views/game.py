@@ -52,9 +52,9 @@ def apply_filter(request, games):
         
         ####### get new list of games ###########
         if category == 'ALL':
-            games = Game.objects.filter(name__icontains=search_key).order_by(filter)
+            games = games.filter(name__icontains=search_key).order_by(filter)
         else:
-            games = Game.objects.filter(name__icontains=search_key, category=category).order_by(filter)
+            games = games.filter(name__icontains=search_key, category=category).order_by(filter)
     return form, games, search_applied
 
 @login_required(login_url='/login/')
