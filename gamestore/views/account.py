@@ -335,18 +335,17 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
         request = kwargs.get('request', None)
         if user:
             if User.objects.filter(username=response['email']).exists():
+                User.objects.get(username=user).delete() # facebook created automatically user with username 'user'
                 user_object = User.objects.get(username=response['email'])
-                auto_user = User.objects.get(username=user)
-                auto_user.delete()
                 if UserProfile.objects.filter(user=user_object).exists():
                     ####### Login with Facebook ##########
                     try:
                         user_auth = authenticate(username=user_object.username)
                         auth_login(request, user_auth)
                         domain_url = get_current_site(request).domain
-                        return redirect('http://{0}/search_game/'.format(domain_url))
+                        return redirect('http://{0}/search_game/'.format(domain_url)) # force to use http
                     except:
-                        message = "Sorry, something went wrong :("
+                        message = "Sorry, authentication process has failed."
                         return render(request, ERROR_HTML, {'message': message})
                 else:
                     message = "Sorry, user with email '{0}' already exists but UserProfile does not. Please sign up manually".format(response['email'])
@@ -354,15 +353,13 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
             else:
                 ####### Check that username and email unique ##########
                 if User.objects.filter(email=response['email']).count() > 1:
-                    auto_user = User.objects.get(username=user)
-                    auto_user.delete()
+                    User.objects.get(username=user).delete() # facebook created automatically user with username 'user'
                     message = "Sorry, user with email '{0}' already exists. Please sign up manually".format(response['email'])
                     return render(request, ERROR_HTML, {'message': message})
                 try:
                     User.objects.filter(username=user).update(username=response['email'])
                 except:
-                    auto_user = User.objects.get(username=user)
-                    auto_user.delete()
+                    User.objects.get(username=user).delete() # facebook created automatically user with username 'user'
                     message = "Sorry, user with username '{0}' already exists. Please sign up manually.".format(response['email'])
                     return render(request, ERROR_HTML, {'message': message})
                 ####### Signup with Facebook ##########
@@ -381,7 +378,7 @@ def save_facebook_profile(backend, user, response, *args, **kwargs):
                     domain_url = get_current_site(request).domain
                     return redirect('http://{0}/facebook_signup/thanks/'.format(domain_url))
                 except:
-                    message = "Sorry, something went wrong :("
+                    message = "Sorry, authentication process has failed."
                     return render(request, ERROR_HTML, {'message': message})
         else:
             message = "Sorry, an error occurred during Facebook login process."

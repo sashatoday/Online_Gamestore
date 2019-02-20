@@ -9,15 +9,22 @@ class PasswordlessAuthBackend(ModelBackend):
         if password:
             try:
                 user = User.objects.get(username=username)
-                if (check_password(password, user.password)):
-                    return user
+                if user.is_active:
+                    if (check_password(password, user.password)):
+                        return user
+                    else:
+                        return None
                 else:
                     return None
             except User.DoesNotExist:
                 return None
         else:
             try:
-                return User.objects.get(username=username)
+                user = User.objects.get(username=username)
+                if user.is_active:
+                    return user
+                else:
+                    return None
             except User.DoesNotExist:
                 return None
                 
