@@ -84,7 +84,7 @@ def show_wishlist(request):
     user = request.user.userprofile
 
     ####  check request to delete game from wishlist  ####
-    if request.method == 'POST':
+    if 'deletegame' in request.POST:
         game_id = request.POST['deletegame']
         game = WishList.objects.filter(wished_game=get_object_or_404(Game, id=game_id)).delete()
 
