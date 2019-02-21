@@ -112,7 +112,7 @@ We controlled the development process in Trello where we assigned tasks to team 
 
 Below is a list of tasks that each team member has completed.
 
-#### Musse Alemu `717869`
+#### Musse Alemu
 
 * Implemented **models**
 * Applied **bootstrap** for login and signup templates
@@ -121,7 +121,7 @@ Below is a list of tasks that each team member has completed.
 * Implemented **Responsive Design**
 * Implemented **Automated Test**
 
-#### Vincent Eurasto `711690`
+#### Vincent Eurasto
 
 * Implemented forms for **update profile** and **change password** actions as well as view and template for them
 * Made improvements for login and register views and templates
@@ -135,7 +135,7 @@ Below is a list of tasks that each team member has completed.
 * Added **own game**
 * Implemented **Automated Test**
 
-#### Aleksandra Zhuravleva `723523`
+#### Aleksandra Zhuravleva
 
 * Implemented **login** and **signup** forms, views and templates
 * Implemented forms, views and templates for **add and edit game** actions (for developers)
@@ -154,7 +154,7 @@ In addition to the presented tasks, each of us reviewed Gitlab merge requests fr
 ## Authors
 
 ```
-723523 Aleksandra Zhuravleva
-711690 Vincent Eurasto
-717869 Musse Alemu
+Aleksandra Zhuravleva
+Vincent Eurasto
+Musse Alemu
 ```
