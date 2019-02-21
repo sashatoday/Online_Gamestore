@@ -1,1 +1,1 @@
-web: gunicorn wsd.wsgi --log-file -
+web: gunicorn online_gamestore.wsgi --log-file -
