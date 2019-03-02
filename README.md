@@ -8,59 +8,55 @@ Online Game Store for JavaScript games &ndash; Project for Web Software Developm
 [online-gamestore.herokuapp.com/](http://online-gamestore.herokuapp.com/search_game/)
 
 #### Project Plan
-[Project Plan](project_plan.md)
+Read [Project Plan](project_plan.md) that was made before the implementation of the project.
 
 #### Description
 
-This project is a prototype of real game store service which provides functionality for players and game developers. Players can search games, buy them, save to wishlist and play. Developers can add new games through external link to html page with JavaScript game. Also, they are able to track number and dates of games sales.
+This project is a prototype of a real game store service which provides functionality for players and game developers. Players can search games, buy them, save to wishlist and play. Developers can add new games through external link to html page with JavaScript game. Also, they are able to track number and dates of games sales.
 
-Game Store uses Django Framework (Python 3.6) and such tools as Bootstrap, JQuery, HighCharts.
+Game Store uses Django Framework (Python 3.6) and such tools as Bootstrap, JQuery, HighCharts and some others.
 
 ## Instructions to use application
 
 Online Game Store is hosted at [Heroku](http://online-gamestore.herokuapp.com/search_game/).
 
+Please, use http protocol for our site. Otherwise, some views can be unavailable (game play, payment view, sales statistics) because games, mock services, some JS libraries use http.
+
 #### User functionality in general
 
 A guest user is able to search games and see game details. Other functionality (buy, save, play) is available after authorization.
 
-To register in our service you should click to 'Sign Up' and provide the following data: username, first name, last name, email, birthday, gender, password and mark that you read User Agreement (you can read by the link).
+To register in our service you should click 'Sign Up' and provide the following data: username, first name, last name, email, birthday, gender, password and mark that you read User Agreement (you can read by clicking the link). Note that user must be at least 14 years old and at most 120 years old.
 
-Note that user must be at least 14 years old and at most 120 years old. The first limitation is due to cash transactions when purchasing games. In our service, people under the age of 14 do not have the authority to perform these operations. The second restriction is added to avoid fictional dates.
-
-After registration, you get an email with the link on address that you provided. Please click on this link, thus, we can validate your email address and make your user profile active.
+After the registration, you will get an email with the link. Please click on this link, thus, we can validate your email address and make your user profile active.
 
 When you confirm your email, you can login. Click 'Login' and type your username and password.
 
-All new users have 'Player' role that means that you can only player functionality (search, buy, save, play). If you want to upload your own games and track statistics, please, change your role to 'Developer' on profile page.
+All new users are assigned to 'Player' role that means that you can use only player functionality (search, buy, save, play). If you want to upload your own games and track statistics, please, change your role to 'Developer' on the profile page.
 
-Click 'Profile' on sidebar menu. Here your current personal data is shown, and you can update it, change your password or delete account. To figure out how other users see your profile, click the link on the top of the page.
+Click 'Profile' on the sidebar menu. Here, your current personal data is shown. You can update it, change your password or delete account. To figure out how other users see your profile, click the link on the top of the page.
 
-After you delete your account, your username and scores will be shown for users but the other info is hidden and profile preview says that the account is deleted.
+After you delete your account, your username and scores will be shown for users but other personal data is hidden, and profile preview says that the account is deleted.
 
 If you changed your mind and decided to return to our service, you can restore your account by clicking 'Restore account'. Just type username and your last password. Then, repeat process with email letter like after registration.
 
-In game searching, you can choose all games or any desired category. You can apply empty search or type some search key. By default, search results are sorted in descending order of uploading date, i.e., fresh games come first. Try to sort games by date, price, title or age limit.
+In game searching, you can choose all games or any desired category. You can apply empty search or type some search key. Try to sort games by date, price, title or age limit. Search functionality is provided in other sections as well. Check at my games, wishlist or uploaded games.
 
-Search functionality is provided in other sections as well. Check at my games, wishlist or uploaded games.
+'My games' include games that you bought. Wishlist contains games that you have saved to buy later. You can delete any game from wishlist if you don't want it anymore. To save to wishlist, you need to click button 'Save to wishlist' in the game description view.
 
-'My games' include games that you bought. Wishlist contains games that you saved to buy later. You can delete any game from wishlist if you don't want it anymore. To save to wishlist you need to click button 'Save to wishlist' in game description view.
+Click on game title or picture to open detailed game view. While short game preview shows game picture, title, category, price and age limit, detailed view gives you game description, developer username and table of 10 best scores as well. In addition, you can share this game in social media, e.g., Twitter, Reddit, Facebook or send by email.
 
-Click on game title or picture to open detailed game view. While short game preview shows game picture, title, category, price, age limit, detailed view gives you game descriptions, developer username and table of 10 best scores. In addition, here you can share this game in social media, e.g., Twitter, Reddit, Facebook or send by email.
-
-To buy game you must be older than game age restriction. See age limit field in game description. Payment is made using [mock payment service](http://payments.webcourse.niksula.hut.fi/ ) provided by WSD course.
+To buy game you must be older than game age limit value. In payment we use [mock payment service](http://payments.webcourse.niksula.hut.fi/ ) provided by WSD course.
 
 #### Developer functionality
 
 When you chose 'Developer' role, you can add games, edit added games, delete them, see list of uploaded games and track games sales.
 
-To add game you should provide at least title, price, category, game URL and age limit. Age limit is used to check that user is older than your stated limit. To complete procedure, you have to mark combobox that you understand Developer agreement. Additionally, you can paste game description and picture URL. By default, there will be simple default image.
+To add game you should provide at least title, price, category, game URL and age limit value. Age limit is used to check that user is older than your stated limit. To complete procedure, you have to mark combobox that you understand Developer agreement. Additionally, you can paste game description and picture URL. By default, there will be simple default image.
 
 'Uploaded games' are developer's game inventory.
 
-In 'Game statistics' you can see your sales on a chart for the whole period of purchasing. You can click on series to add or remove them from plot. Below is the table with total numbers of sales for each game.
-
-NB: Please use http protocol for our site, because some views can be unavailable (game play, payment view, sales statistics).
+In 'Game statistics' you can see your sales on a chart for the whole period of purchasing. You can click on series to add or remove them from the plot. Below is the table with total numbers of sales for each game.
 
 #### <a name="rest-api"></a>REST API Usage
 
