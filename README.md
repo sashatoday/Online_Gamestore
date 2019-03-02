@@ -8,7 +8,7 @@ Online Game Store for JavaScript games &ndash; Project for Web Software Developm
 [online-gamestore.herokuapp.com/](http://online-gamestore.herokuapp.com/search_game/)
 
 #### Project Plan
-[Project Plan](project plan.md)
+[Project Plan](project_plan.md)
 
 #### Description
 
