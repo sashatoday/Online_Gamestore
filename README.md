@@ -2,19 +2,19 @@
 
 Online Game Store for JavaScript games &ndash; Project for Web Software Development course at Aalto University.
 
-## Links
-
-#### App in Heroku
+### Heroku
 [online-gamestore.herokuapp.com/](http://online-gamestore.herokuapp.com/search_game/)
 
-#### Project Plan
-Read [Project Plan](project_plan.md) that was made before the implementation of the project.
-
-#### Description
+## Description
 
 This project is a prototype of a real game store service which provides functionality for players and game developers. Players can search games, buy them, save to wishlist and play. Developers can add new games through external link to html page with JavaScript game. Also, they are able to track number and dates of games sales.
 
 Game Store uses Django Framework (Python 3.6) and such tools as Bootstrap, JQuery, HighCharts and some others.
+
+![](readme_pictures/app_preview.png)
+
+## Project Plan
+Read [Project Plan](project_plan.md) that was made before the implementation of the project.
 
 ## Instructions to use application
 
