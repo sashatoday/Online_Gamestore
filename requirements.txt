@@ -54,5 +54,5 @@ social-auth-app-django==3.1.0
 social-auth-core==3.0.0
 transitions==0.6.9
 Unidecode==1.0.23
-urllib3==1.24.2
+urllib3==1.26.5
 whitenoise==4.1.2
